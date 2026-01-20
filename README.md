@@ -1,4 +1,4 @@
-# STE IJCAI'26 Experiment Pipeline
+# STE Experiment Pipeline
 
 This folder (`ste/`) is a self-contained, runnable experiment pipeline intended for an IJCAI-grade empirical section.
 
@@ -21,8 +21,7 @@ This folder (`ste/`) is a self-contained, runnable experiment pipeline intended 
    - Writes LaTeX tables to `paper_assets/tables/`.
    - Writes figure PDFs to `paper_assets/figs/`.
 
-## Why earlier outputs can look “fake”
-
+## Note:
 If the reachability operator is implemented as a **sum of path masses** (e.g., `D + D^2 + …`) it can **saturate** (most reachability entries approach 1) for moderate `n`, which makes Top Cycle membership probabilities nearly constant and close to 1.
 
 Similarly, some uncovered-set relaxations based on a single “witness” can collapse cover scores toward 0, which makes `sigmoid(beta*(0.5-max_cover))` nearly constant and close to `sigmoid(beta*0.5)`.
