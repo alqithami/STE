@@ -1,0 +1,12 @@
+{
+  "timestamp": "20260119_232225",
+  "run_dir": "./outputs/runs/20260119_232225",
+  "config": "configs/ste_master.yaml",
+  "quick": false,
+  "python": "3.12.10",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "torch_version": "2.9.1",
+  "cuda_available": false,
+  "seed_base": 42,
+  "num_runs": 10
+}

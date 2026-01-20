@@ -1,0 +1,9 @@
+numpy>=1.24
+pandas>=2.0
+PyYAML>=6.0
+matplotlib>=3.7
+scikit-learn>=1.2
+# torch is required but install it in a way that matches your platform:
+# https://pytorch.org/get-started/locally/
+# Optional baselines:
+# trueskill
