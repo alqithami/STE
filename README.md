@@ -145,3 +145,5 @@ Before trusting results:
 - Increase `m_per_pair` and verify recovery metrics improve.
 - Sweep `rho` and verify recovery degrades as cyclicity increases.
 
+- 
+
