@@ -1,6 +1,6 @@
-# STE Experiment Pipeline (OLD)
+# STE Experiment Pipeline
 
-This folder (`ste/`) is a self-contained, runnable experiment pipeline intended for an IJCAI-grade empirical section.
+This folder (`ste/`) is a self-contained, runnable experiment pipeline.
 
 ## What this pipeline does
 
