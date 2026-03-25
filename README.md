@@ -144,6 +144,3 @@ Before trusting results:
 - Run at least two different seeds and verify results change in plausible ways.
 - Increase `m_per_pair` and verify recovery metrics improve.
 - Sweep `rho` and verify recovery degrades as cyclicity increases.
-
-- 
-
