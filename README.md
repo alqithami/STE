@@ -1,4 +1,4 @@
-# STE Experiment Pipeline
+# Soft Tournament Equilibrium (STE) Pipeline
 
 This folder (`ste/`) is a self-contained, runnable experiment pipeline.
 
