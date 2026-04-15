@@ -1,4 +1,7 @@
 # Soft Tournament Equilibrium (STE) Pipeline
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.04328-b31b1b.svg)](https://arxiv.org/abs/2604.04328)
 
 This folder (`ste/`) is a self-contained, runnable experiment pipeline.
 
