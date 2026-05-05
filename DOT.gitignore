@@ -1,0 +1,58 @@
+# Python cache and build products
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated experiment outputs and figures
+outputs/*
+!outputs/.gitkeep
+plots/*
+!plots/.gitkeep
+figures/generated/*
+paper_assets/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Generated archives / local bundles
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Raw/private/external data
+data/raw/*
+data/external/*
+data/private/*
+!data/raw/.gitkeep
+!data/external/.gitkeep
+!data/private/.gitkeep
+
+# Keep documentation placeholders
+!data/README.md
+!paper/README.md
