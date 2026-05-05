@@ -1,149 +1,140 @@
-# Soft Tournament Equilibrium (STE) Pipeline
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![arXiv](https://img.shields.io/badge/arXiv-2604.04328-b31b1b.svg)](https://arxiv.org/abs/2604.04328)
+# Soft Tournament Equilibrium (STE)
 
-This folder (`ste/`) is a self-contained, runnable experiment pipeline.
+This repository contains the runnable code and experiment pipeline for **Soft Tournament Equilibrium (STE)**: set-valued evaluation for non-transitive pairwise comparisons. The main empirical pipeline is designed to reproduce the synthetic planted-core benchmark, ablations, bootstrap diagnostics, runtime scaling, and optional real-data diagnostics used in the current STE manuscript.
 
-## What this pipeline does
+## Repository status
 
-1. **Synthetic tournaments**
-   - Generates a ground-truth probabilistic tournament `P` with a tunable transitive signal (BTL) and tunable cyclicity.
-   - Samples pairwise comparisons (with optional noise + sparsity).
-   - Estimates `P_hat` from the sampled comparisons (train/val/test split is supported).
-   - Computes **Top Cycle** and **Uncovered Set** membership probabilities using STE operators.
-   - Evaluates recovery, robustness, calibration, stability-vs-sparsity, ablations, and runtime scaling.
+This repository is intended to be the **code and experiment artifact** for the paper. Generated outputs are intentionally excluded from version control; publishable outputs should be regenerated from the committed configs and archived separately as a reviewer artifact or release.
 
-2. **Real-world (optional)**
-   - Loads **Chatbot Arena** pairwise data from a CSV (you provide the file path).
-   - Loads **AgentBench** pairwise data from a JSONL/CSV-like format (you provide the file path).
-   - Computes STE membership probabilities and baseline scores.
+## Main components
 
-3. **Paper assets**
-   - Writes raw result CSVs into a timestamped `runs/<timestamp>/` directory.
-   - Writes LaTeX tables to `paper_assets/tables/`.
-   - Writes figure PDFs to `paper_assets/figs/`.
+```text
+ste_neurips/        NeurIPS-style synthetic and real-data experiment runner
+ste_ops/            Core STE operators
+baselines/          Ranking/rating baselines
+configs/            Smoke, laptop, server, and final experiment configs
+data/               Dataset loaders and templates; do not commit private/raw dumps
+scripts/            Convenience run scripts
+tests/              Sanity tests
+tools/              Auditing and placeholder-detection utilities
+outputs/            Generated locally; ignored by git except .gitkeep
+plots/              Generated locally; ignored by git except .gitkeep
+```
 
-## Note:
-If the reachability operator is implemented as a **sum of path masses** (e.g., `D + D^2 + …`) it can **saturate** (most reachability entries approach 1) for moderate `n`, which makes Top Cycle membership probabilities nearly constant and close to 1.
-
-Similarly, some uncovered-set relaxations based on a single “witness” can collapse cover scores toward 0, which makes `sigmoid(beta*(0.5-max_cover))` nearly constant and close to `sigmoid(beta*0.5)`.
-
-This pipeline therefore defaults to:
-- `ste.reachability_mode: max_product` (bounded, existence-style)
-- `ste.uncovered_mode: lukasiewicz` (fuzzy implication form of covering)
-
-Both are deterministic and avoid the most common degeneracies.
-
-## Setup
-
-### Python dependencies
-
-Create a clean environment and install dependencies:
+## Installation
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-Notes:
-- `torch` installation depends on your machine; if you already have `torch`, keep it.
-- `trueskill` is optional. If you do not install it, the TrueSkill baseline is skipped.
+On Apple Silicon, the synthetic pipeline is CPU/NumPy-based and does not require GPU setup. Server-scale experiments can be run on CPU nodes unless you add neural contextual models.
 
-## Sanity checks (do this first)
+## First checks
 
-From inside the `ste/` directory:
+Run the unit/sanity tests and a small smoke experiment before launching larger jobs:
 
 ```bash
-python -m tests.sanity
+make test
+make smoke
 ```
 
-Expected behavior:
-- **Transitive tournament** → Top Cycle size = 1 and Uncovered size = 1.
-- **3-cycle** → Top Cycle size = 3 and Uncovered size = 3.
+Expected smoke outputs are written under:
 
-If this fails, do **not** run large experiments.
+```text
+outputs/neurips_smoke/
+```
 
-## Auditing / anti-placeholder tooling
+## Synthetic experiments
 
-Two helper scripts are included to make it easy to validate that the code is
-executing real computations end-to-end:
-
-1) Static scan for common placeholder patterns:
+Laptop/Mac run:
 
 ```bash
-python tools/static_placeholder_scan.py
+make mac
 ```
 
-2) One-run audit that saves intermediate matrices (D, R, cover) and full
-arrays in a compressed NPZ so you can inspect them numerically:
+Recommended final synthetic run:
 
 ```bash
-python tools/audit_one_run.py --config configs/ste_master.yaml --n 20 --rho 0.4 --seed 42
+make final
 ```
 
-The audit artifacts are written under `outputs/audit/...` and include a JSON
-report with SHA256 hashes.
-
-## Running experiments
-
-### Quick smoke test
+Server-scale run:
 
 ```bash
-python run_all.py --quick
+make server
 ```
 
-Quick mode reduces the number of seeds and bootstrap samples. It is a smoke test, not publishable.
+The synthetic suite writes:
 
-### Full run (publishable settings)
+```text
+oracle_sanity.csv
+synthetic_recovery.csv
+synthetic_ablation.csv
+bootstrap_stability.csv
+runtime_scaling.csv
+negative_controls.csv
+synthetic_threshold_sensitivity.csv
+synthetic_pairwise_reliability.csv
+synthetic_membership_reliability.csv
+synthetic_edge_margins.csv
+summary_report.md
+paper_tables.tex
+figures/*.png
+```
 
-Edit the config and then run:
+## Real-data diagnostics
+
+Arena-style human preference CSV schema:
+
+```text
+model_a, model_b, winner, category
+```
+
+Run:
 
 ```bash
-python run_all.py --config configs/ste_master.yaml
+bash scripts/run_arena_human_preferences.sh /path/to/arena.csv outputs/arena_full
 ```
 
-To run only one experiment:
+AgentBench-style score log schema:
+
+```text
+environment, agent, task_id, score
+```
+
+or use `success` / `status` instead of `score`.
+
+Run:
 
 ```bash
-python run_all.py --exp core_recovery
-python run_all.py --exp calibration
+bash scripts/run_agentbench_logs.sh /path/to/agentbench_scores.csv outputs/agentbench_full
 ```
 
-### Output locations
+Real-data outputs are diagnostics. They should be reported as evidence about cyclic structure and stability, not as ground-truth core accuracy.
 
-- Raw results: `outputs/runs/<timestamp>/...csv`
-- Figures: `outputs/paper_assets/figs/*.pdf`
-- Tables: `outputs/paper_assets/tables/*.tex`
+## Reviewer-safety rules
 
-The pipeline also copies the exact config used into the run directory:
+Do not claim that STE scores are calibrated probabilities unless reliability diagnostics support that claim. For real data, report STE outputs as diagnostic membership scores. In synthetic experiments, ranking baselines can be converted to top-|C| sets using the true core size; this is favorable to the baselines and should be stated explicitly.
 
-- `outputs/runs/<timestamp>/config_used.yaml`
+## Cleaning generated files
 
-## Real-world experiments
+```bash
+make clean-generated
+```
 
-### Chatbot Arena
+To remove generated files from git if they were accidentally committed:
 
-1. Obtain/export the pairwise dataset you intend to use.
-2. Point the config key `paths.chatbot_arena_file` to your CSV.
-3. Enable `experiments.chatbot_arena_global` (and optionally `chatbot_arena_by_category`).
+```bash
+git rm -r --cached __pycache__ outputs plots || true
+find . -type d -name __pycache__ -prune -exec rm -rf {} +
+mkdir -p outputs plots
+touch outputs/.gitkeep plots/.gitkeep
+git add .gitignore outputs/.gitkeep plots/.gitkeep
+```
 
-The loader expects columns (configurable):
-- `model_a`, `model_b`, and `winner` (with values indicating whether A/B won; ties can be dropped or handled by policy).
+## Citation
 
-### AgentBench
-
-1. Point `paths.agentbench_file` to your file.
-2. Enable `experiments.agentbench_per_environment`.
-
-Because AgentBench formats can vary, check `data/agentbench.py` and adapt column names as needed.
-
-## Reproducibility checklist
-
-Before trusting results:
-- Confirm `config_used.yaml` matches what you intended.
-- Run `python -m tests.sanity`.
-- Run at least two different seeds and verify results change in plausible ways.
-- Increase `m_per_pair` and verify recovery metrics improve.
-- Sweep `rho` and verify recovery degrades as cyclicity increases.
+Use `CITATION.cff` once the public paper/preprint identifier is finalized.

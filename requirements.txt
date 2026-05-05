@@ -4,17 +4,12 @@ scipy>=1.10
 scikit-learn>=1.2
 matplotlib>=3.6
 pyyaml>=6.0
-
-# Optional but recommended for a TrueSkill baseline
-trueskill>=0.4.5
-
+tabulate>=0.9.0
 pytest>=7.0
-
-# Optional but recommended for downloading public Hugging Face datasets
-# used in the real-data suite.
+networkx>=3.0
+tqdm>=4.66
+# Optional baselines / real-data helpers. Keep installed for the full reviewer pipeline.
+trueskill>=0.4.5
 datasets>=2.18.0
 huggingface_hub>=0.23.0
 pyarrow>=14.0.0
-
-# Required by pandas.DataFrame.to_markdown in generated reports.
-tabulate>=0.9.0
