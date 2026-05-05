@@ -1,0 +1,48 @@
+out: outputs/neurips_synthetic_server
+n_values: [25, 50, 100]
+core_sizes: [3, 5, 7]
+m_values: [1, 2, 5, 10, 25, 50, 100]
+missing_values: [0.0, 0.1, 0.3, 0.5, 0.7]
+label_noise_values: [0.00, 0.02, 0.05, 0.10]
+margin_out_values: [0.16, 0.20, 0.26, 0.32]
+seeds: 100
+posterior_samples: 500
+methods: [ste_posterior_edge_uc, ste_posterior_edge_tc, ste_plugin_uc, ste_plugin_tc, hard_uc, hard_tc, winrate, btl, elo, rank_centrality, hodge, pagerank, copeland]
+reachability: max_min
+tau: 0.035
+K: n-1
+run_ablation: true
+ablation_n_values: [25, 50, 100]
+ablation_core_sizes: [3, 5]
+ablation_m_values: [2, 5, 10, 25, 50]
+ablation_missing_values: [0.0, 0.1, 0.3, 0.5]
+ablation_seeds: 50
+ablation_edge_estimators: posterior_edge,weighted_mean,missing_as_half,hard_majority
+ablation_reachability: max_min,prob_or,walk_count
+ablation_K_values: 2,3,5,10,n-1
+ablation_tau_values: [0.01, 0.02, 0.035, 0.07, 0.1, 0.2]
+run_bootstrap: true
+bootstrap_n: 50
+bootstrap_core_size: 5
+bootstrap_m: 10
+bootstrap_missing: 0.1
+bootstraps: 500
+stability_seeds: 20
+bootstrap_methods: [ste_posterior_edge_uc, ste_plugin_uc, hard_uc, winrate, btl, elo, rank_centrality, hodge, copeland]
+run_scaling: true
+scaling_n_values: [25, 50, 100, 200, 500]
+scaling_seeds: 10
+scaling_K_values: 2,3,5,10,n-1
+scaling_reachability: max_min,prob_or
+run_extra_diagnostics: true
+diagnostic_n: 50
+diagnostic_core_size: 5
+diagnostic_m: 10
+diagnostic_missing: 0.1
+diagnostic_seeds: 100
+control_n: 50
+control_core_size: 5
+control_m: 10
+control_missing: 0.1
+control_seeds: 100
+threshold_values: [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]

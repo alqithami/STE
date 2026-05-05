@@ -1,0 +1,7 @@
+environment,agent,n_episodes,status_completed,status_validation_failed,status_task_limit
+dbbench-std,agent_a,2,2.0,,
+dbbench-std,agent_b,2,1.0,1.0,
+dbbench-std,agent_c,2,,2.0,
+os-std,agent_a,2,1.0,,1.0
+os-std,agent_b,2,1.0,1.0,
+os-std,agent_c,2,1.0,1.0,

@@ -1,0 +1,10 @@
+model_a,model_b,winner,category
+model_alpha,model_beta,model_alpha,coding
+model_beta,model_gamma,model_beta,coding
+model_gamma,model_alpha,model_gamma,coding
+model_alpha,model_delta,model_alpha,coding
+model_beta,model_delta,model_beta,coding
+model_gamma,model_delta,model_gamma,coding
+model_alpha,model_beta,model_beta,writing
+model_beta,model_gamma,model_gamma,writing
+model_gamma,model_alpha,model_alpha,writing

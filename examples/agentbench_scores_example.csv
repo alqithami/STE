@@ -1,0 +1,13 @@
+environment,agent,task_id,score,status
+os-std,agent_a,task_001,1,completed
+os-std,agent_b,task_001,0,validation_failed
+os-std,agent_c,task_001,1,completed
+os-std,agent_a,task_002,0,task_limit
+os-std,agent_b,task_002,1,completed
+os-std,agent_c,task_002,0,validation_failed
+dbbench-std,agent_a,task_001,1,completed
+dbbench-std,agent_b,task_001,1,completed
+dbbench-std,agent_c,task_001,0,validation_failed
+dbbench-std,agent_a,task_002,1,completed
+dbbench-std,agent_b,task_002,0,validation_failed
+dbbench-std,agent_c,task_002,0,validation_failed

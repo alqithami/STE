@@ -1,0 +1,96 @@
+{
+  "out": "outputs/neurips_smoke",
+  "n_values": [
+    15
+  ],
+  "core_sizes": [
+    3
+  ],
+  "m_values": [
+    5,
+    15
+  ],
+  "missing_values": [
+    0.0,
+    0.3
+  ],
+  "label_noise_values": [
+    0.02
+  ],
+  "margin_out_values": [
+    0.26
+  ],
+  "seeds": 2,
+  "posterior_samples": 40,
+  "methods": [
+    "ste_posterior_edge_uc",
+    "ste_plugin_uc",
+    "hard_uc",
+    "hard_tc",
+    "winrate",
+    "btl",
+    "rank_centrality",
+    "hodge",
+    "copeland"
+  ],
+  "reachability": "max_min",
+  "tau": 0.035,
+  "K": "n-1",
+  "run_ablation": true,
+  "ablation_n_values": [
+    15
+  ],
+  "ablation_core_sizes": [
+    3
+  ],
+  "ablation_m_values": [
+    5
+  ],
+  "ablation_missing_values": [
+    0.0
+  ],
+  "ablation_seeds": 2,
+  "ablation_edge_estimators": "posterior_edge,weighted_mean,missing_as_half,hard_majority",
+  "ablation_reachability": "max_min,prob_or",
+  "ablation_K_values": "2,n-1",
+  "ablation_tau_values": [
+    0.035
+  ],
+  "run_bootstrap": true,
+  "bootstrap_n": 15,
+  "bootstrap_core_size": 3,
+  "bootstrap_m": 10,
+  "bootstrap_missing": 0.1,
+  "bootstraps": 8,
+  "stability_seeds": 2,
+  "bootstrap_methods": [
+    "ste_posterior_edge_uc",
+    "ste_plugin_uc",
+    "winrate",
+    "btl"
+  ],
+  "run_scaling": true,
+  "scaling_n_values": [
+    15,
+    30
+  ],
+  "scaling_seeds": 1,
+  "scaling_K_values": "2,n-1",
+  "scaling_reachability": "max_min,prob_or",
+  "run_extra_diagnostics": true,
+  "diagnostic_n": 15,
+  "diagnostic_core_size": 3,
+  "diagnostic_m": 10,
+  "diagnostic_missing": 0.1,
+  "diagnostic_seeds": 2,
+  "control_n": 15,
+  "control_core_size": 3,
+  "control_m": 10,
+  "control_missing": 0.1,
+  "control_seeds": 2,
+  "threshold_values": [
+    0.35,
+    0.5,
+    0.65
+  ]
+}

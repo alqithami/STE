@@ -1,0 +1,124 @@
+# STE real-dataset manifest template.
+# Fill the paths after downloading/exporting the public datasets or leaderboard logs.
+# The manifest intentionally separates human pairwise preference datasets from
+# task-score datasets; both are converted into the common tournament interface.
+
+output_root: outputs/real_suite_final
+bootstrap: 1000
+seed: 0
+tau: 0.035
+reachability: max_min
+methods:
+  - ste_posterior_edge_uc
+  - ste_posterior_edge_tc
+  - ste_plugin_uc
+  - ste_plugin_tc
+  - hard_uc
+  - hard_tc
+  - winrate
+  - btl
+  - elo
+  - trueskill
+  - rank_centrality
+  - hodge
+  - pagerank
+  - copeland
+  - schulze
+  - minimax
+  - ranked_pairs
+  - kemeny_local
+
+datasets:
+  # Human pairwise preference datasets.
+  - name: chatbot_arena_33k_human
+    enabled: false
+    type: pairwise
+    path: data/chatbot_arena_33k.csv
+    by_category: true
+    cycle_min_count: 20
+    cycle_confidence: 0.95
+    columns:
+      agent_a: model_a
+      agent_b: model_b
+      winner: winner
+      category: category
+
+  - name: arena_human_preference_55k
+    enabled: false
+    type: pairwise
+    path: data/arena_human_preference_55k.csv
+    by_category: true
+    cycle_min_count: 20
+    cycle_confidence: 0.95
+    columns:
+      agent_a: model_a
+      agent_b: model_b
+      winner: winner
+      category: category
+
+  # LLM-as-judge pairwise outputs. These are not human labels; report separately.
+  - name: arena_hard_auto_pairwise
+    enabled: false
+    type: pairwise
+    path: data/arena_hard_auto_pairwise.csv
+    by_category: true
+    cycle_min_count: 10
+    cycle_confidence: 0.90
+    columns:
+      agent_a: model_a
+      agent_b: model_b
+      winner: winner
+      category: category
+
+  # Agent execution logs. Same task_id must be attempted by multiple agents.
+  - name: agentbench
+    enabled: false
+    type: scorelog
+    path: data/agentbench_scores.csv
+    cycle_min_count: 5
+    cycle_confidence: 0.90
+    columns:
+      environment: environment
+      agent: agent
+      task_id: task_id
+      score: score
+      status: status
+
+  - name: webarena
+    enabled: false
+    type: scorelog
+    path: data/webarena_scores.csv
+    cycle_min_count: 5
+    cycle_confidence: 0.90
+    columns:
+      environment: site
+      agent: agent
+      task_id: task_id
+      score: score
+      success: success
+
+  - name: osworld
+    enabled: false
+    type: scorelog
+    path: data/osworld_scores.csv
+    cycle_min_count: 5
+    cycle_confidence: 0.90
+    columns:
+      environment: domain
+      agent: agent
+      task_id: task_id
+      score: score
+      success: success
+
+  - name: swebench_verified
+    enabled: false
+    type: scorelog
+    path: data/swebench_verified_scores.csv
+    cycle_min_count: 5
+    cycle_confidence: 0.90
+    columns:
+      environment: repository
+      agent: agent
+      task_id: instance_id
+      score: score
+      success: resolved
