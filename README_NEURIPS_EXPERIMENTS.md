@@ -1,6 +1,6 @@
-# STE NeurIPS-grade experiment pipeline
+# STE experiment pipeline
 
-This document describes the reviewer-shareable experiment pipeline for Soft Tournament Equilibrium (STE). It is aligned with the current STE draft and is designed to support the central empirical claim:
+This document describes the reviewer-shareable experiment pipeline for Soft Tournament Equilibrium (STE). It is aligned with the STE and is designed to support the central empirical claim:
 
 > In cyclic pairwise-evaluation settings, the useful object is often a set-valued tournament core rather than a forced scalar ranking.
 
@@ -132,18 +132,6 @@ Run:
 ```bash
 bash scripts/run_agentbench_logs.sh /path/to/agentbench_scores.csv outputs/agentbench_full
 ```
-
-## Paper integration
-
-Use the generated `paper_tables.tex` and `figures/*.png` from the output directory as the source for manuscript tables and figures. Do not manually edit reported numerical values in the paper. If the manuscript source is stored in this repository, place it under `paper/` and keep compiled PDFs or LaTeX build products out of version control unless they are explicitly part of a release artifact.
-
-## Reviewer-safety notes
-
-- Do not claim membership scores are calibrated probabilities unless reliability diagnostics support that claim.
-- For real data, report STE outputs as diagnostics rather than ground-truth core accuracy.
-- In synthetic top-|C| conversion, ranking baselines receive the true core size; this is favorable to the baselines.
-- The random-label negative control should not show strong planted-core recovery. If it does, treat the main result as suspect until debugged.
-- Archive the exact config, commit hash, random seeds, raw CSV/JSON outputs, and figure-generation code for any results used in the manuscript.
 
 ## One-command complete run
 
