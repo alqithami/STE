@@ -1,5 +1,9 @@
 # Soft Tournament Equilibrium (STE)
 
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.04328-b31b1b.svg)](https://arxiv.org/abs/2604.04328)
+
 This repository contains the runnable code and experiment pipeline for **Soft Tournament Equilibrium (STE)**: set-valued evaluation for non-transitive pairwise comparisons. The main empirical pipeline is designed to reproduce the synthetic planted-core benchmark, ablations, bootstrap diagnostics, runtime scaling, and optional real-data diagnostics used in the current STE manuscript.
 
 ## Repository status
