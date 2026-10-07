@@ -34,7 +34,7 @@ jobs:
       - name: Run smoke experiment
         run: |
           make smoke
-          make summarize
+          python -m ste_neurips.neurips_suite summarize --out outputs/neurips_smoke
 
       - name: Upload smoke outputs
         if: always()
