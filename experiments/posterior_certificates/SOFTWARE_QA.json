@@ -1,0 +1,43 @@
+{
+  "software_release": "STE-Posterior-Certificates-v2",
+  "status": "SOFTWARE_QA_COMPLETE",
+  "v2_production_run": false,
+  "v2_gpu_training": false,
+  "interpretation": "Software tests and CPU smoke only; no v2 experiment results or new learning advantage claimed.",
+  "unit_tests": {
+    "passed": 73,
+    "failed": 0,
+    "log": "validation/unit_tests.log",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+  },
+  "cpu_smoke": {
+    "classification": "software_QA",
+    "hash_checks": 658,
+    "selected_forward_replays": 240,
+    "joint_draw_replays": 192,
+    "recomputed_metric_rows": 768,
+    "recomputed_selective_rows": 144,
+    "coverage_verified": true,
+    "source_hashes_verified": true,
+    "data_hashes_verified": true,
+    "checkpoint_hashes_verified": true,
+    "selected_replay_verified": true
+  },
+  "external_saved_state_replay": "validation/CPU_SMOKE_EXTERNAL_REPLAY.json",
+  "archives_verified": {
+    "full_sha256": "97b16e19d913903dfb0a21135b1ae2422cc068e6c04baf50a696f6b87dda1e68",
+    "review_sha256": "f10ad7db48035a9c3d9326902d471f6eedf434925bfe1417f9ef0b64d7d3e86b",
+    "classification": "software_QA",
+    "policy": "Hashes identify preserved software-QA artifacts, never v2 production findings."
+  },
+  "fixed_count_certificate_software_check": {
+    "cells": 24,
+    "replicates": 6144,
+    "independent_audit": "validation/CERTIFICATE_DIAGNOSTIC_AUDIT.json",
+    "scope": "Software replay of the same fixed diagnostic; not new human learning or population evidence."
+  },
+  "frozen_v1_parent_hashes_verified": 69,
+  "immutable_v1_evidence_policy": "Native v1 findings retained; entire mixture hard-q aggregate excluded, 320/2592 invalid hard relations, including101/864 at10%; seven raw mixture q range violations.",
+  "corrected_future_fit_policy": "V2 normalization and validation change fitting numerics/cost; fresh retraining required at new output root.",
+  "environment_setup_failure_preserved": "An earlier local CPU QA attempt failed because the isolated no-deps Torch installation lacked Sympy; original failed smoke output retained outside this repository. Standard pip requirements install supplies Torch dependencies."
+}

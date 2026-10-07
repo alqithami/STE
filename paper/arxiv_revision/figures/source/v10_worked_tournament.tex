@@ -1,0 +1,62 @@
+% Deterministic example: all six strict-majority edges, no fitted data.
+% Circles mark UC members; the square marks the covered vertex. All are in TC.
+\begin{tikzpicture}[
+  >=Stealth,
+  every node/.style={font=\fontsize{7.2}{8.4}\selectfont},
+  ucvertex/.style={circle,draw=steBlue,line width=.65pt,fill=steBlue!7,
+    minimum size=4.9mm,inner sep=0pt},
+  coveredvertex/.style={rectangle,draw=steGray,line width=.65pt,fill=steGray!13,
+    minimum size=4.9mm,inner sep=0pt},
+  majority/.style={-{Stealth[length=2.0mm,width=1.35mm]},draw=steGray,line width=.55pt},
+  certificate/.style={-{Stealth[length=2.0mm,width=1.35mm]},draw=steBlue,line width=.75pt},
+  panel/.style={anchor=north west,align=left,inner sep=0pt,text width=5.25cm}
+]
+% Bounding box: about one column wide and 3.0 cm high.
+\path[use as bounding box] (-.22,-.60) rectangle (7.83,2.40);
+\node[anchor=west,inner sep=0pt,font=\fontsize{7.2}{8.4}\selectfont\bfseries]
+  at (-.06,2.20) {(a) Tournament};
+\node[ucvertex] (a) at (0,1.74) {$a$};
+\node[ucvertex] (b) at (1.95,1.74) {$b$};
+\node[ucvertex] (c) at (.975,.12) {$c$};
+\node[coveredvertex] (d) at (.975,.95) {$d$};
+
+% Arrowless annotation drawn first: majority edges remain visually continuous.
+\draw[draw=steGray,densely dashed,line width=.35pt]
+  (d.east) -- (2.36,.95) |- (2.53,.43);
+
+% Exactly six majority edges. Blue edges certify that b covers d.
+\draw[majority] (a) -- (b);
+\draw[majority] (c) to[bend left=15] (a);
+\draw[certificate,preaction={draw=white,line width=2.3pt}]
+  (b) to[bend left=16] (c);
+\draw[majority] (a) -- (d);
+\draw[certificate] (b) -- (d);
+\draw[majority] (d) -- (c);
+
+\node[anchor=west,inner sep=0pt,font=\fontsize{7.2}{8.4}\selectfont\bfseries]
+  at (2.53,2.20) {(b) Membership certificates};
+\node[panel] at (2.53,1.93) {
+  $N^+(a)=\{b,d\},\quad N^+(b)=\{c,d\}$\\[2pt]
+  $N^+(c)=\{a\},\qquad N^+(d)=\{c\}$
+};
+\node[panel] at (2.53,1.15) {
+  \textbf{TC:} $\{a,b,c,d\}$ (full panel)\\[2pt]
+  $d\to c\to a\to b\to d$ is a spanning cycle.
+};
+\node[panel,fill=white] at (2.53,.51) {
+  \textbf{UC:} $b$ covers $d$ $\Rightarrow\UC=\{a,b,c\}$\\[2pt]
+  $b\to d,\quad N^+(d)=\{c\}\subset N^+(b)$
+};
+
+% Explicit shape and line semantics make the figure readable in monochrome.
+\node[ucvertex,minimum size=2.4mm] at (.02,-.39) {};
+\node[anchor=west,inner sep=0pt,font=\fontsize{6.7}{7.4}\selectfont]
+  at (.21,-.39) {UC member};
+\node[coveredvertex,minimum size=2.4mm] at (2.03,-.39) {};
+\node[anchor=west,inner sep=0pt,font=\fontsize{6.7}{7.4}\selectfont]
+  at (2.22,-.39) {covered};
+\node[anchor=west,inner sep=0pt,font=\fontsize{6.7}{7.4}\selectfont]
+  at (3.62,-.39) {All nodes: TC};
+\node[anchor=west,inner sep=0pt,font=\fontsize{6.7}{7.4}\selectfont,text=steBlue]
+  at (5.65,-.39) {Blue: cover proof};
+\end{tikzpicture}

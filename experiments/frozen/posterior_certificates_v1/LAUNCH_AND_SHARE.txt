@@ -1,0 +1,55 @@
+STE Posterior Certificates v1 — existing-server commands
+
+This is a new exploratory extension. The submitted paper is unchanged.
+Never run a duplicate pipeline if one is already active.
+
+1. On your Mac, connect using the existing key (do not paste its contents):
+
+ssh -o IdentitiesOnly=yes -o ConnectTimeout=15 -i "$HOME/.ssh/ste_gpu_oct05" ubuntu@158.176.15.37
+
+2. On the server, inspect progress:
+
+cat /home/ubuntu/ste-posterior-certificates-v1/STATUS.json
+cat /home/ubuntu/ste-posterior-certificates-v1/pipeline.pid
+tail -n 40 /home/ubuntu/ste-posterior-certificates-v1/pipeline.log
+nvidia-smi
+
+3. Continuously display new output (Ctrl-C stops viewing, not the experiment):
+
+tail -n 50 -F /home/ubuntu/ste-posterior-certificates-v1/pipeline.log
+
+4. Completion checks, on the server:
+
+test -f /home/ubuntu/ste-posterior-certificates-v1/production/COMPLETE.json && cat /home/ubuntu/ste-posterior-certificates-v1/production/COMPLETE.json
+test -f /home/ubuntu/ste-posterior-certificates-v1/PIPELINE_COMPLETE.json && cat /home/ubuntu/ste-posterior-certificates-v1/PIPELINE_COMPLETE.json
+test -f /home/ubuntu/ste-posterior-certificates-v1/PIPELINE_FAILED.json && cat /home/ubuntu/ste-posterior-certificates-v1/PIPELINE_FAILED.json
+
+Production COMPLETE means selected-state replay and reconstruction audit passed.
+PIPELINE_COMPLETE also requires both verified archives and unchanged source
+hashes. Smoke or pilot COMPLETE never means production is complete. An audit is
+necessary evidence of implementation and integrity, not proof of population
+validity or independent retraining.
+
+5. When complete, on your Mac download the compact review file and checksum:
+
+scp -o IdentitiesOnly=yes -i "$HOME/.ssh/ste_gpu_oct05" ubuntu@158.176.15.37:/home/ubuntu/ste-posterior-certificates-v1/STE_Posterior_Certificates_v1_production_REVIEW.zip "$HOME/Downloads/"
+scp -o IdentitiesOnly=yes -i "$HOME/.ssh/ste_gpu_oct05" ubuntu@158.176.15.37:/home/ubuntu/ste-posterior-certificates-v1/STE_Posterior_Certificates_v1_production_REVIEW.zip.sha256 "$HOME/Downloads/"
+cd "$HOME/Downloads"
+shasum -a 256 -c STE_Posterior_Certificates_v1_production_REVIEW.zip.sha256
+
+Upload the REVIEW archive here if its size permits. Preserve the FULL archive on
+the server for checkpoint/draw audit. Its analogous path ends _FULL.zip. If the
+review archive is too large, do not delete or alter outputs: the connected Mac
+can be used for a targeted transfer after inspection.
+
+6. Only if no pipeline has ever been started in this result directory:
+
+cd /home/ubuntu/STE_Posterior_Certificates_v1
+sha256sum -c SHA256SUMS
+mkdir -p /home/ubuntu/ste-posterior-certificates-v1
+nohup bash run_all.sh pipeline > /home/ubuntu/ste-posterior-certificates-v1/pipeline.log 2>&1 < /dev/null &
+
+Production has three hours of maximum allocated fitting, plus inference and
+audit overhead. The pilot provides a measured timing estimate. Do not change
+configuration in response to pilot quality or production outcomes. If a stage
+fails, preserve its directory and logs for inspection; do not restart over it.

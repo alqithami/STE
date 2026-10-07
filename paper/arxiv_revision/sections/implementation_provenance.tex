@@ -1,0 +1,65 @@
+\section{Implementation conventions and historical provenance}\label{app:implementation-provenance}\label{app:implementation}\label{app:historical-overview}
+Appendices~\ref{app:ibm-gpu}--\ref{app:real-learning} provide the current studies' complete protocols. This section records operator distinctions and summarizes earlier evidence. The source package retains the earlier protocols, complete result tables, and their associated code and archives separately. Their data and analyses are not pooled with any current study.
+
+\subsection{Operator conventions and missing comparisons}
+Algorithm~\ref{alg:lse} returns canonical scores before a selection rule is applied. Its streamed NumPy reference and optional autograd implementation agree on tested values; numerical checks cover finite differences, finite-temperature inequalities, and all strict tournaments with two, three, and four alternatives. These checks complement the proofs in Appendix~\ref{app:proofs} rather than constituting formal verification.
+
+Hard TC uses Boolean transitive closure with self-reachability. Hard UC tests the direct edge and every covering witness. An empirically missing or exactly tied pair contributes neither hard direction. This partial-graph convention does not arbitrarily complete a strict tournament; strict-margin guarantees are not applied to its tied targets. Native hard sets differ from oracle-size selections of their binary scores, whose ties may require a stated tie rule. Canonical missing-pair probabilities of $1/2$ encode neutrality, not observed equality or posterior certainty.
+
+\paragraph{Weighted/Boltzmann variant.}\label{app:variant-details}
+For decisive counts $m_{ab}=w_{ab}+w_{ba}$ and Jeffreys means $\widehat P_{ab}=(w_{ab}+1/2)/(m_{ab}+1)$, \WB\ uses the off-diagonal edges
+\begin{equation}\label{eq:weighted}
+ D^{\rm WB}_{ab}=\frac{m_{ab}}{m_{ab}+5}\,\sigma((\widehat P_{ab}-1/2)/\tau).
+\end{equation}
+Its UC extrema use the Boltzmann mean
+\begin{equation}\label{eq:boltzmann}
+ B_\gamma(z)=\frac{\sum_i z_i e^{z_i/\gamma}}{\sum_i e^{z_i/\gamma}}.
+\end{equation}
+The constant 5 is a fixed historical confidence scale: its count factor is one half at five decisive comparisons. It is a retained heuristic; no separate tuning or optimality claim is made for it. Canonical \LSE\ and the matched-epoch study omit this count factor.
+
+For TC, put $\bar K=\min(K,n-1)$ for a requested $K\ge1$; an omitted or nonpositive code argument uses $n-1$. The executed weighted recurrence is
+\begin{align}
+Q_{\rm WB}^{(1)}&=D^{\rm WB},\qquad
+Q_{{\rm WB},ab}^{(k)}=\max_{c\in\agents}\min\{Q_{{\rm WB},ac}^{(k-1)},D^{\rm WB}_{cb}\},\nonumber\\
+R_{{\rm WB},ab}&=\max_{1\le k\le\bar K}Q_{{\rm WB},ab}^{(k)},\qquad
+t^{\rm WB}_a=\smin_\gamma\{R_{{\rm WB},ab}:b\ne a\}.\label{eq:historical-wb-tc}
+\end{align}
+The diagonals of $D^{\rm WB}$ and the final $R_{\rm WB}$ are zero. Unlike the canonical recurrence, the path product and length aggregation here use exact extrema and are only piecewise differentiable. UC uses Eqs.~\eqref{eq:violation}--\eqref{eq:uc} with $D^{\rm WB}$ and $B_\gamma$ replacing both maxima. The Boltzmann sums include every logically eligible witness or cover, including zero entries; missing edges are not removed from their denominators. The code clips edge logits to $[-60,60]$ and floors edge/operator temperatures at $10^{-8}/10^{-12}$, below every reported setting. The finite-temperature outputs are not interchangeable with \LSE, and lowering temperature alone does not remove the confidence-weighting error in Appendix~\ref{app:proofs}. The source package preserves the historical implementation separately from the canonical reference.
+
+\subsection{Context mixtures after conditioning on decisive outcomes}\label{app:decisive-mixtures}
+Let $r^{(c)}_{ab}=\Pr(\text{decisive}\mid a,b,c)$, and let $q_c$ now denote a context distribution \emph{before} observing whether a comparison is decisive. The law of total probability gives, when $\sum_c q_cr^{(c)}_{ab}>0$,
+\[
+\Pr(a\succ b\mid a,b,\text{decisive};q)
+=\frac{\sum_c q_cr^{(c)}_{ab}P^{(c)}_{ab}}{\sum_c q_cr^{(c)}_{ab}}
+=\sum_c\widetilde q_{c,ab}P^{(c)}_{ab},
+\qquad
+\widetilde q_{c,ab}=\frac{q_cr^{(c)}_{ab}}{\sum_d q_dr^{(d)}_{ab}}.
+\]
+These conditioning weights can depend on the pair. They equal the prespecified common weights $q_c$ when decisiveness rates are constant across contexts for that pair. Alternatively, an analyst can define a \emph{standardized} target $\sum_cq_cP^{(c)}_{ab}$ directly and sample or reweight decisive observations to that definition. The context experiment does exactly the latter with Bernoulli comparisons, so $r^{(c)}_{ab}=1$ and there is no distinction. Historical human-preference diagnostics condition on each release's observed decisive comparisons; they do not identify an unobserved common task mixture. The identity above clarifies the estimand; it introduces no additional observations or experiment.
+
+Even strictly oriented context relations can yield an exactly tied mixture pair. Its reference graph omits both directions at $P_{ab}(q)=1/2$, and strict-margin recovery guarantees are not applied. Historical context comparisons supply the resulting reference core size to every method; reweighting also benefits ranking baselines, so this is neither automatic cardinality recovery nor an STE-specific identification guarantee.
+
+\subsection{Historical recovery without oracle size}\label{app:newcontrolled}\label{sec:unknown}
+The canonical unknown-size study fits method/target thresholds on 256 development graphs and evaluates 4,050 shared test graphs. The test design crosses five families, $n\in\{9,17,33\}$, count intensities $\{3,10,30\}$, missing fractions $\{0,.25,.5\}$, and 30 cases per cell. Development excludes the random family and uses sizes 9/17, intensities 8/32, missingness 0/.3, and eight cases per cell. Fifty test cases belong to an earlier inspected pilot and are counted once. Retained-pair counts are lognormally heterogeneous $1+\operatorname{Poisson}(bH)$ with unit-mean $H$.
+
+The development-selected UC/TC cutoffs are .625/.550; native hard sets use neither an oracle size nor a fitted cutoff. Mean LSE UC/TC F1 is .552/.624, while its UC advantage over Rank Centrality is .011. LSE's TC selections average 14.25 alternatives against reference size 9.56. The separated-family TC is the entire panel, so all-selected is perfect there; generator-specific ordering and alternative reporting rules differ. The complete historical analysis retains all methods, primary/native and secondary rules, and its 540 Holm-adjusted planned comparisons. This is descriptive recovery under that design, not an additional confirmation of the current learning claims.
+
+The older confidence-weighted archive instead uses 64,800 factorial instances and oracle-size lists. Reused streams give only 894 distinct trial-seed values, so design cells are not independent replications. Its WB operator and known-size endpoint are separate from the canonical unknown-size study and both GPU studies.
+
+\subsection{Historical single-collection learning}\label{app:newlearning}
+The exploratory CPU study uses one 512/128-graph training/development collection at $n=12$ and 256 tests at each $n=12,24$, reused across ten initializations. Its ten-feature, width-32 tanh pair encoder differs from the later sixteen-feature GPU encoder. Pairwise-only, auxiliary membership, and STE-core objectives use matched initial parameters and graph orders; the latter two receive identical UC labels. Adam uses learning rate .001, batch 16, norm-5 clipping, and 40 epochs. Development selects $\lambda\in\{.1,1\}$ and thresholds on the .05 grid for the evaluated readout. Fixed epochs do not imply convergence or equal compute; uncertainty conditions on this one training collection.
+
+A subsequent frozen-checkpoint common-soft-UC comparison gives STE--auxiliary F1 differences .0144/.0066 at $n=12/24$, with unadjusted crossed-bootstrap intervals $[-.0013,.0303]$/$[-.0071,.0207]$. Both cross zero. At $n=24$, STE predicts mean size 11.15 against reference 6.95; all-selected has higher exact recovery on the natural mixture despite lower F1. These limits remain in the preserved results.
+
+\subsection{Historical ten-collection comparison}\label{app:confirmation}
+A separate CPU study contains ten independent collections, each with 512 training and 128 development graphs at $n=12$ and 256 tests at each $n=12,24$. Three paired initializations share a collection. The same ten-feature encoder, an ordinary auxiliary head, and a two-round relational head are trained for 160 epochs with the preceding optimizer; development selects loss weight and the .05-grid cutoff separately for each readout. Epoch 40 is primary; selecting among epochs 40/80/160 is prespecified secondary. Only ten collection means determine inference, with approximate $t_9$ intervals and Holm adjustment of the two primary exact sign-flip tests.
+
+Primary STE--ordinary-auxiliary differences under common soft UC are $-.0012/.0091$, with intervals $[-.0061,.0038]/[-.0064,.0246]$ and adjusted $p=.602/.430$. The secondary selected-budget $n=24$ difference is .0276 ($[.0081,.0471]$). Yet the relational head's native F1 .6753/.5754 compares with STE-soft .6520/.5716. At $n=24$, STE selects mean size 10.92 against 6.94 and has 8.91\% exact recovery. The secondary gain is not a replacement primary endpoint or uniform complete-system advantage.
+
+\subsection{Historical recorded-profile and human-data evidence}\label{app:profiles-confirmation}
+The earlier PrefLib reconstruction \citep{mattei2013preflib,oneill2013openstv,popov2015consensus} uses 91 development profiles from three sources and 47 tests from six disjoint sources. Twenty nested whole-ballot samples per profile use fractions .05/.10/.25/.50, respecting multiplicities and within-record dependence. Cutoffs are chosen only on development; aggregation averages repetitions, profiles within sources, and sources equally. Reference cores describe the full recorded profiles, not population truth. Forty-six test UCs are singletons and only one is a selective non-singleton. LSE/posterior macro F1 is .8259/.8884, with a descriptive source-level difference interval $[-.1112,-.0139]$. A post hoc full-count check finds within-profile separation on all 47 tests but no universally separating absolute cutoff; decision-rule reanalyses reuse these profiles and do not reverse the original primary comparison.
+
+Other preserved diagnostics include respondent-held-out SUSHI panels \citep{kamishima2009orders,sushidata}, Arena/WebDev topology-matched simulations \citep{chiang2024chatbotarena,arena100data,webdevdata}, context reweighting, and real-count bootstrap stability. SUSHI keeps whole respondents in a fixed 3,000/2,000 split and 1,000 block resamples; on its larger panel BTL is stronger at a common ten-item budget. The Arena/WebDev simulations retain real observation patterns but generate latent outcomes and supply every method the true core size. They do not establish labeled human-core accuracy. Real-count bootstrap stability conditions on observed counts and is neither latent accuracy nor a user-cluster confidence interval. Shared-source releases and language subsets are not independent benchmark families. Public task-log conversions with incomplete denominators are excluded from validated comparative evidence.
+
+\subsection{Reference workspace and timing scope}\label{app:runtime}
+The canonical forward reference streams candidate columns for TC and one target at a time for UC, with quadratic workspace; optional autograd retains a larger graph. The archived WB path implementation broadcasts cubic candidates. Its CPU timings and the cloud GPU's vectorized training timings therefore concern different kernels and cannot be interchanged. Forward-only CPU checks use isolated subprocesses, one warmup, three repetitions, and one BLAS thread; resident-memory peaks include interpreter/library allocations. A depth $K<n-1$ changes the TC approximation target and loses the general full-TC recovery guarantee. Appendix~\ref{app:ibm-gpu} separately specifies the current GPU checkpointing and complete-training-step measurements.

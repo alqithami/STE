@@ -1,0 +1,217 @@
+STE Posterior Certificates v1 — completed production review
+
+The production experiment completed on the existing CUDA server. The external review passed for the native set decisions and summaries, while finding invalid secondary hard-q diagnostics and raw mixture-q numerical defects. Completion does not establish a learning advantage or a new theoretical result.
+
+Scientific scope
+
+This is a separate exploratory study on a previously examined cohort: 36 genuine human ordinal profiles across six source folds, of which 33 have singleton targets and only three have selective non-singleton targets. Those three selective targets all have size three and come from only two sources. The target is the UC of each finite full recorded profile, not an identified voter-population UC. Held-out predictors received observed decisive and tied counts only. Full training references and development labels were used within their specified source roles.
+
+The 10% summary averages resamples and initializations within profile, profiles within source, then the six sources equally. Repeated subsamples and initializations are not additional independent profiles. All comparisons are descriptive; there are no p-values, population claims or general superiority inference. Five and 25% fractions are nested secondary diagnostics.
+
+Native 10% results (source macro)
+
+Method | F1 | Exact set | Mean selected size | Cardinality MAE | UC Brier | Orientation Brier
+--- | --- | --- | --- | --- | --- | ---
+Jeffreys + GFM | 0.8742 | 0.7656 | 1.352 | 0.2713 | 0.0437 | 0.0549
+Empirical Bayes + GFM | 0.8705 | 0.7522 | 1.369 | 0.2825 | 0.0447 | 0.0560
+Learned independent edges + GFM | 0.8704 | 0.7614 | 1.217 | 0.2485 | 0.0400 | 0.0497
+Learned two-component mixture + GFM | 0.8366 | 0.7301 | 1.185 | 0.2300 | 0.0486 | 0.0516 (raw-q caveat)
+Raw-count UC | 0.8481 | 0.7950 | 1.194 | 0.1658 | not applicable | not applicable
+Count soft plug-in | 0.8462 | 0.7679 | 1.233 | 0.2117 | 0.0507 | not applicable
+Relational native head | 0.7944 | 0.6161 | 1.307 | 0.3157 | 0.0681 | not applicable
+Ordinary native head | 0.7340 | 0.5730 | 1.301 | 0.5336 | 0.0708 | not applicable
+
+The corresponding source-macro target size is 1.122; it differs from a profile-pooled mean because sources receive equal weight.
+
+Native GFM comparisons keep Jeffreys and empirical-Bayes posterior baselines visible. The ordinary and relational baselines use their own development-selected native heads. The count soft plug-in is the prespecified development-calibrated secondary method. Hard-q or half-threshold alternatives are not substituted for the native decisions after observing outcomes.
+
+Interpretation
+
+The highest recorded native F1 is Jeffreys + GFM (0.8742). The highest native exact-set recovery is Raw-count UC (0.7950). These are different endpoints and cannot be collapsed into one performance claim.
+
+Relative to Jeffreys-GFM, learned independent edges have a descriptive F1 difference of -0.003779; the two-component mixture difference is -0.037609. The mixture therefore does not establish that learning edge dependence improves this cohort's native UC reconstruction. A lower observed Brier score at an endpoint is a descriptive probabilistic-quality result, not proof of calibrated probabilities.
+
+The empirical-Bayes scalar prior receives full decisive counts from unique training profiles, which is richer training information than Jeffreys and the neural models' majority/membership-only labels. Its objective is a source-balanced composite working likelihood, because comparisons share ballots; it is not the full ordinal-ballot likelihood. The learned mixture is a predictive distribution, not an established exact Bayesian posterior.
+
+Selective non-singleton profiles
+
+Method | F1 | Exact set | Mean selected size | Correct size frequency | Cardinality MAE
+--- | --- | --- | --- | --- | ---
+Jeffreys + GFM | 0.8411 | 0.5312 | 2.719 | 0.7188 | 0.4062
+Empirical Bayes + GFM | 0.8599 | 0.5312 | 2.781 | 0.7188 | 0.3438
+Learned independent edges + GFM | 0.6749 | 0.1146 | 1.698 | 0.1354 | 1.3229
+Learned two-component mixture + GFM | 0.6542 | 0.0729 | 1.583 | 0.1042 | 1.4167
+Raw-count UC | 0.7521 | 0.4062 | 2.375 | 0.5000 | 0.8125
+Count soft plug-in | 0.8054 | 0.5312 | 2.438 | 0.6250 | 0.6250
+Relational native head | 0.7576 | 0.2812 | 2.115 | 0.3646 | 0.8854
+Ordinary native head | 0.2576 | 0.0000 | 0.625 | 0.0208 | 2.3750
+
+This small descriptive aggregate averages only the two represented sources. It must not be treated as evidence from six selective sources or from independent replications. Learned edges and the mixture tend to select fewer alternatives than the known reference cardinality of three in this cohort.
+
+00007-00000068.soi
+Method | F1 | Exact set | Selected size | Correct size frequency
+--- | --- | --- | --- | ---
+Jeffreys + GFM | 0.6521 | 0.0000 | 3.125 | 0.7500
+Empirical Bayes + GFM | 0.6521 | 0.0000 | 3.125 | 0.7500
+Learned independent edges + GFM | 0.6704 | 0.0000 | 1.875 | 0.0833
+Learned two-component mixture + GFM | 0.6708 | 0.0000 | 1.750 | 0.1250
+Raw-count UC | 0.5387 | 0.0000 | 2.500 | 0.3750
+Count soft plug-in | 0.6464 | 0.0000 | 2.375 | 0.3750
+Relational native head | 0.6583 | 0.0000 | 2.000 | 0.2500
+Ordinary native head | 0.6347 | 0.0000 | 1.708 | 0.0833
+
+No evaluated native method exactly recovered this profile's set in the saved 10% inputs. Partial-overlap F1 does not remove that limitation.
+
+00007-00000086.soi
+Method | F1 | Exact set | Selected size | Correct size frequency
+--- | --- | --- | --- | ---
+Jeffreys + GFM | 0.8875 | 0.6250 | 2.500 | 0.6250
+Empirical Bayes + GFM | 0.8875 | 0.6250 | 2.500 | 0.6250
+Learned independent edges + GFM | 0.7708 | 0.2917 | 2.000 | 0.2917
+Learned two-component mixture + GFM | 0.7292 | 0.2083 | 1.833 | 0.2083
+Raw-count UC | 0.7196 | 0.1250 | 2.000 | 0.1250
+Count soft plug-in | 0.5750 | 0.1250 | 1.375 | 0.1250
+Relational native head | 0.5833 | 0.1250 | 1.375 | 0.1250
+Ordinary native head | 0.1875 | 0.0000 | 0.375 | 0.0000
+
+00019-00000004.toi
+Method | F1 | Exact set | Selected size | Correct size frequency
+--- | --- | --- | --- | ---
+Jeffreys + GFM | 0.9125 | 0.7500 | 2.625 | 0.7500
+Empirical Bayes + GFM | 0.9500 | 0.7500 | 2.750 | 0.7500
+Learned independent edges + GFM | 0.6292 | 0.0833 | 1.458 | 0.0833
+Learned two-component mixture + GFM | 0.6083 | 0.0417 | 1.375 | 0.0417
+Raw-count UC | 0.8750 | 0.7500 | 2.500 | 0.7500
+Count soft plug-in | 1.0000 | 1.0000 | 3.000 | 1.0000
+Relational native head | 0.8944 | 0.5000 | 2.542 | 0.5417
+Ordinary native head | 0.1042 | 0.0000 | 0.208 | 0.0000
+
+Source heterogeneity at 10% (native F1)
+
+Source | Jeffreys + GFM | Empirical Bayes + GFM | Learned independent edges + GFM | Learned two-component mixture + GFM | Raw-count UC | Count soft plug-in | Relational native head | Ordinary native head
+--- | --- | --- | --- | --- | --- | --- | --- | ---
+00007 | 0.7190 | 0.7139 | 0.7017 | 0.6801 | 0.6384 | 0.6505 | 0.6178 | 0.5156
+00019 | 0.9756 | 0.9810 | 0.9411 | 0.9440 | 0.9821 | 0.9792 | 0.9790 | 0.8244
+00021 | 0.9097 | 0.8958 | 0.9676 | 0.8287 | 0.9236 | 0.9236 | 0.7917 | 0.8796
+00022 | 0.8333 | 0.8333 | 0.8611 | 0.8125 | 0.7500 | 0.7500 | 0.7500 | 0.7500
+00067 | 0.8817 | 0.8817 | 0.8860 | 0.8953 | 0.8646 | 0.8583 | 0.8931 | 0.8542
+00073 | 0.9258 | 0.9175 | 0.8650 | 0.8589 | 0.9296 | 0.9155 | 0.7347 | 0.5803
+
+These source rows expose variation hidden by a macro mean. They do not supply an independent population sample or license six-source significance tests.
+
+Secondary 5% and 25% fractions
+
+Method | 5% F1 | 5% exact | 25% F1 | 25% exact
+--- | --- | --- | --- | ---
+Jeffreys + GFM | 0.8199 | 0.6662 | 0.9448 | 0.8626
+Empirical Bayes + GFM | 0.8097 | 0.6553 | 0.9443 | 0.8598
+Learned independent edges + GFM | 0.8203 | 0.7091 | 0.9421 | 0.8626
+Learned two-component mixture + GFM | 0.8136 | 0.6865 | 0.9172 | 0.8169
+Raw-count UC | 0.8220 | 0.7093 | 0.9458 | 0.9144
+Count soft plug-in | 0.8187 | 0.7130 | 0.9464 | 0.8929
+Relational native head | 0.7751 | 0.5791 | 0.8863 | 0.7166
+Ordinary native head | 0.6929 | 0.5008 | 0.8244 | 0.6692
+
+These secondary outcomes do not replace the prespecified 10% comparison. Neither a favorable secondary number nor a corrected diagnostic creates a new primary endpoint.
+
+External verification and known defect
+
+External review status: PRIMARY_REVIEW_COMPLETE_WITH_INVALID_SECONDARY_DIAGNOSTIC
+Verified original result hashes: 29234
+Verified source hashes: 18
+Saved prediction files inspected: 20736
+Recorded metric rows reconstructed: 41472
+Selected forward replays: 12960
+Raw ballot/count reconstructions: 864
+Joint-statistic reconstructions: 10368
+Completed selected-forward replay device: cuda:0
+Maximum selected-forward difference on that device: 0
+Maximum metric difference: 0
+Maximum summary difference: 0
+
+The independent review found 320 affected hard_q_diagnostic cases out of 2592 saved mixture prediction cases. The table below reports overlapping categories, so its columns must not be added to form a total.
+
+Method | Affected cases | Self loops | Bidirectional | Range excursions | Changed after clearing diagonal | Changed under normalized sampling law
+--- | --- | --- | --- | --- | --- | ---
+posterior_mixture hard-q diagnostic | 320 | 320 | 0 | 7 | 320 | 320
+
+Floating-point mixture aggregation can make nominal diagonal 0.5 entries slightly larger than 0.5, so thresholding q > 0.5 can introduce self loops. Rounding can also violate the intended orientation/probability contract. Those affected hard-q rows are scientifically invalid as intended irreflexive tournament readouts and are quarantined. Their original saved bytes, masks and arithmetic were retained; no frozen results were silently repaired. External corrected reconstructions are post hoc diagnostics only and are not promoted as primary findings.
+
+The entire archived mixture hard-q aggregate is excluded from scientific interpretation because it contains those invalid cases. We do not remove the affected cases and promote an outcome-selected remainder.
+
+The raw mixture-q array has 7 recorded prediction cases with probabilities slightly outside [0,1]. Its orientation Brier/ECE values are reproduced raw-q numerical diagnostics, not validated metrics of the exact normalized mixture orientation probabilities. No corrected orientation metric is substituted here. Native UC membership Brier comes from sampled strict-tournament memberships and remains distinct from these raw-q defects, as do native GFM set F1 and exact recovery.
+
+The original internal audit reproduced the flawed calculation. Its pass therefore was insufficient to validate every endpoint. The external review used independent set-inclusion and decoder logic and exposed the defect. Native GFM samples strict tournaments with zero diagonals from the component laws; native GFM, direct-head, raw-count and soft-plug-in decisions were checked separately. This report validates those native comparisons, not all archived secondary diagnostics.
+
+Preserved partial cross-device review
+
+Preserved external-review v3 stopping condition
+
+The full inspection reached record 18107 of 20736 saved prediction files. It stopped on a selected-checkpoint CPU replay of learned_edge, fold 5, initialization 0, case 00073-00000007.soi/r02/f0.1. The maximum absolute difference for the intermediate logits was 1.0013580322265625e-05; the strict absolute gate was 1e-05. No output tolerance was relaxed. This is a partial cross-device replay, not a completed CPU validation.
+
+The subsequent independent inspection replays the selected checkpoints on the original CUDA device with the frozen TF32/determinism settings and unchanged absolute 1e-05 gates. Its report must pass independently before native findings are described as externally verified. Frozen experiment source, configuration, predictions and archives remain unchanged.
+
+This historical stopping note is preserved verbatim. The completed CUDA review reported above is the verification used here; the partial CPU attempt is not presented as full cross-device validation.
+
+Selected-state replay checks that saved checkpoints reproduce saved predictions. It does not independently retrain the systems or prove optimizer convergence. Only the immutable neural architecture was reused for selected replay on the explicitly recorded device; the ballot parser, set metrics, native decoding, summaries, certificate reconstruction and archive checks were independently implemented. The original audit regenerated all saved Monte Carlo draws; the external review independently reconstructed their joint statistics and decisions. Learned probabilities remain unproven as externally calibrated posteriors.
+
+Actual costs and common upper allocations
+
+System | Fits | Allocated seconds | Charged seconds | Minimum/maximum fit seconds | Optimizer steps
+--- | --- | --- | --- | --- | ---
+Empirical Bayes + GFM | 18 | 2160.00 | 1.50 | 0.02/0.14 | 0
+Ordinary native head | 18 | 2160.00 | 1513.45 | 84.03/84.13 | 403880
+Relational native head | 18 | 2160.00 | 1515.35 | 84.04/85.74 | 323530
+Learned independent edges + GFM | 18 | 2160.00 | 1515.09 | 84.05/84.31 | 349842
+Learned two-component mixture + GFM | 18 | 2160.00 | 1518.67 | 84.11/84.62 | 208304
+
+All recorded upper allocations valid within the fixed tolerance: True.
+Total allocated fitting seconds: 10800.00
+Total actual charged fitting/development seconds: 6064.06
+Recorded fit-and-test wall seconds: 6219.68
+The same upper allocation is not the same actual compute. Initialization, learning, in-budget development/Monte Carlo selection, serialization and bookkeeping were charged. The empirical-Bayes scalar fit may converge early without padding. The two mixture candidate weights split one allocation. Held-out inference and audits occur outside fit allocations and are recorded separately. The scalar empirical-Bayes optimizer has no neural gradient steps; zero in that column does not mean that its prior was left unfitted. Optimizer steps are not a matched measure of statistical complexity or supervision richness.
+
+Method | Test prediction calls | Mean inference milliseconds | Total inference seconds | UC draws per posterior input
+--- | --- | --- | --- | ---
+Empirical Bayes + GFM | 2592 | 7.467 | 19.36 | 4096
+Ordinary native head | 2592 | 1.618 | 4.19 | 0
+Relational native head | 2592 | 1.791 | 4.64 | 0
+Learned independent edges + GFM | 2592 | 9.034 | 23.42 | 4096
+Learned two-component mixture + GFM | 2592 | 9.472 | 24.55 | 4096
+Jeffreys + GFM | 2592 | 7.415 | 19.22 | 4096
+Raw-count UC | 2592 | 0.033 | 0.09 | 0
+Count soft plug-in | 2592 | 3.058 | 7.93 | 0
+
+Fixed IID certificate diagnostic and theory scope
+
+The separate independently audited CPU diagnostic contains 6,144 synthetic cases conditioned on 6 fixed probability matrices. There were 12 whole-graph interval failures, 0 UC-envelope failures and 2 confidently wrong edges in the saved cases. Exact and correct certificate recovery occurred in 3,177 cases. These are observed frequencies, not zero-risk guarantees.
+
+In the four strong-core/weak-remainder cells at 256 observations per pair, each saved replicate recovered the singleton or size-three UC; no saved replicate fully oriented the entire graph. This shows output certification before full graph orientation in those chosen fixed examples. Every pair received the same sampling budget, so it proves no adaptive query or allocation savings. The theorem's failure allocation is per fixed case under within-pair IID Bernoulli sampling, not simultaneous across all cases and not an anytime rule. It does not establish coverage for correlated human ballot subsamples.
+
+The theory note provides full supporting proofs. Hoeffding union bounds, depth-two tournament supports, Rao–Blackwellization, General F-measure Maximizer decoding and likelihood-ratio gradients are established components or have unverified novelty in this application. This completed study is not an established new theoretical advancement. Optimizing sampled hard-UC training utility also does not prove improvement of the final GFM action or held-out F1.
+
+Evidence and preserved archives
+
+External evidence JSON: /workspace/scratch/16f4f4d2b505/tmp/ste_posterior_review/independent_production_review_v4.json
+External evidence JSON SHA256: bec0a6adc59cfba69f8f303b4ab23519c9012fc9002fbc50ddbc54312610cb8f
+External review script SHA256: 2cfe83ad29c88f67b814829f97776d0beca423690d77084315560ecb37c89a32
+Immutable server results: /home/ubuntu/ste-posterior-certificates-v1/production
+Immutable source: /home/ubuntu/STE_Posterior_Certificates_v1
+Verified Mac backup folder: ~/Downloads/STE_Posterior_Certificates_v1_completed
+The Mac copies and their checksum sidecars were verified separately by the parent operator. The external archive checks below verify CRC, every manifest-listed payload hash and, for FULL, agreement with the original result tree.
+
+STE_Posterior_Certificates_v1_production_FULL.zip
+Bytes: 76262305
+SHA256: 092c768f94d51dbb0fb61d30db782a31b72f8f15b70e7d0e4fbd56728f68c3e3
+Manifest payload files: 29306
+FULL original result-tree match: verified
+
+STE_Posterior_Certificates_v1_production_REVIEW.zip
+Bytes: 54236223
+SHA256: e26c00f92dbab17d5948f5f6751483d6805180f1c86bc30fbfbf6a80dacdc56a
+Manifest payload files: 28956
+Full-tree comparison: not applicable to compact REVIEW. Archive CRC and every manifest payload passed.
+
+FULL preserves complete raw Monte Carlo draws and checkpoints. REVIEW is a compact sharing alternative and does not replace FULL for full replay. Both original archives also preserve the invalid secondary rows; use this review and the machine-readable external validity findings when interpreting them.
+
+The submitted manuscript, registered wording and earlier frozen studies remain unchanged. No paper was submitted or overwritten by this inspection, and no new server or duplicate production run was created. The new experiment should inform a separate future revision with its negative outcomes and limitations intact. It supports no acceptance probability.

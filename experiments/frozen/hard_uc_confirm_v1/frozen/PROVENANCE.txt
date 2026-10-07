@@ -1,0 +1,5 @@
+Immutable modules copied from the completed 3 October 2026 IBM L40S study
+contained in STE_AISTATS2027_v11 version6. Original seed 2026100301.
+The new study seed is 2026100407. Operators, model and generator are reused
+verbatim. This package contains no new scientific performance results.
+The included manuscript reports the original completed study.

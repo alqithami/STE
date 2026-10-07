@@ -1,0 +1,30 @@
+{
+  "status": "background_pipeline_launched_not_yet_production_complete",
+  "server": "ubuntu@158.176.15.37",
+  "pipeline_PID": 77690,
+  "code_root": "/home/ubuntu/STE_Posterior_Certificates_v1",
+  "results_root": "/home/ubuntu/ste-posterior-certificates-v1",
+  "log": "/home/ubuntu/ste-posterior-certificates-v1/pipeline.log",
+  "source_verification": "Every frozen SHA256SUMS entry passed on server before launch",
+  "CUDA_QA_exit_code": 0,
+  "learning_code_unchanged_since_cuda_qa": true,
+  "ordered_gates": [
+    "59softwaretests",
+    "fixed_synthetic_diagnostic",
+    "independent_diagnostic_audit",
+    "verified_diagnostic_zip",
+    "CUDA_smoke_and_audit",
+    "timing_pilot_and_audit",
+    "exploratory_production_and_audit",
+    "verified_FULL_and_REVIEW_archives",
+    "source_hash_check"
+  ],
+  "limits": "No new server created. No existing study modified. Smoke/pilot not production evidence.",
+  "observed_at_utc": "2026-10-07T13:01:13Z",
+  "observed_stage": "timing_pilot_running_on_CUDA",
+  "observed_compute_PID": 77728,
+  "observed_GPU_memory_MiB": 626,
+  "final_deployment_smoke": "COMPLETE; source, data, checkpoint, replay and coverage verified",
+  "server_independent_certificate_audit": "PASS; 6144cases,12intervalfailures,0UCenvelopefailures,2confidentwrongedges",
+  "production_complete": false
+}

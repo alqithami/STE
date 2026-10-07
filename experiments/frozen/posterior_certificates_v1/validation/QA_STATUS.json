@@ -1,0 +1,36 @@
+{
+  "classification": "executed_software_QA_not_learning_findings",
+  "local_native_tests": {
+    "tests": 51,
+    "passed": 43,
+    "skipped": 8,
+    "reason": "Torch unavailable locally"
+  },
+  "remote_full_suite": {
+    "tests": 59,
+    "passed": 59,
+    "skipped": 0,
+    "Torch_tests_device": "cpu",
+    "environment": "Python3.11.17 torch2.6.0+cu124 NumPy1.26.4 SciPy1.13.1"
+  },
+  "cuda_end_to_end_smoke": {
+    "device": "NVIDIA L40S CUDA0",
+    "root": "/home/ubuntu/ste-posterior-certificates-v1-qa-smoke1",
+    "mode": "software_QA",
+    "equal_allocation_valid": true,
+    "hash_checks": 658,
+    "selected_forward_replays_per_audit": 240,
+    "joint_draw_replays_per_audit": 192,
+    "recomputed_metric_rows_per_audit": 768,
+    "recomputed_selective_rows_per_audit": 144,
+    "audit_devices": [
+      "cuda0",
+      "cpu"
+    ],
+    "remote_process_exit_code": 0,
+    "full_archive_sha256": "01cbaeb61e8c56c5b742b7201824a0e6d46de66ece982f6be7278883154b686b",
+    "review_archive_sha256": "56446b96ce1875f7073047fe09d579466347a00d178ca4405aba260c46314938",
+    "QA_code_zip_sha256": "937706d1cdfafcdfbe36683ef41a7da74b8c2f50133c2da3c79cad6301c65807"
+  },
+  "limits": "Smoke covers two folds, one initialization/resample and reduced draws; it is not production evidence. Final deployment adds independent diagnostic replay and documentation, preserving the tested learning code; the gated pipeline repeats full tests and smoke before pilot and production."
+}

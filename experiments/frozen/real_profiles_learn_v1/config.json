@@ -1,0 +1,48 @@
+{
+  "version": "STE-RealProfiles-Learn-v1",
+  "classification": "exploratory real-profile finite-reference reconstruction; not confirmatory or population-core accuracy",
+  "seed": 410763,
+  "sources": [
+    "00007",
+    "00019",
+    "00021",
+    "00022",
+    "00067",
+    "00073"
+  ],
+  "expected_profiles": 36,
+  "expected_selective_profiles": 3,
+  "fractions": [
+    0.05,
+    0.1,
+    0.25
+  ],
+  "primary_fraction": 0.1,
+  "subsample_replicates": 8,
+  "initializations": 3,
+  "hidden": 32,
+  "temperature": 0.035,
+  "learning_rate": 0.003,
+  "gradient_clip": 5.0,
+  "batch_size": 8,
+  "systems": [
+    "pair",
+    "aux",
+    "relational_aux",
+    "ste"
+  ],
+  "core_weights": [
+    0.1,
+    1.0
+  ],
+  "system_budget_seconds": 120.0,
+  "candidate_checkpoints": 4,
+  "posterior_draws": 4096,
+  "btl_l2": 0.01,
+  "btl_iterations": 500,
+  "threshold_step": 0.02,
+  "train_sampling": "uniform source, then uniform profile, then uniform fraction, then uniform replicate",
+  "development_objective": "macro profile F1 at primary fraction; each decoder selected separately with deterministic tie-breaking",
+  "test_analysis": "mean replicates within profile, profiles within source, six sources equally; initializations averaged; no formal p values",
+  "require_cuda_for_production": true
+}

@@ -1,0 +1,29 @@
+\begin{algorithm}[t]
+\caption{Canonical STE-LSE forward pass}\label{alg:lse}
+\small
+\noindent\textbf{Input:} $P\in[0,1]^{n\times n}$, $P_{ab}+P_{ba}=1$, $P_{aa}=1/2$; $n\ge2$, $\tau,\gamma,\gamma_c>0$, integer $K\ge1$.
+\par\smallskip
+\begingroup
+\setlength{\tabcolsep}{0pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{@{}r@{\hspace{0.55em}}p{\dimexpr\linewidth-2em\relax}@{}}
+1 & Set $D_{aa}\gets0$; for $a\ne b$, set $D_{ab}\gets\sigma((P_{ab}-1/2)/\tau)$.\\
+2 & $Q\gets D$, $L\gets D/\gamma$.\\
+3 & \textbf{for} $k=2,\ldots,K$:\\
+4 & \quad Allocate a new $n\times n$ matrix $Q^{\rm new}$.\\
+5 & \quad\textbf{for} $b\in\agents$, write column $b$ of $Q^{\rm new}$:\\
+6 & \qquad $H_{ac}\gets\smin_\gamma(Q_{ac},D_{cb})$ for all $a,c$.\\
+7 & \qquad $Q^{\rm new}_{ab}\gets\smax_\gamma\{H_{ac}:c\in\agents\}$ for all $a$.\\
+8 & \quad $Q\gets Q^{\rm new}$; $L\gets\operatorname{logaddexp}(L,Q/\gamma)$.\\
+9 & $R\gets\gamma(L-\log K)$, entrywise.\\
+10 & $t_a\gets\smin_\gamma\{R_{ab}:b\ne a\}$ for all $a$.\\
+11 & \textbf{for} $a\in\agents$:\\
+12 & \quad\textbf{for} $c\in\agents\setminus\{a\}$:\\
+13 & \qquad If $n=2$, set $v(c,a)\gets0$; otherwise set\\
+14 & \qquad $v(c,a)\gets\smax_{\gamma_c}\{D_{ab}(1-D_{cb}):b\notin\{a,c\}\}$.\\
+15 & \qquad $\operatorname{cov}(c,a)\gets D_{ca}(1-v(c,a))$.\\
+16 & \quad $u_a\gets1-\smax_{\gamma_c}\{\operatorname{cov}(c,a):c\ne a\}$.\\
+17 & \textbf{return} continuous scores $t,u$, before any set decision.\\
+\end{tabular}
+\endgroup
+\end{algorithm}

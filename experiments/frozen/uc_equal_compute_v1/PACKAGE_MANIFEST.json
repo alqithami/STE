@@ -1,0 +1,160 @@
+{
+  "associated_production_study_completed": true,
+  "created_utc": "2026-10-05T23:22:49.674757+00:00",
+  "documentation_only_anonymization": true,
+  "files": [
+    {
+      "bytes": 5137,
+      "path": "ANONYMIZATION_AND_PROVENANCE.json",
+      "sha256": "b15297e924ffa00f4772f5075b3a7244a39af310be402879c35cf51be29d30c8"
+    },
+    {
+      "bytes": 2935,
+      "path": "LAUNCH_AND_SHARE.md",
+      "sha256": "70f50a73d3e16fbcc088126b7e3d542e33f2143ab064e86426185344ddfedb3b"
+    },
+    {
+      "bytes": 7064,
+      "path": "PROTOCOL.md",
+      "sha256": "ba0722ca2cc605c3a56a91775081e63c842105d7536c04a4f80df821bb7c2963"
+    },
+    {
+      "bytes": 3334,
+      "path": "README.md",
+      "sha256": "ed03af7ef04126562e8a0eecbc69166e15db59de4a06c69840afc43749964067"
+    },
+    {
+      "bytes": 29244,
+      "path": "analyze.py",
+      "sha256": "acd8a98e418b57bdc37b2bf8ff1e114c5f35cd1a768e2c21416fe4acba2a36af"
+    },
+    {
+      "bytes": 3031,
+      "path": "config.json",
+      "sha256": "4d5f5c0beaa46fa106949e51fdbac2c171068fb6486007cd28e553f0268525c7"
+    },
+    {
+      "bytes": 1426,
+      "path": "frozen/FROZEN_SHA256SUMS.txt",
+      "sha256": "d8df56163283eb653e5b738021c2bc786af58a5be694d60d1de0c6478acceb2c"
+    },
+    {
+      "bytes": 352,
+      "path": "frozen/PROVENANCE.txt",
+      "sha256": "3a07d88ab3be566607303c343af4e990c1d20ff3e81349a15f54e7ed32457d95"
+    },
+    {
+      "bytes": 2238,
+      "path": "frozen/original_config.json",
+      "sha256": "b8d70b1581d67f6dc9d88a793d7295dd0d002791244e78980ffdabfa86a3ac0d"
+    },
+    {
+      "bytes": 67,
+      "path": "frozen/ste/__init__.py",
+      "sha256": "a8281f3660e704907410330365513f5ca8f0c497882d38220c7f1ddc764d5b56"
+    },
+    {
+      "bytes": 8417,
+      "path": "frozen/ste/analysis.py",
+      "sha256": "10be7da42fe6209ebf3d65a0a0188a47d8f8b13b86a9dfac8a7687eb216717e4"
+    },
+    {
+      "bytes": 3921,
+      "path": "frozen/ste/baselines.py",
+      "sha256": "65b96323e52101896876615fbc15ba94d51ee73ce0a37a408ccd00121a0eb3b7"
+    },
+    {
+      "bytes": 3365,
+      "path": "frozen/ste/common.py",
+      "sha256": "da23d5ad63142e12051a6282de5a70975a197c5ca360868fb088e66726442afb"
+    },
+    {
+      "bytes": 4973,
+      "path": "frozen/ste/count_study.py",
+      "sha256": "185f99ccd393e4c461fcae571ce8102a4111c2ae74cd21fab8023d7f88add328"
+    },
+    {
+      "bytes": 6449,
+      "path": "frozen/ste/data.py",
+      "sha256": "b3cbfa54ee342f93771b17f7c088500e5157d58558e6fee00e01c2f1d31a31c8"
+    },
+    {
+      "bytes": 8384,
+      "path": "frozen/ste/diagnostics.py",
+      "sha256": "64a41b4b8216da3feb1f8fc3aaf94c5c594cad1fa39fa17040935f6510565275"
+    },
+    {
+      "bytes": 11883,
+      "path": "frozen/ste/learning.py",
+      "sha256": "790174b50f94937ba91998ad846a36d6b195e65c45171ed174e11d1dfbdda858"
+    },
+    {
+      "bytes": 4310,
+      "path": "frozen/ste/metrics.py",
+      "sha256": "d35e62761a52e498acf218ba5351e46971229c4b07ee8559715a06b858f748be"
+    },
+    {
+      "bytes": 1949,
+      "path": "frozen/ste/models.py",
+      "sha256": "5ebd00bff682c3fa12344c25d6981a70f8185313ded4a859139144dbd0b418d3"
+    },
+    {
+      "bytes": 5058,
+      "path": "frozen/ste/operators.py",
+      "sha256": "435b53f6d07e8436db695b25f227577dcee62af3edef547b4b573009cb499af1"
+    },
+    {
+      "bytes": 2447,
+      "path": "frozen/ste/packaging.py",
+      "sha256": "ca65ab24a35d1968619ba07f84d4cf07c566cc0ff684483ee086181cfae87882"
+    },
+    {
+      "bytes": 13044,
+      "path": "frozen/ste/real.py",
+      "sha256": "b86144d17667211c719c248e197beb46ddc4cd51bb35ecec4267636a5c96345a"
+    },
+    {
+      "bytes": 5071,
+      "path": "frozen/ste/validation.py",
+      "sha256": "9ce517caa183db31b146eaafd61d68af7fbc64312095894429df42a363967ea9"
+    },
+    {
+      "bytes": 10301,
+      "path": "ibm.sh",
+      "sha256": "2aa89ffba532776bb6d180a104361f744969d37f07ec4b49fa603ed48e0cf825"
+    },
+    {
+      "bytes": 6586,
+      "path": "package_results.py",
+      "sha256": "b6ab44396d508317a793d25d0224005c35064d29f0cfa8e479b07198bf0bf095"
+    },
+    {
+      "bytes": 4792,
+      "path": "preflight.py",
+      "sha256": "0891b140918043b467fc6004bb3864f9407763ce5b89cfb34356df0a420e6d5f"
+    },
+    {
+      "bytes": 42,
+      "path": "requirements.txt",
+      "sha256": "8fd7785fbdfba7ff878471f7f31a56d85316f2da28259389e34867df3b7ab181"
+    },
+    {
+      "bytes": 39385,
+      "path": "run_experiment.py",
+      "sha256": "5b45151fa5d92429f248b1e11f5f0fcad73bc0bab01a1bf7b96439f9e40b333a"
+    },
+    {
+      "bytes": 4865,
+      "path": "software_tests.py",
+      "sha256": "4fb0985d4e1fcfc39f36badea351200138b0baa422afdfff03c670005d88c750"
+    },
+    {
+      "bytes": 10212,
+      "path": "verify_archive.py",
+      "sha256": "642ef6d196bb12fd10b090efe4fd8299b5b2b1ed9cd0e5cb0937e90e3ff5e240"
+    }
+  ],
+  "original_release": "STE_UC_EqualCompute_v1",
+  "release": "STE_UC_EqualCompute_v1_submission_source",
+  "scientific_run_executed_during_this_documentation_preparation": false
+}

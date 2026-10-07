@@ -1,0 +1,17 @@
+{
+  "status": "ARCHIVES_VERIFIED",
+  "archives": [
+    {
+      "file": "/workspace/scratch/16f4f4d2b505/tmp/ste_arxiv_revision/posterior_v2_qa/STE_Posterior_Certificates_v2_smoke_v2_final_FULL.zip",
+      "bytes": 2098187,
+      "sha256": "97b16e19d913903dfb0a21135b1ae2422cc068e6c04baf50a696f6b87dda1e68",
+      "payload_files": 726
+    },
+    {
+      "file": "/workspace/scratch/16f4f4d2b505/tmp/ste_arxiv_revision/posterior_v2_qa/STE_Posterior_Certificates_v2_smoke_v2_final_REVIEW.zip",
+      "bytes": 1095985,
+      "sha256": "f10ad7db48035a9c3d9326902d471f6eedf434925bfe1417f9ef0b64d7d3e86b",
+      "payload_files": 623
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+\section{Matched-epoch study: protocol and verification}\label{app:ibm-gpu}
+The matched-epoch study uses a cloud NVIDIA L40S for separate TC/UC fits, source-excluded recorded-profile calibration, numerical diagnostics, and cost measurements. Its protocol was frozen before execution but not externally preregistered. %Reanalysis of preserved outputs is not another independent experiment. 
+The equal-budget follow-up and earlier studies are reported separately. Provider descriptions distinguish election ballots from sports lap rankings in the recorded-data cohort; this provenance correction changes neither observations nor numerical endpoints.
+
+\subsection{Execution, provenance, and verification scope}
+The environment uses Python 3.11.7, PyTorch 2.6.0+cu124 (CUDA runtime 12.4), NumPy 1.26.4, SciPy 1.13.1, and pandas 2.2.3. Training uses float32 without AMP or TF32, deterministic PyTorch settings, and one numerical thread. All 504 candidate fits record GPU placement of models, inputs, labels, and optimizer state and complete 160 epochs. Continuous GPU exclusivity was not monitored, so wall-clock differences between stages are not interpreted as individual fit times.
+
+Archive integrity and frozen code/input comparisons pass. The reviewed evidence retains development/test scores, calibration choices, diagnostics, and raw ordinal profiles, while the separately preserved full archive additionally contains weights, training data, ordinal subsamples, posterior draws, and count-score arrays. Thus this study's verification does not include weight-to-prediction replay, training-ID checks, or independent regeneration of every ordinal sample, posterior draw, and count decision.
+
+Learning metrics and development choices reproduce from saved labels and scores, with maximum per-case discrepancy $4.45\times10^{-16}$. The 1,536 development and 12,288 test identifiers do not overlap. Exported count aggregates also reproduce. All 462 raw ordinal profiles were reparsed and their reference cores checked; source-excluded calibration and recorded-profile metrics reproduce within $5.56\times10^{-16}$. The 1,215 numerical diagnostic cells were checked, and all 540 plain/checkpoint output and gradient pairs agree exactly in their saved float32 representations. These checks establish computational consistency within the retained evidence, not an independent training replication. Thresholds retain their full numerical precision because rounding a cutoff can change an inclusive boundary decision.
+
+\subsection{Synthetic generators, inputs, and matched model selection}
+Independent streams use semantic seed namespaces for collection, phase, size, and graph. Each collection has 512 training and 128 development graphs at $n=12$, and 256 test graphs at each $n=12,24,48,64$. Five families cycle by graph index. Ordered utilities are a perturbed decreasing grid. Planted odd regular cyclic cores dominate transitive outsiders. The separated family embeds Figure~\ref{fig:worked-tournament}'s four-vertex motif dominating outsiders, so TC and UC differ; unlike the historical construction, its TC need not be the entire panel. Rank mixtures use five BTL contexts with Dirichlet weights. Random orientations produce frequent full cores. Orientation-based families have independent unordered-pair margins uniform on $[0.04,0.35]$; vertex permutation removes fixed index cues. Two independently coded hard oracles agree on generated labels.
+
+For each unordered pair, $H$ is unit-mean lognormal with log standard deviation 0.7. Planned missingness 0.25 removes its $1+\operatorname{Poisson}(10H)$ comparisons; otherwise each comparison ties with probability 0.2 and decisive outcomes use latent $P$. Matrix $W$ stores decisive wins and $T$ tied counts. The neural input has four edge features (smoothed margin, log decisive count, tie fraction, observation indicator) and six summaries for each endpoint, totaling sixteen. The shared encoder has two width-32 tanh layers and a scalar antisymmetrized pair head. The ordinary membership head pools incoming/outgoing encoded edges. The relational control adds four summaries of predicted relation strengths, including two-step paths; it is not the two-round message-passing head of the older study.
+
+For each target, collection, and initialization, pairwise-only uses one fit; auxiliary, relational auxiliary, and STE each use two fits at weights 0.1 and 1: $12\times3\times2\times(1+2+2+2)=504$. Models share initial pair parameters and minibatch order. Inactive heads in pairwise-only/STE are not treated as trained direct baselines. Their active pair predictor has 1,633 parameters; auxiliary has 3,746 active parameters and relational auxiliary 3,874. Nominal base-model parity does not mean equal active parameter counts, but the pair estimator architecture and supervision labels are matched. All fit 160 epochs with Adam at 0.001, batch 16, and norm-5 clipping. Soft temperatures are tied at 0.035 and TC depth is $n-1$. At epochs 40/80/160, readout-specific development F1 selects weight, snapshot, and threshold. Ties prefer earlier epochs, smaller weights, cutoff nearer 0.5, then the smaller cutoff. The absolute grid is $0,0.025,\ldots,1$ with all/none sentinels. Relative selection first min--max normalizes a profile, returning constant 0.5 for constant scores. Largest-gap selection is a fixed rule with all-selected for a constant vector.
+
+Training BCE inputs, including pair probabilities and core/head scores, are clamped to $[10^{-6},1-10^{-6}]$ for numerical stability. This differs from the unclipped mathematical operator: a saturated clipped coordinate can have zero loss gradient. Pair likelihood divides by total decisive comparisons in the minibatch; target BCE averages its graphs and alternatives. Clipping norm 5 acts on model parameters after backpropagation. Saved diagnostic gradients instead differentiate clipped BCE with respect to upper-triangle probability logits, not these model parameters.
+
+\begin{table}[H]\centering\small
+\input{results/tables/v10_gpu_learning_systems.tex}
+\caption{Complete-system descriptive mean F1 with absolute calibration. ``Struct.'' uses the relevant TC/UC operator; ``head'' is the model's own supervised membership output. Each readout receives its own development selection. Relational control has 128 extra parameters.}
+\label{tab:gpu-systems}\end{table}
+
+\begingroup\footnotesize
+\input{results/tables/v10_gpu_learning_all.tex}
+\endgroup
+
+The twelve collection means, not 36 initializations or individual graph/metric rows, are the primary units. The three effects in Table~\ref{tab:gpu-primary} use $t_{11}$ intervals and all $2^{12}=4096$ sign flips, with Holm correction across exactly those three comparisons. The intervals are approximate and not simultaneous. Readout, family, size-$12/64$, and reference-class contrasts are descriptive secondary analyses. AP/AUROC exclude full/empty targets, so their support differs from F1; the retained class counts identify that denominator.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v10_gpu_core_classes.tex}
+\caption{Descriptive common-structural-readout effects by reference-core class. Within-class means average graphs/initializations and then twelve collections. These are inspected strata, not extra primary endpoints.}
+\label{tab:gpu-core-classes}\end{table}
+
+Family means are positive for all five generators on the primary endpoints, but heterogeneous. UC at $n=48$ ranges from a 0.0007 gain for random tournaments to 0.0688 for rank mixtures. TC at $n=24$ ranges from 0.0010 for random to 0.0870 for rank mixtures. Near-ceiling full-core cases and large singleton gains constrain interpretation as selective cyclic-set recovery. Full family/class and selection-rule results accompany these tables in the source package.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v11_selective_recovery.tex}
+\caption{STE structural readout on selective non-singleton targets only ($1<|C|<n$), with the original development-selected absolute cutoff. Metrics average the saved per-collection stratum means over twelve collections. Exact is complete-set recovery; selected and reference are mean cardinalities. These are inspected descriptive strata, not additional primary tests.}
+\label{tab:selective-recovery}\end{table}
+
+\subsection{Count baselines and diagnostic targets}
+Count estimators use the same development/test observations as learning. They include Jeffreys-smoothed point probabilities, independent Beta$(1/2,1/2)$ posterior hard cores, native hard graph solutions, BTL (500 iterations, regularization 0.001), Rank Centrality, HodgeRank, Copeland, smooth Copeland, and win rate. Posterior draws number 512. GFM maximizes F1 for the finite joint hard-membership distribution, including the empty set; it supplies no real truth. Absolute/relative cutoffs are learned on development, with gap and native controls separate. All automatic outputs withhold true core size. Latent-$P$ and oracle-size rows are explicitly diagnostic and excluded from automatic superiority comparisons.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v10_gpu_counts.tex}
+\caption{Count-only descriptive F1 using absolute development calibration; all-selected is native. RC is Rank Centrality. These observations are reused from the learning collections and do not form an independent confirmation.}
+\label{tab:gpu-counts}\end{table}
+
+BTL convergence flags pass throughout. Rank Centrality reaches its stopping limit in 2 of 13,824 distinct synthetic development/test cases, so not every secondary spectral fit is certified converged. Independent edge-posterior draws may generate different joint cores from a latent dependent model; finite Monte Carlo precision is not posterior calibration.
+
+\subsection{Recorded-data eligibility, source identity, and calibration}\label{app:gpu-real-inventory}
+The 462 raw PrefLib profiles come from a fixed eligibility screen for selective non-singleton candidates, supplemented with fixed singleton controls. The source package preserves source attribution and data integrity information. Eligibility is conditional on this screen, not random selection from human preference populations. The strict selective UC cohort has two profiles in source 00007, one in 00019, two in 00049, and seven in 00053. These twelve profiles across four sources pass the frozen numerical minimum of ten profiles and three sources, but that gate does not verify human-preference provenance. Tied/partial relation cohorts are secondary; they do not inherit strict-tournament guarantees.
+
+Source 00007 contains Electoral Reform Society election ballots \citep{preflibers}; source 00019 contains Oakland election ballots \citep{oneill2013openstv}. Source 00049 instead encodes completion-time rankings in multi-lap speed-skating/cycling competitions, and source 00053 encodes Formula 1 lap-time rankings \citep{boehmer2022collecting}. Each sports ``vote'' is a lap, not a respondent preference. The provider descriptions explicitly identify these constructions. Thus the primary cohort contains three election profiles and nine sports profiles (Table~\ref{tab:gpu-real-inventory}); the protocol's intended minimum-sized human validation is not fulfilled. The full eleven-series manifest also includes other ordinal data types, so 462 is a count of input profiles, not human elections.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v11_gpu_real_inventory.tex}
+\caption{Every primary strict selective UC profile. ``Records'' is the raw PrefLib multiplicity total, called ``voters'' by its generic format; its meaning is ballots or laps according to source. Complete pair coverage concerns the aggregate decisive matrix, not whether every individual order is complete.}
+\label{tab:gpu-real-inventory}\end{table}
+
+Whole-record subsamples without replacement preserve multiplicities and within-record pair dependence. Ten streams per profile use nested fractions 0.1/0.25/0.5; pair-missingness overlays 0.25/0.5 apply only at fraction 0.25, producing fifty cases/profile and 23,100 total. For elections these records are ballots; for the sports sources they are laps. Uniform lap subsampling evaluates reconstruction of the recorded race, not temporal generalization, future-race outcomes, or independent human judgments. It does not remove serial dependence among laps. Unranked and tied alternatives do not create artificial decisive wins. The primary reference is the complete finite-profile conditional-decisive empirical core. Numerically neutral missing/tie-only probabilities equal 0.5, but their evidence states remain distinct in $W,T$ and the mask. Observed 50/50 decisive pairs have different posterior concentration from unobserved ones.
+
+For a held-out source, calibration uses strict selective, nonduplicate profiles in all other sources. For each method, target, and rule, it averages the ten resampling streams at all three fractions without extra missingness, with equal-source weighting; equal numbers of cases/profile also give equal profile weights within source. It selects one common cutoff that transfers to every fraction and missingness setting, rather than fitting fraction-specific cutoffs. The $11\times2\times8\times3=528$ calibration records reflect sources, targets, score methods, and rules. Test-source reference labels never choose its cutoff. Profile means average ten repetitions before source aggregation. Four source groups, not twelve profiles or 120 primary subsamples, determine the primary macro comparison. Calibration sets overlap between source folds; together with purposive source inclusion, this limits treating the displayed source-level $t$ interval as a population confidence guarantee.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v10_gpu_real_sources.tex}
+\caption{Primary UC F1 by held-out source; STE and posterior both use absolute source-excluded calibration. Sources 00007/00019 are elections; 00049/00053 are sports lap rankings. Every source favors posterior. These four purposively assembled clusters limit population inference.}
+\label{tab:gpu-real-sources}\end{table}
+
+STE minus posterior mean F1 is $-0.1333$, with descriptive $t_3$ interval $[-0.3454,0.0788]$. No precise population conclusion follows from this small, mixed source count. Native GFM reaches 0.6920 and posterior-half 0.6450, showing the importance of decision rules even under the same posterior. A post hoc election-only description averages the original source means for 00007 and 00019 equally: STE/posterior F1 is 0.7200/0.8879 on three profiles. Original source-excluded cutoffs, including sports-source calibration inputs, are retained. This is neither a replacement primary endpoint nor an independently calibrated human-only experiment. No extra significance test or population interval is assigned to this two-source subset.
+
+The secondary strict selective TC cohort contains ten profiles from four sources; STE/Rank Centrality/posterior F1 is 0.7005/0.8347/0.5925 at the analogous setting. Complete rule/fraction/missingness/source summaries, including partial/tied cases, are retained. Rank Centrality stopping flags fail in 559 of 23,100 overall recorded-profile cases (2.42\%), but none of the 120 UC or 100 TC strict primary-setting cases; BTL flags all pass. Independent-edge posterior sampling is a working model despite within-record and possible serial dependence; its inclusion frequencies do not supply a population confidence certificate.
+
+\subsection{TC depth, gradients, checkpoint parity, and actual memory}
+Diagnostics span $n=8,16,32,64,96$, ordered/planted/long-path families, three independent graphs/cell, and temperatures 0.01/0.035/0.1. TC depths are the distinct values among $1,\lceil\log_2 n\rceil,\lceil n/2\rceil,n-1$, each plain and checkpointed; UC is evaluated separately. This gives 1,215 cells. Gradients are of clipped true-label BCE with respect to upper-triangle logits, not a universal operator Jacobian analysis. Two warmups and five measured repetitions retain forward/backward arrays, outputs, probabilities, targets, and gradients.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v10_gpu_tc_error.tex}
+\caption{Full-depth TC mean absolute score error at the default coupled temperature 0.035. Each value averages three diagnostic graphs and their vertices. Full long-path cores do not make this a selective-set classification test.}
+\label{tab:gpu-tc-error}\end{table}
+
+The full-depth long-path errors at $n=96$ are 0.8387/0.8475/0.6759 for temperatures 0.01/0.035/0.1. Simply decreasing a coupled temperature on this grid does not establish a useful size-dependent strategy. All raw gradients are finite. The largest fraction with absolute gradient below $10^{-8}$ is 79.03\%; the largest exactly-zero fraction is 67.86\%, in low-temperature cells. No whole saved gradient vector has every entry zero, though float32 norm calculations can underflow. A finite BCE gradient and a perturbation upper bound do not establish healthy gradients for all losses, all graphs, or all sizes.
+
+The 540 saved plain/checkpoint output/gradient pairs are bit-identical. At $n=96$, full depth, temperature 0.035, means over all three families and three graphs give 414.9 MiB and 42.7 ms for plain autograd, versus 94.5 MiB and 101.0 ms with checkpointing, for peak allocated memory and forward-plus-backward time respectively. About 64 MiB of resident allocation precedes these measurements; the peaks are total allocated memory, not pure operator increments. Warmups/repetitions and allocator state limit precision and portability.
+
+The GPU code vectorizes each max--min TC step into a $B\times n\times n\times n$ candidate array. Without checkpointing, backward retains order $BKn^3$ candidate intermediates plus order $BKn^2$ path states. Non-reentrant step checkpointing retains order $BKn^2$ boundaries and log-length accumulator states while recomputing order $Bn^3$ step workspace. At full $K=n-1$, the respective dominant theoretical orders are $Bn^4$ and $Bn^3$. The canonical streamed-column forward algorithm can use order $Bn^2$ workspace, but this GPU implementation does not claim that forward memory bound. UC streams one target at a time, with order $Bn^2$ forward intermediates and order $Bn^3$ retained across targets for backward. These are implementation analyses, separate from measured allocator peaks.
+
+\subsection{Complete neural-training-step costs}
+Benchmarks use batch four, five warmups, and twenty timed steps including model forward, target loss, backward, clipping, and Adam. At a given size all objectives share the same observed batch; each objective/target starts a fresh model and optimizer from the same initialization seed, and repeatedly updates on that batch. TC STE is checkpointed; no mixed precision or TF32 is enabled. Equal epochs in the learning experiment are therefore not equal compute. Larger-size step benchmarks are distinct from full model training at $n=12$.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v10_gpu_cost.tex}
+\caption{Recorded L40S complete batch-four training-step medians. Ratios compare STE structural loss with the auxiliary own-head loss on the common base model. They exclude data preparation and posterior inference and are not fit-to-convergence timings.}
+\label{tab:gpu-cost}\end{table}
+
+These diagnostics do not validate a size-dependent temperature strategy. Any such strategy would need development selection followed by fresh confirmation, with hard-score fidelity and gradient degradation assessed together. Improving approximation alone would not establish a better training layer or resolve direct auxiliary-head competitiveness.

@@ -1,0 +1,21 @@
+{
+  "EQUAL_ALLOCATION_VALID": true,
+  "checkpoint_hashes_verified": true,
+  "classification": "software_QA",
+  "coverage_verified": true,
+  "data_hashes_verified": true,
+  "hash_checks": 658,
+  "inference": "no formal p-values or superiority/population/calibration claims",
+  "joint_draw_replays": 192,
+  "mode": "smoke",
+  "recomputed_metric_rows": 768,
+  "recomputed_selective_rows": 144,
+  "replay_device": "cpu",
+  "report_role": "external_replay_of_preserved_outputs",
+  "seconds": 1.8278238029997738,
+  "selected_forward_replays": 240,
+  "selected_forward_tolerance": 1e-05,
+  "selected_replay_verified": true,
+  "source_hashes_verified": true,
+  "status": "AUDIT_COMPLETE"
+}

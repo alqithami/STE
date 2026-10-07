@@ -1,0 +1,60 @@
+{
+  "release": "STE-RunPod-Genuine-v1",
+  "seed": 2026100301,
+  "precision": "float32, TF32 disabled, no mixed precision",
+  "learning": {
+    "collections": 12,
+    "initializations": 3,
+    "targets": ["uc", "tc"],
+    "objectives": ["pair", "aux", "relational_aux", "ste"],
+    "train_n": 12,
+    "train_graphs": 512,
+    "development_graphs": 128,
+    "test_sizes": [12, 24, 48, 64],
+    "test_graphs_per_size": 256,
+    "families": ["ordered", "planted", "separated", "rank_mixture", "random"],
+    "epochs": 160,
+    "checkpoints": [40, 80, 160],
+    "core_weights": [0.1, 1.0],
+    "hidden": 32,
+    "batch_size": 16,
+    "eval_batch_size": 8,
+    "learning_rate": 0.001,
+    "gradient_clip": 5.0,
+    "count_intensity": 10,
+    "missing_probability": 0.25,
+    "tie_probability": 0.2,
+    "temperature": 0.035,
+    "checkpoint_tc": true
+  },
+  "primary_comparisons": [
+    {"target": "uc", "n": 24, "left": "ste", "right": "aux", "readout": "structural", "rule": "absolute"},
+    {"target": "uc", "n": 48, "left": "ste", "right": "aux", "readout": "structural", "rule": "absolute"},
+    {"target": "tc", "n": 24, "left": "ste", "right": "aux", "readout": "structural", "rule": "absolute"}
+  ],
+  "decisions": {"threshold_step": 0.025, "rules": ["absolute", "relative", "gap"]},
+  "counts": {"posterior_draws": 512, "btl_iterations": 500, "btl_l2": 0.001},
+  "real": {
+    "commit": "1a8e9a9d0ad02a2a2d7473e813d1ac3057264f80",
+    "fractions": [0.1, 0.25, 0.5],
+    "replicates": 10,
+    "additional_missingness": [0.25, 0.5],
+    "min_primary_profiles": 10,
+    "min_primary_sources": 3,
+    "primary_target": "uc",
+    "primary_fraction": 0.25,
+    "primary_missingness": 0.0,
+    "calibration": "leave one PrefLib source series out, equal-source weighting",
+    "selection": "prior metadata screen candidates; recompute raw-data eligibility before any estimator performance"
+  },
+  "diagnostics": {
+    "sizes": [8, 16, 32, 64, 96],
+    "temperatures": [0.01, 0.035, 0.1],
+    "families": ["ordered", "planted", "long_path"],
+    "independent_graphs": 3,
+    "warmup": 2,
+    "repetitions": 5,
+    "near_zero_gradient": 1e-8
+  },
+  "benchmark": {"sizes": [12, 24, 48, 64, 96], "batch_size": 4, "warmup": 5, "repetitions": 20}
+}

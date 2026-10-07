@@ -1,0 +1,1 @@
+{"status": "PASS", "cells": 24, "replicates": 6144, "hashes_verified": 26, "observed_totals": {"interval_envelope_failures": 12, "uc_envelope_failures": 0, "confident_wrong_edges": 2, "exact_and_correct_uc_replicates": 3177}, "audit": "validation/CERTIFICATE_DIAGNOSTIC_AUDIT.json"}

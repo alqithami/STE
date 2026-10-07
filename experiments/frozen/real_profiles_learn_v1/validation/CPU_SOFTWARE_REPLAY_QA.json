@@ -1,0 +1,11 @@
+{
+  "classification": "software smoke audit",
+  "development_best_choice_checks": 60,
+  "max_cpu_replay_absolute_error": 0.0,
+  "no_new_outcomes_from_smoke": true,
+  "profiles": 36,
+  "raw_ballot_reconstruction_cases": 216,
+  "selected_weight_prediction_files_replayed": 360,
+  "selective_profiles": 3,
+  "source_macro_aggregation_recomputed": true
+}

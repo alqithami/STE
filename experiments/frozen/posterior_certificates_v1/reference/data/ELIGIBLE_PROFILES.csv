@@ -1,0 +1,37 @@
+source,source_name,file,sha256,n,voters,uc_size,relative_path
+00007,Electoral Reform Society (ERS) Data,00007-00000010.soi,c704644c7d60d6a1c508e1118b52385bb85c5c19ea16480ade3ae426f6051895,6,976,1,data/profiles/00007-00000010.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000033.soi,e6ca08adc6f0bb12ed7ad562dca33562c76c50acfd39a36657896657951a3c79,16,750,1,data/profiles/00007-00000033.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000068.soi,fb546ef40af181bce422e3af6f4e41142d69af5cdceb9eb7cff3bbf794d63094,11,902,3,data/profiles/00007-00000068.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000069.soi,f4025ba10a9c83d98848d0fd4b00280ba4d79c788f5a37cfabded597463e56f8,4,369,1,data/profiles/00007-00000069.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000070.soi,54c2111558bbefcd2d0c985c7d1e45cc9ac09f500ae8d1c7fca68be0df98b342,4,1123,1,data/profiles/00007-00000070.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000071.soi,f9c6b176f78f7f55cf703cf7a3f1c7901a65b5204cc9bac8e22e6be9fbd0ed7a,7,276,1,data/profiles/00007-00000071.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000073.soi,17d5aed7267225fdc0efee45730fa21792a02d04bc0049aba41f37f848358722,5,157,1,data/profiles/00007-00000073.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000075.soi,d924b02a6fdd7ee144d28feb2ebe118c78ba7d90f3aba85ba6d6d06a985cc35a,9,134,1,data/profiles/00007-00000075.soi
+00007,Electoral Reform Society (ERS) Data,00007-00000086.soi,d84399298b5c9176fe52a2e30c6df5ebeeb6a2e01589e06df54c155fd46afad4,4,279,3,data/profiles/00007-00000086.soi
+00019,Oakland Election Data,00019-00000001.toi,05bf5c7fc8c43bd6709f3b9e7c2e287fd8a479e9131c6e62f923e31e879cd336,8,20981,1,data/profiles/00019-00000001.toi
+00019,Oakland Election Data,00019-00000002.toi,10aec52fcc94fc5e11712cd63e2488751318ab01f9bb1c5191d4ee9b9ae0c520,11,119256,1,data/profiles/00019-00000002.toi
+00019,Oakland Election Data,00019-00000003.toi,64505658e0e034f86d86c7cf204da18c18027e84d0a9d0ef76f4f0349c24a13a,6,144229,1,data/profiles/00019-00000003.toi
+00019,Oakland Election Data,00019-00000004.toi,481722062092270aa2037dcf8d0c3ba47fcd6f449e7ea6b8edbb2cc5a3f61002,8,28660,3,data/profiles/00019-00000004.toi
+00019,Oakland Election Data,00019-00000005.toi,1e3ea45b045eb51e573a6eb6f22625a5c77b18469c46883f05419a8bcf26fc33,7,22079,1,data/profiles/00019-00000005.toi
+00019,Oakland Election Data,00019-00000006.toi,afbc7ef9554486b643680a94000efa2ce99fd926f5ed39bd2d3bd3c65a728820,5,11266,1,data/profiles/00019-00000006.toi
+00019,Oakland Election Data,00019-00000007.toi,1bb597eadce9abd9ca2865bdae972fd59a86baa78c431dcfda4f4ba576c10991,4,20674,1,data/profiles/00019-00000007.toi
+00021,San Francisco Election Data,00021-00000004.toi,d2d8214b407fcf239f7a5fdbe81c9d17fc2f8f7c11dca9c1dc2210d6461d1a35,4,29426,1,data/profiles/00021-00000004.toi
+00021,San Francisco Election Data,00021-00000007.toi,7c5c74805bc5846e13cf754301000620f2f1141d656ffd64d35d3d9f9dd1f4d7,7,24109,1,data/profiles/00021-00000007.toi
+00021,San Francisco Election Data,00021-00000009.toi,ca219c534c5c096f30608c7a85d4036221cf4e29bb5c1b2c5d9ec97e37763877,5,34931,1,data/profiles/00021-00000009.toi
+00022,San Leandro Election Data,00022-00000002.toi,d85e9bdee2484e990ef55b25f2805212a3426a5909479b9fda903e000f1f4c09,4,25355,1,data/profiles/00022-00000002.toi
+00022,San Leandro Election Data,00022-00000003.toi,0c628941c1d880288eeb61904f5e03b3f9226c7302fa1f18667845d0bfd5e9d6,5,23236,1,data/profiles/00022-00000003.toi
+00067,Comparative Study of Electoral Systems,00067-00000047.soi,1fa107f5ffd6eab8d98946c289e47dd84ad76fe1ef308e1ffbbbebada3ffc240,9,943,1,data/profiles/00067-00000047.soi
+00067,Comparative Study of Electoral Systems,00067-00000048.soi,0f89f842a1cac6f7ba3004572173c1bd54d0b7d95077debb7bebf20b0b948542,9,937,1,data/profiles/00067-00000048.soi
+00067,Comparative Study of Electoral Systems,00067-00000072.soi,2daec6c9d167806d1870ddf14f97ade8ba2caa3a3877cb096cd6b253bb7882ab,9,985,1,data/profiles/00067-00000072.soi
+00067,Comparative Study of Electoral Systems,00067-00000169.soi,e066063d6274cbcff61652f69e0a5b57c651644a5a55b5842061badc096556c1,9,2338,1,data/profiles/00067-00000169.soi
+00067,Comparative Study of Electoral Systems,00067-00000172.soi,8787bd69fbcbeb6fb69a7b3698e114ea7a8ed024bbbf05ebe294506f07bcd584,9,2118,1,data/profiles/00067-00000172.soi
+00067,Comparative Study of Electoral Systems,00067-00000249.soi,9367d2fd4e9086ccfde074f600390f3a6f829401acc3dadddc9ed92a24be43a1,9,1288,1,data/profiles/00067-00000249.soi
+00067,Comparative Study of Electoral Systems,00067-00000256.soi,3df0de5e32d7ba2b5e307e6c194eca6d842ec1f456ea9bc9afd0a0cc1c5c6ab6,9,1169,1,data/profiles/00067-00000256.soi
+00067,Comparative Study of Electoral Systems,00067-00000257.soi,a9e774cab891b70548cb8c2940ed9f1c00ce211abd4edb8de50c9c9c7f5811bb,9,1170,1,data/profiles/00067-00000257.soi
+00067,Comparative Study of Electoral Systems,00067-00000286.soi,f05699ebf4474b30968a996f8e1e518a069067a00f8a9ed5e2dc3032ef6ad3fd,9,1068,1,data/profiles/00067-00000286.soi
+00067,Comparative Study of Electoral Systems,00067-00000287.soi,44cae8a192fd79739f5671d96c5542f6bd18844c7502a0b1bf0bdc8d609317aa,9,1061,1,data/profiles/00067-00000287.soi
+00073,"""Voter Autrement"" Online Experiments in French Presidential Elections",00073-00000006.soi,38ae03e213771ae6f0c0151440a428588608c5e947721b1e21e7e3db8b93689f,11,10947,1,data/profiles/00073-00000006.soi
+00073,"""Voter Autrement"" Online Experiments in French Presidential Elections",00073-00000007.soi,f3d3a863318fba8b8a47271d92a07ccec32b68e2cd1dc0a2435f4ec8928305f0,11,11219,1,data/profiles/00073-00000007.soi
+00073,"""Voter Autrement"" Online Experiments in French Presidential Elections",00073-00000008.soi,c1da2da12a18cdcd7d1345218106cfb48bc00026edc454d19597a45f5f8174aa,11,11024,1,data/profiles/00073-00000008.soi
+00073,"""Voter Autrement"" Online Experiments in French Presidential Elections",00073-00000014.soi,9c10b842e7d4bf389bdba6dffe4ce7ad2bc918df1eeedcec92e7662aec8b58c8,12,766,1,data/profiles/00073-00000014.soi
+00073,"""Voter Autrement"" Online Experiments in French Presidential Elections",00073-00000015.soi,7020d3d4af2ea296603c37d9c83db1aaa2d295aa9589a079dd276bf70cead4c2,12,743,1,data/profiles/00073-00000015.soi

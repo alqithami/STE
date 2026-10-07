@@ -1,0 +1,215 @@
+\section{Posterior and count controls on human profiles}\label{app:posterior-native}
+This extension evaluates native UC decisions for learned orientation distributions, simple posterior models, and direct membership heads on the previously examined human-profile cohort. Its data, sampling, model fitting, and decoder choices were fixed before production. Prior outcomes and the cohort were already known, so the study remains exploratory. It neither replaces the earlier human-profile study in Appendix~\ref{app:real-learning} nor adds an independent preference dataset. The extension uses separately seeded nested subsamples and a distinct fitting/selection protocol. Both studies preserve their actual sampled inputs and endpoints; their means are not pooled or interpreted as controlled changes between experiments. In particular, the different count-control means across studies reflect different observed subsets and native decisions, not a demonstrated change in estimator quality.
+
+\subsection{Finite-record target and source separation}
+The 36 actual ordinal profiles come from six PrefLib source series: ERS, Oakland, San Francisco, San Leandro, CSES, and Voter Autrement \citep{mattei2013preflib,preflibers,oneill2013openstv,preflibcses,preflibvoterautrement}. The source-level inventory is in Table~\ref{tab:posterior-cohort}. These are election ballots, survey-derived rankings, or online voting records; no sports profiles or generated ballots enter this study. There are 4--16 alternatives and 134--144,229 records per profile. Full decisive counts observe every unordered pair without an exact majority tie. All targets are the hard UC of the complete finite recorded profile: 33 singletons and three selective sets, each of size three. These references do not identify a voter-population core.
+
+Positive integer rank multiplicities are retained. An explicit tied rank supplies a symmetric tied count and no decisive win; a comparison involving an unranked alternative remains unobserved. Eight resamples draw nested 5\%, 10\%, and 25\% fractions without replacement through multivariate hypergeometric increments over the actual record multiplicities. Each fraction uses at least one record, with the sample size otherwise rounded down. The saved 864 inputs preserve dependence among pair counts induced by shared records. Repetitions, fractions, and initializations do not create additional profiles.
+
+In the six cyclic folds, one whole source is held out for testing, the next source in the displayed source order for development, and the other four for training. Each source occurs once as test and once as development. Full training counts support prior fitting or reference labels; development references select checkpoints and decisions. Held-out predictors receive only observed decisive and tied counts. They receive no full test counts, target memberships, core sizes, or core-class flags. The ERS-held-out fold contains no selective training profile, and the Oakland-held-out fold contains two. This limited selective supervision is part of the benchmark's scope.
+\begin{table}[ht]\centering\small
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}\toprule
+Source & Profiles & Alternatives & Records & Selective references\\\midrule
+ERS & 9 & 4--16 & 134--1,123 & 2\\
+Oakland & 7 & 4--11 & 11,266--144,229 & 1\\
+San Francisco & 3 & 4--7 & 24,109--34,931 & 0\\
+San Leandro & 2 & 4--5 & 23,236--25,355 & 0\\
+CSES & 10 & 9--9 & 937--2,338 & 0\\
+Voter Autrement & 5 & 11--12 & 743--11,219 & 0\\
+\bottomrule\end{tabular*}
+\caption{Actual human-profile inventory for the posterior-control extension. The displayed order also defines cyclic source folds. Each full reference is strict; subsample relations can be incomplete or tied. CSES construction and provider references are retained in Appendix~\ref{app:real-learning}.}\label{tab:posterior-cohort}\end{table}
+
+\subsection{Systems, training information, and native decisions}
+Write $q_{ab}$ for the predictive probability of a \emph{majority orientation}, distinct from the matchup probability $P_{ab}$. Jeffreys inference uses independent Beta$(w_{ab}+1/2,w_{ba}+1/2)$ matchup posteriors and sets $q_{ab}=\Pr(P_{ab}>1/2\mid W)$. Empirical Bayes fits one symmetric Beta$(\alpha,\alpha)$ prior from full decisive counts of unique training profiles. Its bounded scalar objective averages pair log marginals within profile, profiles within source, and sources equally. Repeated subsamples add no prior-fitting evidence. Because pairs share ordinal records, this is a composite Beta-binomial working likelihood. Empirical Bayes receives richer full-count supervision than the majority/membership labels used by neural methods; common observed test inputs do not imply matched training information.
+
+The four neural systems share an observed-count encoder with eight permutation-equivariant node features and five oriented pair features. Features summarize Jeffreys-smoothed proportions, decisive margins/counts, tied fractions, and observed coverage. Two width-32 layers use tanh activations. The ordinary head predicts membership from the node representation; the relational head additionally aggregates learned pair messages. Both use BCE against full-profile UC membership. Learned edges instead predict reciprocal orientation probabilities and minimize unordered-pair BCE against full-profile majority labels. The two-component mixture adds a global component law; one component is drawn for the \emph{whole} tournament, followed by conditionally independent edges. It minimizes orientation BCE plus a likelihood-ratio gradient estimate of sampled hard-UC F1 utility, using a leave-one-out reward baseline and fixed weights $\lambda\in\{0.1,1\}$ (Proposition~\ref{prop:mixture-score-identity}). This objective does not establish improvement of the final GFM action. This produces a learned predictive distribution, not an exact Bayesian posterior or an externally calibrated joint law.
+
+Neural updates process one training input at a time through random permutations of the saved training cases. Adam uses learning rate 0.001, width 32, gradient clipping 5, float32, deterministic operations, and disabled TF32. Paired initializations share the initialization seed within each fold. The two mixture candidates share one system allocation. They use 64 sampled tournaments per utility update; development decisions use 512 draws. Checkpoint opportunities occur at 20\%, 45\%, and 70\% of each candidate's allocation. Development selection uses only its source's 10\%-record inputs, averaging resamples within profile and profiles equally. Exact ties prefer an earlier checkpoint and smaller utility weight. Direct-head and soft plug-in cutoffs use $0,0.05,\ldots,1$, with explicit all/empty endpoints and ties preferring proximity to $0.5$, then the smaller cutoff. Choices are serialized before test scoring.
+
+Jeffreys, empirical Bayes, learned edges, and the mixture all draw 4,096 strict tournaments per held-out input and use the established General F-measure Maximizer (GFM) \citep{waegeman2014fmeasure}. For each possible size $k$, it selects the $k$ alternatives with largest sampled expected F1 contributions and maximizes that utility over $k$. This is the native expected-F1 decision for the sampled joint UC distribution; it need not maximize F1 against the finite recorded reference. The native ordinary/relational decisions use their own development-selected heads. Raw-count UC evaluates covering on the observed strict-majority relation, omitting unresolved directions. The prespecified secondary count soft plug-in applies canonical soft UC to Jeffreys pair means and development-selects its cutoff. Posterior half-threshold and hard-orientation diagnostics are not substituted for these native decisions after seeing outcomes.
+
+\subsection{Native outcomes and aggregation}
+The designated descriptive comparison includes all profiles at 10\% records. Each metric averages the eight resamples and three initializations within profile, profiles within source, and the six source means equally. Count procedures are retained in the same paired case structure. The source-macro reference size is 1.1217, which differs from the profile-pooled size because sources are equally weighted. Table~\ref{tab:posterior-native-full} reports the overlap, exact-set, and cardinality endpoints; Tables~\ref{tab:posterior-native-sources} and~\ref{tab:posterior-native-profiles} expose source and profile heterogeneity. There are no significance tests, population confidence intervals, or general-superiority claims.
+\begin{table}[ht]\centering\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrr@{}}\toprule
+System & F1 & Exact & $|S|$ & Size MAE & Correct size & UC Brier\\\midrule
+Jeffreys--GFM & 0.8742 & 0.7656 & 1.352 & 0.2713 & 0.8254 & 0.0437\\
+Empirical Bayes--GFM & 0.8705 & 0.7522 & 1.369 & 0.2825 & 0.8119 & 0.0447\\
+Learned edges--GFM & 0.8704 & 0.7614 & 1.217 & 0.2485 & 0.8183 & 0.0400\\
+Learned mixture--GFM & 0.8366 & 0.7301 & 1.185 & 0.2300 & 0.8257 & 0.0486\\
+Raw-count UC & 0.8481 & 0.7950 & 1.194 & 0.1658 & 0.9038 & ---\\
+Count soft plug-in$^{\dagger}$ & 0.8462 & 0.7679 & 1.233 & 0.2117 & 0.8635 & 0.0507\\
+Relational head & 0.7944 & 0.6161 & 1.307 & 0.3157 & 0.7197 & 0.0681\\
+Ordinary head & 0.7340 & 0.5730 & 1.301 & 0.5336 & 0.6591 & 0.0708\\
+\bottomrule\end{tabular*}
+\caption{Native 10\%-record source macro results. Exact and correct size are frequencies, not percentages; size MAE is $\mathbb E\lvert |S|-|C|\rvert$. UC Brier is the mean squared error of membership scores against finite-reference indicators; lower values establish neither calibration nor better set decisions. $^{\dagger}$Prespecified secondary soft plug-in control.}\label{tab:posterior-native-full}\end{table}
+
+Jeffreys--GFM has the highest native F1 (0.8742). Learned edges are lower by 0.003779 and the mixture by 0.037609. Raw-count UC has the highest exact recovery (0.7950). Learned edges have the lowest recorded UC Brier (0.0400), but the improved marginal-score loss does not establish an F1 or exact-set advantage. These endpoints cannot be collapsed into one performance claim. Empirical-Bayes early convergence, neural capacity, different supervision, and source dependence further limit causal interpretations.
+
+For compact tables, J/E/L/M denote Jeffreys, empirical Bayes, learned independent edges, and the mixture with GFM; R is raw-count UC; S is the secondary soft plug-in; Rel/Ord are native relational/ordinary heads. Each paired cell below is F1/exact-set frequency.
+\begin{table}[ht]\centering\scriptsize\setlength{\tabcolsep}{2pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrrrr@{}}\toprule
+Source & J & E & L & M & R & S$^{\dagger}$ & Rel & Ord\\\midrule
+ERS & 0.719/0.444 & 0.714/0.431 & 0.702/0.435 & 0.680/0.426 & 0.638/0.431 & 0.651/0.444 & 0.618/0.343 & 0.516/0.296\\
+Oakland & 0.976/0.929 & 0.981/0.929 & 0.941/0.851 & 0.944/0.863 & 0.982/0.964 & 0.979/0.946 & 0.979/0.911 & 0.824/0.810\\
+San Francisco & 0.910/0.833 & 0.896/0.792 & 0.968/0.903 & 0.829/0.708 & 0.924/0.875 & 0.924/0.792 & 0.792/0.514 & 0.880/0.736\\
+San Leandro & 0.833/0.750 & 0.833/0.750 & 0.861/0.750 & 0.812/0.729 & 0.750/0.750 & 0.750/0.750 & 0.750/0.750 & 0.750/0.750\\
+CSES & 0.882/0.787 & 0.882/0.787 & 0.886/0.804 & 0.895/0.838 & 0.865/0.850 & 0.858/0.850 & 0.893/0.854 & 0.854/0.846\\
+Voter Autrement & 0.926/0.850 & 0.917/0.825 & 0.865/0.825 & 0.859/0.817 & 0.930/0.900 & 0.915/0.825 & 0.735/0.325 & 0.580/0.000\\
+\bottomrule\end{tabular*}
+\caption{Source-specific 10\%-record F1/exact recovery, with profiles weighted equally within source. Variation across these six purposively assembled series is descriptive and does not justify a six-source population test.}\label{tab:posterior-native-sources}\end{table}
+
+\begingroup\scriptsize\setlength{\tabcolsep}{2pt}
+\begin{longtable}{@{}lrrllllllll@{}}
+\caption{All 36 profile results at 10\% records. A profile label gives its source and catalogue identifier, not a new dataset; $n$ is alternative count and $c$ reference UC size. Every method cell is F1/exact recovery, averaged over the shared resamples and initializations.}\label{tab:posterior-native-profiles}\\
+\toprule Profile & $n$ & $c$ & J & E & L & M & R & S$^{\dagger}$ & Rel & Ord\\\midrule\endfirsthead
+\multicolumn{11}{l}{\textit{Table~\ref{tab:posterior-native-profiles} continued}}\\\toprule
+Profile & $n$ & $c$ & J & E & L & M & R & S$^{\dagger}$ & Rel & Ord\\\midrule\endhead
+\midrule\multicolumn{11}{r}{\textit{Continued on next page}}\\\endfoot
+\bottomrule\endlastfoot
+ERS 10 & 6 & 1 & 0.429/0.250 & 0.425/0.250 & 0.653/0.375 & 0.597/0.375 & 0.458/0.250 & 0.396/0.250 & 0.569/0.250 & 0.444/0.333\\
+ERS 33 & 16 & 1 & 0.958/0.875 & 0.958/0.875 & 0.958/0.875 & 0.958/0.875 & 1.000/1.000 & 1.000/1.000 & 0.764/0.292 & 0.596/0.042\\
+ERS 68 & 11 & 3 & 0.652/0.000 & 0.652/0.000 & 0.670/0.000 & 0.671/0.000 & 0.539/0.000 & 0.646/0.000 & 0.658/0.000 & 0.635/0.000\\
+ERS 69 & 4 & 1 & 0.571/0.375 & 0.571/0.375 & 0.599/0.417 & 0.589/0.417 & 0.583/0.500 & 0.583/0.500 & 0.513/0.458 & 0.500/0.500\\
+ERS 70 & 4 & 1 & 0.792/0.375 & 0.792/0.375 & 0.764/0.458 & 0.653/0.458 & 0.375/0.375 & 0.542/0.375 & 0.500/0.333 & 0.375/0.375\\
+ERS 71 & 7 & 1 & 0.661/0.250 & 0.619/0.125 & 0.547/0.250 & 0.590/0.250 & 0.675/0.375 & 0.717/0.500 & 0.686/0.542 & 0.625/0.375\\
+ERS 73 & 5 & 1 & 0.583/0.375 & 0.583/0.375 & 0.479/0.375 & 0.458/0.375 & 0.458/0.375 & 0.458/0.375 & 0.482/0.417 & 0.444/0.417\\
+ERS 75 & 9 & 1 & 0.938/0.875 & 0.938/0.875 & 0.875/0.875 & 0.875/0.875 & 0.938/0.875 & 0.938/0.875 & 0.806/0.667 & 0.833/0.625\\
+ERS 86 & 4 & 3 & 0.888/0.625 & 0.888/0.625 & 0.771/0.292 & 0.729/0.208 & 0.720/0.125 & 0.575/0.125 & 0.583/0.125 & 0.188/0.000\\
+Oakland 1 & 8 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+Oakland 2 & 11 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+Oakland 3 & 6 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+Oakland 4 & 8 & 3 & 0.912/0.750 & 0.950/0.750 & 0.629/0.083 & 0.608/0.042 & 0.875/0.750 & 1.000/1.000 & 0.894/0.500 & 0.104/0.000\\
+Oakland 5 & 7 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 0.938/0.875 & 0.972/0.917 & 1.000/1.000\\
+Oakland 6 & 5 & 1 & 0.917/0.750 & 0.917/0.750 & 0.958/0.875 & 1.000/1.000 & 1.000/1.000 & 0.917/0.750 & 0.986/0.958 & 0.708/0.708\\
+Oakland 7 & 4 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 0.958/0.958\\
+San Francisco 4 & 4 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 0.972/0.917 & 1.000/1.000 & 1.000/1.000 & 0.889/0.667 & 1.000/1.000\\
+San Francisco 7 & 7 & 1 & 0.729/0.500 & 0.688/0.375 & 0.903/0.708 & 0.542/0.292 & 0.771/0.625 & 0.771/0.375 & 0.569/0.125 & 0.639/0.208\\
+San Francisco 9 & 5 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 0.972/0.917 & 1.000/1.000 & 1.000/1.000 & 0.917/0.750 & 1.000/1.000\\
+San Leandro 2 & 4 & 1 & 0.667/0.500 & 0.667/0.500 & 0.722/0.500 & 0.625/0.458 & 0.500/0.500 & 0.500/0.500 & 0.500/0.500 & 0.500/0.500\\
+San Leandro 3 & 5 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+CSES 47 & 9 & 1 & 0.737/0.375 & 0.737/0.375 & 0.786/0.500 & 0.857/0.667 & 0.750/0.750 & 0.833/0.750 & 0.806/0.750 & 0.750/0.750\\
+CSES 48 & 9 & 1 & 0.413/0.250 & 0.413/0.250 & 0.365/0.250 & 0.401/0.292 & 0.438/0.375 & 0.375/0.375 & 0.361/0.333 & 0.375/0.375\\
+CSES 72 & 9 & 1 & 0.875/0.875 & 0.875/0.875 & 0.903/0.875 & 0.903/0.875 & 0.875/0.875 & 0.875/0.875 & 0.931/0.875 & 0.875/0.875\\
+CSES 169 & 9 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+CSES 172 & 9 & 1 & 0.917/0.750 & 0.917/0.750 & 0.931/0.792 & 0.944/0.833 & 0.833/0.750 & 0.875/0.875 & 0.972/0.917 & 0.750/0.750\\
+CSES 249 & 9 & 1 & 0.917/0.750 & 0.917/0.750 & 0.917/0.750 & 0.861/0.750 & 0.750/0.750 & 0.750/0.750 & 0.931/0.792 & 0.806/0.750\\
+CSES 256 & 9 & 1 & 0.958/0.875 & 0.958/0.875 & 0.958/0.875 & 0.986/0.958 & 1.000/1.000 & 0.875/0.875 & 0.931/0.875 & 0.986/0.958\\
+CSES 257 & 9 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+CSES 286 & 9 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+CSES 287 & 9 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000\\
+Voter Autrement 6 & 11 & 1 & 1.000/1.000 & 1.000/1.000 & 0.986/0.958 & 1.000/1.000 & 1.000/1.000 & 0.958/0.875 & 0.667/0.000 & 0.667/0.000\\
+Voter Autrement 7 & 11 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 0.681/0.042 & 0.583/0.000\\
+Voter Autrement 8 & 11 & 1 & 0.671/0.375 & 0.629/0.250 & 0.381/0.292 & 0.336/0.208 & 0.648/0.500 & 0.682/0.375 & 0.569/0.292 & 0.579/0.000\\
+Voter Autrement 14 & 12 & 1 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 1.000/1.000 & 0.889/0.667 & 0.521/0.000\\
+Voter Autrement 15 & 12 & 1 & 0.958/0.875 & 0.958/0.875 & 0.958/0.875 & 0.958/0.875 & 1.000/1.000 & 0.938/0.875 & 0.868/0.625 & 0.551/0.000\\
+\end{longtable}\endgroup
+
+\subsection{Selective references, exact recovery, and cardinality}
+Only ERS profiles 68 and 86 and Oakland profile 4 have selective non-singleton references, all of size three. The selective source macro averages the two ERS profiles, then ERS and Oakland equally. It uses two represented sources, not six selective sources or independent replicated trials. In that aggregate, Jeffreys/empirical-Bayes F1 is 0.8411/0.8599, versus 0.6749/0.6542 for learned edges/mixture. The latter select only 1.70/1.58 alternatives on average, and exactly recover 0.1146/0.0729 of the saved sets. Table~\ref{tab:posterior-native-selective} retains every profile's overlap, exact recovery, and size results.
+
+Every evaluated native method has zero exact recovery on the eleven-alternative ERS profile at the saved 10\% inputs. Oakland's secondary soft plug-in recovers the finite reference exactly in every saved input; that favorable secondary profile does not replace the native main endpoint. The two-source aggregate does not conceal these profile-specific limitations or establish that the method transfers to diverse nontrivial human cores.
+\begin{table}[ht]\centering\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}llrrrrr@{}}\toprule
+Profile ($n$) & System & F1 & Exact & $|S|$ & Correct size & Size MAE\\\midrule
+ERS 68 (11) & Jeffreys--GFM & 0.6521 & 0.0000 & 3.125 & 0.7500 & 0.3750\\
+ & Empirical Bayes--GFM & 0.6521 & 0.0000 & 3.125 & 0.7500 & 0.3750\\
+ & Learned edges--GFM & 0.6704 & 0.0000 & 1.875 & 0.0833 & 1.2083\\
+ & Learned mixture--GFM & 0.6708 & 0.0000 & 1.750 & 0.1250 & 1.2500\\
+ & Raw-count UC & 0.5387 & 0.0000 & 2.500 & 0.3750 & 1.0000\\
+ & Count soft plug-in$^{\dagger}$ & 0.6464 & 0.0000 & 2.375 & 0.3750 & 0.8750\\
+ & Relational head & 0.6583 & 0.0000 & 2.000 & 0.2500 & 1.0000\\
+ & Ordinary head & 0.6347 & 0.0000 & 1.708 & 0.0833 & 1.2917\\
+\midrule
+ERS 86 (4) & Jeffreys--GFM & 0.8875 & 0.6250 & 2.500 & 0.6250 & 0.5000\\
+ & Empirical Bayes--GFM & 0.8875 & 0.6250 & 2.500 & 0.6250 & 0.5000\\
+ & Learned edges--GFM & 0.7708 & 0.2917 & 2.000 & 0.2917 & 1.0000\\
+ & Learned mixture--GFM & 0.7292 & 0.2083 & 1.833 & 0.2083 & 1.1667\\
+ & Raw-count UC & 0.7196 & 0.1250 & 2.000 & 0.1250 & 1.2500\\
+ & Count soft plug-in$^{\dagger}$ & 0.5750 & 0.1250 & 1.375 & 0.1250 & 1.6250\\
+ & Relational head & 0.5833 & 0.1250 & 1.375 & 0.1250 & 1.6250\\
+ & Ordinary head & 0.1875 & 0.0000 & 0.375 & 0.0000 & 2.6250\\
+\midrule
+Oakland 4 (8) & Jeffreys--GFM & 0.9125 & 0.7500 & 2.625 & 0.7500 & 0.3750\\
+ & Empirical Bayes--GFM & 0.9500 & 0.7500 & 2.750 & 0.7500 & 0.2500\\
+ & Learned edges--GFM & 0.6292 & 0.0833 & 1.458 & 0.0833 & 1.5417\\
+ & Learned mixture--GFM & 0.6083 & 0.0417 & 1.375 & 0.0417 & 1.6250\\
+ & Raw-count UC & 0.8750 & 0.7500 & 2.500 & 0.7500 & 0.5000\\
+ & Count soft plug-in$^{\dagger}$ & 1.0000 & 1.0000 & 3.000 & 1.0000 & 0.0000\\
+ & Relational head & 0.8944 & 0.5000 & 2.542 & 0.5417 & 0.4583\\
+ & Ordinary head & 0.1042 & 0.0000 & 0.208 & 0.0000 & 2.7917\\
+\bottomrule\end{tabular*}
+\caption{All three selective reference profiles at 10\% records, each with true UC size three. Eight shared inputs and three initializations are averaged within profile. Exact-set and correct-size frequencies answer different questions.}\label{tab:posterior-native-selective}\end{table}
+
+\subsection{Secondary fractions}
+Table~\ref{tab:posterior-native-fractions} preserves all systems at the two nested secondary fractions. Five- and 25\%-record outcomes reuse the same finite profiles and resampling streams; they are neither new independent datasets nor substitute primary settings. The mixture remains below Jeffreys--GFM in F1 at both fractions. Learned edges' slightly higher 5\% mean cannot establish equivalence, a learning advantage, or a revised headline outcome.
+\begin{table}[ht]\centering\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}\toprule
+& \multicolumn{2}{c}{5\% records} & \multicolumn{2}{c}{25\% records}\\\cmidrule(lr){2-3}\cmidrule(l){4-5}
+System & F1 & Exact & F1 & Exact\\\midrule
+Jeffreys--GFM & 0.8199 & 0.6662 & 0.9448 & 0.8626\\
+Empirical Bayes--GFM & 0.8097 & 0.6553 & 0.9443 & 0.8598\\
+Learned edges--GFM & 0.8203 & 0.7091 & 0.9421 & 0.8626\\
+Learned mixture--GFM & 0.8136 & 0.6865 & 0.9172 & 0.8169\\
+Raw-count UC & 0.8220 & 0.7093 & 0.9458 & 0.9144\\
+Count soft plug-in$^{\dagger}$ & 0.8187 & 0.7130 & 0.9464 & 0.8929\\
+Relational head & 0.7751 & 0.5791 & 0.8863 & 0.7166\\
+Ordinary head & 0.6929 & 0.5008 & 0.8244 & 0.6692\\
+\bottomrule\end{tabular*}
+\caption{Secondary nested-fraction source macro results using the unchanged native decisions and profile/source weighting.}\label{tab:posterior-native-fractions}\end{table}
+
+\subsection{Actual compute and inference cost}
+Each of five fitted systems receives a common \emph{upper} allocation of 120 synchronized wall-clock seconds per fold/initialization, including initialization, fitting, development/Monte Carlo work, checkpointing, selection, and bookkeeping. Ninety allocations total 10,800 seconds. Every recorded fit satisfies the fixed 2\% upper-allocation tolerance, but actual charged time totals 6,064.06 seconds. The converged empirical-Bayes scalar optimizer uses only 1.50 seconds across its eighteen fits; neural systems typically finish in about 84 seconds per allocation. Equal caps therefore do not imply equal actual compute, equal statistical complexity, or matched supervision. Mixture utility candidates split one allocation; additional candidate fitting is not hidden outside the cap.
+
+Table~\ref{tab:posterior-native-training} gives measured fit costs and update counts. Held-out inference, common data preparation, analysis, and audits are outside fitting allocations. Table~\ref{tab:posterior-native-inference} separately reports all saved prediction calls across fractions, profiles, folds, and initializations. Their arithmetic mean times differ from the source-macro weighting of quality metrics. The recorded fit-and-test wall time is 6,219.68 seconds; held-out evaluation is 147.00 seconds. Timing is for the single tested L40S and software environment, not a portable hardware scaling claim.
+\begin{table}[ht]\centering\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrr@{}}\toprule
+System & Fits & Allocated s & Charged s & Fit range (s) & Updates\\\midrule
+Empirical Bayes--GFM & 18 & 2160 & 1.50 & 0.02--0.14 & 0\\
+Ordinary head & 18 & 2160 & 1513.45 & 84.03--84.13 & 403,880\\
+Relational head & 18 & 2160 & 1515.35 & 84.04--85.74 & 323,530\\
+Learned edges--GFM & 18 & 2160 & 1515.09 & 84.05--84.31 & 349,842\\
+Learned mixture--GFM & 18 & 2160 & 1518.67 & 84.11--84.62 & 208,304\\
+\bottomrule\end{tabular*}
+\caption{Actual fitting/development costs. Empirical Bayes uses a fitted scalar optimizer with no neural gradient updates; zero in that column does not mean an unfitted prior. Neural update counts include candidate training and do not measure equivalent statistical information.}\label{tab:posterior-native-training}\end{table}
+\begin{table}[ht]\centering\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrr@{}}\toprule
+System & Calls & Mean ms & Total s & Draws/input\\\midrule
+Jeffreys--GFM & 2,592 & 7.415 & 19.22 & 4,096\\
+Empirical Bayes--GFM & 2,592 & 7.467 & 19.36 & 4,096\\
+Learned edges--GFM & 2,592 & 9.034 & 23.42 & 4,096\\
+Learned mixture--GFM & 2,592 & 9.472 & 24.55 & 4,096\\
+Raw-count UC & 2,592 & 0.033 & 0.09 & 0\\
+Count soft plug-in$^{\dagger}$ & 2,592 & 3.058 & 7.93 & 0\\
+Relational head & 2,592 & 1.791 & 4.64 & 0\\
+Ordinary head & 2,592 & 1.618 & 4.19 & 0\\
+\bottomrule\end{tabular*}
+\caption{Held-out prediction cost on the L40S, including saved native posterior draws where applicable. Sampling/GFM is more expensive than the raw covering decision; these held-out costs occur outside the fitting cap.}\label{tab:posterior-native-inference}\end{table}
+
+\subsection{Certificates: logical scope and descriptive diagnostics}
+The completion enclosure in Proposition~\ref{prop:uc-completion-enclosure} and fixed-design statement in Corollary~\ref{cor:uc-fixed-design-enclosure} require explicit allowed edge orientations (Appendix~\ref{app:posterior-certificates-theory}). Independent Beta posteriors with positive parameters support every strict tournament, so unrestricted support alone cannot certify nontrivial individual UC membership. Human-profile count intervals are therefore inspected only as restrictions defining a completion family. Their necessary/possible outputs describe that family; they do not gain frequentist coverage from correlated, finite-population record subsampling. The fixed-count IID Bernoulli assumptions used for the supporting concentration theorem are not the human subsampling design.
+
+Table~\ref{tab:posterior-native-certificates} reports source-macro human diagnostics across the specified per-case failure allocations and fractions. The saved cases have no false certified inclusions or exclusions relative to the finite reference, but substantial abstention. Zero observed errors neither prove calibration nor justify a zero-risk or voter-population claim. The failure allocation describes the IID theorem's fixed-case calculation, not simultaneous or anytime coverage over these human profiles.
+\begin{table}[ht]\centering\footnotesize
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}rrrrrrr@{}}\toprule
+$\delta$ & Records & Certified & Abstained & $|L|$ & $|U|$ & False in/out\\\midrule
+0.01 & 5\% & 0.0976 & 0.9024 & 0.048 & 6.553 & 0/0\\
+0.01 & 10\% & 0.1698 & 0.8302 & 0.088 & 6.131 & 0/0\\
+0.01 & 25\% & 0.3923 & 0.6077 & 0.295 & 4.891 & 0/0\\
+0.05 & 5\% & 0.1151 & 0.8849 & 0.061 & 6.425 & 0/0\\
+0.05 & 10\% & 0.2069 & 0.7931 & 0.130 & 5.992 & 0/0\\
+0.05 & 25\% & 0.4593 & 0.5407 & 0.369 & 4.444 & 0/0\\
+0.10 & 5\% & 0.1269 & 0.8731 & 0.071 & 6.374 & 0/0\\
+0.10 & 10\% & 0.2357 & 0.7643 & 0.138 & 5.829 & 0/0\\
+0.10 & 25\% & 0.4890 & 0.5110 & 0.396 & 4.262 & 0/0\\
+\bottomrule\end{tabular*}
+\caption{Finite-cohort certificate diagnostics with no human-profile coverage guarantee. $L/U$ are inner/outer membership bounds under the calculated edge restrictions. ``Certified'' is the fraction of alternative statuses decided; it is not the fraction of exactly recovered complete sets.}\label{tab:posterior-native-certificates}\end{table}
+
+A separate independently audited CPU diagnostic contains 6,144 cases under six \emph{fixed} probability matrices: singleton strong-core/weak-remainder, size-three cyclic-core/weak-remainder, and uniform-margin families at $n=12,24$. It uses 16, 64, 256, or 1,024 IID Bernoulli comparisons per pair and 256 repetitions per cell, with $\delta=0.05$ per case. The saved cases have twelve whole-graph interval failures, zero UC-envelope failures, two confidently wrong edges, and 3,177 exact correct certificates. At 256 observations per pair, every replicate in the four strong-core/weak-remainder cells certifies the true singleton or size-three core, while none fully orients the graph. These chosen examples illustrate output certification before whole-graph orientation. Every pair receives the same budget: they establish no adaptive query or allocation savings, population calibration, or learned-method advantage.
+
+\subsection{Independent verification and excluded secondary diagnostic}
+Preserved evidence includes raw ordinal records and multiplicities, full/subsample counts, fold identities, reference sets, development choices, selected weights, training devices/gradients, time accounting, sampled tournaments/memberships, and per-case decisions. An external review independently reconstructs all 864 ballot/count inputs, inspects 20,736 prediction files, recomputes 41,472 recorded metric rows and their summaries, and verifies archive payload hashes. The original production audit regenerates the Monte Carlo draws; the external review independently rebuilds their joint membership statistics and native GFM decisions. On the original CUDA device and deterministic settings, 12,960 selected-model forward replays reproduce the stored outputs exactly. This checks saved-state consistency, not independent retraining or optimizer convergence. A partial CPU replay reached a strict intermediate-logit tolerance limit and is not represented as full cross-device validation.
+
+Independent structural decoding exposes a genuine invalid \emph{secondary} mixture hard-orientation diagnostic. Floating-point mixture summation made nominal diagonal $q_{aa}=1/2$ entries slightly larger than $1/2$, introducing self-loops when thresholded. In 320 of 2,592 saved mixture cases (101 at the main 10\% fraction), the recorded hard relation was therefore not irreflexive and its purported UC decision was invalid. Seven mixture cases also contain raw orientation probabilities slightly outside $[0,1]$; no bidirectional pairs were observed. The entire archived mixture hard-orientation aggregate is excluded, rather than deleting affected cases and interpreting an outcome-selected remainder. Raw mixture-orientation Brier/calibration summaries are also excluded as measures of a valid normalized law.
+
+The original internal audit reproduced the flawed calculation, so its pass did not establish validity of every endpoint. Native GFM instead samples a normalized component choice and strict tournaments with zero diagonal; its decisions, membership Brier, and the direct-head/raw/soft-plug-in controls were verified separately. The defect does not change the native results reported here. Frozen predictions and all invalid secondary rows remain preserved; corrected orientation reconstructions are post hoc diagnostics and no corrected aggregate is promoted as a main result. Public code adds explicit probability and irreflexivity safeguards in a separately identified correction, with no claim of a newly trained or rerun experiment.

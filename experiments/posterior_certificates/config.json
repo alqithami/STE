@@ -1,0 +1,196 @@
+{
+  "release": "STE-Posterior-Certificates-v2",
+  "seed": 20261007,
+  "study_status": "exploratory: cohort and earlier outcomes were already observed",
+  "target": "finite full-profile empirical strict-majority uncovered set",
+  "data": {
+    "manifest": "reference/data/ELIGIBLE_PROFILES.csv",
+    "source_order": [
+      "00007",
+      "00019",
+      "00021",
+      "00022",
+      "00067",
+      "00073"
+    ],
+    "fractions": [
+      0.05,
+      0.1,
+      0.25
+    ],
+    "resamples": 8,
+    "sampler": "nested multivariate hypergeometric over actual ballot multiplicities",
+    "unranked_rule": "unobserved",
+    "tied_rank_rule": "symmetric tie count T, no decisive win",
+    "synthetic_ballots": false
+  },
+  "folds": {
+    "test": "one held-out source",
+    "development": "cyclic next source in original cohort source order",
+    "training": "the remaining four sources",
+    "prediction_features": [
+      "observed W",
+      "observed T"
+    ],
+    "reference_labels": [
+      "full-profile majority orientations",
+      "full-profile UC membership"
+    ]
+  },
+  "learning": {
+    "methods": [
+      "empirical_bayes",
+      "ordinary",
+      "relational",
+      "learned_edge",
+      "posterior_mixture"
+    ],
+    "initializations": 3,
+    "hidden": 32,
+    "learning_rate": 0.001,
+    "gradient_clip": 5.0,
+    "lambdas": [
+      0.1,
+      1.0
+    ],
+    "threshold_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+    ],
+    "empirical_bayes": "single symmetric Beta(alpha,alpha) prior fit from full decisive counts of unique training profiles only; source-balanced, profile-balanced, then pair-mean composite Beta-binomial working likelihood",
+    "empirical_bayes_supervision": "full training counts supply richer prior-fitting information than Jeffreys and majority/membership-only neural labels; repeated resamples are not prior-fit evidence; inference uses observed counts only",
+    "ordinary": "ordinary membership head trained on full-profile UC labels",
+    "relational": "relational membership head trained on the same full-profile UC labels",
+    "learned_edge": "independent edge-orientation probabilities trained on full-profile majority labels with BCE",
+    "posterior_mixture": "two-component conditional edge distribution with one global component draw per tournament; edge BCE plus sampled UC expected-F1 utility",
+    "mixture_components": 2,
+    "neural_parameter_claim": "a learned conditional predictive distribution, not an exact Bayesian posterior"
+  },
+  "fixed_baselines": [
+    "raw_count_uc",
+    "jeffreys_posterior_f1"
+  ],
+  "posterior": {
+    "jeffreys_alpha": 0.5,
+    "development_draws": 512,
+    "test_draws": 4096,
+    "training_draws": 64,
+    "smoke_training_draws": 8,
+    "smoke_development_draws": 32,
+    "smoke_test_draws": 64,
+    "decoder": "general F-measure maximizer: optimize empirical expected F1 over cardinalities 1 through n",
+    "certificate_alpha": 0.05,
+    "certificate_scope": "human finite-cohort diagnostics only; formal coverage applies to independent Bernoulli comparisons with fixed counts, not correlated human ballot subsamples"
+  },
+  "budget": {
+    "production_seconds": 120.0,
+    "pilot_seconds": 30.0,
+    "smoke_seconds": 2.0,
+    "checkpoint_fractions": [
+      0.2,
+      0.45,
+      0.7
+    ],
+    "training_stop_fraction": 0.85,
+    "final_development_serialization_reserve_fraction": 0.15,
+    "relative_tolerance": 0.02,
+    "production_initializations": 3,
+    "pilot_initializations": 1,
+    "smoke_initializations": 1,
+    "lambda_budget": "split the posterior_mixture system allocation equally between its two fixed lambda candidates",
+    "charged_components": [
+      "initialization",
+      "training",
+      "development inference and Monte Carlo draws",
+      "threshold or candidate selection",
+      "checkpoint serialization",
+      "in-loop bookkeeping"
+    ],
+    "excluded_recorded_components": [
+      "common data preparation",
+      "post-budget held-out inference",
+      "post-budget analysis and packaging"
+    ],
+    "overshoot_policy": "fixed 2% upper-allocation tolerance; any overrun flags EQUAL_ALLOCATION_VALID=false; complete and archive as exploratory_budget_deviation with no p-values",
+    "early_convergence_policy": "a converged scalar empirical-Bayes fit may leave allocation unused; report that cost without padding",
+    "inference_cost_policy": "held-out inference wall time and draws are separately reported for every system"
+  },
+  "selection": {
+    "data": "development source only, 10% fraction",
+    "criterion": "mean resample F1 within profile, then mean across development profiles",
+    "tie_break": "earlier checkpoint, smaller lambda, threshold nearest 0.5, smaller threshold",
+    "test_access": "prediction functions receive observed counts only; held-out reference labels are used after choices are frozen"
+  },
+  "reporting": {
+    "main_fraction": 0.1,
+    "main_cohort": "all 36 profiles",
+    "aggregation": "mean across resamples and initializations within profile, profiles within source, then six sources equally",
+    "metrics": [
+      "f1",
+      "exact_set",
+      "selected_size",
+      "target_size",
+      "cardinality_error",
+      "brier",
+      "certificate_width",
+      "inference_seconds"
+    ],
+    "selective_profile_ids": [
+      "00007-00000068.soi",
+      "00007-00000086.soi",
+      "00019-00000004.toi"
+    ],
+    "selective_reporting": "per-profile descriptive results including exact set and predicted cardinality; no pooled superiority claim",
+    "p_values": false,
+    "confidence_claims": false,
+    "smoke": "software QA only; not a timing pilot or empirical result",
+    "pilot": "timing and feasibility only; not a replacement for production"
+  },
+  "synthetic_certificate_diagnostic": {
+    "entrypoint": "run_diagnostics.py",
+    "seed": 20261007,
+    "sizes": [
+      12,
+      24
+    ],
+    "fixed_counts_per_pair": [
+      16,
+      64,
+      256,
+      1024
+    ],
+    "repetitions": 256,
+    "delta_per_case": 0.05,
+    "families": [
+      "condorcet_weak_rest",
+      "cycle_core_weak_rest",
+      "uniform_margin"
+    ],
+    "strong_win_probability": 0.85,
+    "weak_rest_probability": 0.51,
+    "uniform_margin_win_probability": 0.65,
+    "inference_inputs": "observed W only; P is generation/evaluation truth",
+    "scope": "illustrative fixed IID Bernoulli count models; separate from human-profile learning"
+  },
+  "software_status": "corrected forward pipeline; software QA only; no v2 production or retraining results",
+  "v1_evidence_policy": "v1 native findings retained; mixture hard-q aggregate excluded after independent inspection; replay v1 only with original frozen source"
+}

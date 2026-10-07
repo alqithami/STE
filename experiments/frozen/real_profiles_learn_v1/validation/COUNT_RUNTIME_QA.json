@@ -1,0 +1,40 @@
+{
+  "cases_in_production": 864,
+  "classification": "software timing QA only",
+  "estimate_excludes_gpu_training_and_packaging": true,
+  "records": [
+    {
+      "device": "cpu",
+      "mean_seconds": 0.09519021966661967,
+      "n": 4,
+      "posterior_draws": 4096,
+      "seconds_three_repeats": [
+        0.2701745040012611,
+        0.007509934999688994,
+        0.007886219998908928
+      ]
+    },
+    {
+      "device": "cpu",
+      "mean_seconds": 0.03944297933291333,
+      "n": 9,
+      "posterior_draws": 4096,
+      "seconds_three_repeats": [
+        0.039571498999066534,
+        0.03869381100048486,
+        0.04006362799918861
+      ]
+    },
+    {
+      "device": "cpu",
+      "mean_seconds": 0.10697647766695202,
+      "n": 16,
+      "posterior_draws": 4096,
+      "seconds_three_repeats": [
+        0.10951653800111671,
+        0.1006885639999382,
+        0.11072433099980117
+      ]
+    }
+  ]
+}

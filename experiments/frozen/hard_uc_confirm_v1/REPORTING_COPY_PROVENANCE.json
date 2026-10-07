@@ -1,0 +1,12 @@
+{
+  "scope": "Anonymous operational-documentation copy only; scientific implementation, configuration, protocol, data and numerical code unchanged.",
+  "changed_files": [
+    {
+      "path": "LAUNCH_AND_SHARE.md",
+      "original_sha256": "cbc7a540bee6641c40cd54a517222067f3bffb94116be2fce1a822ab24d75c1b",
+      "reporting_sha256": "9b6a0eb9acdbcf807280366db1a16faa0d89f817fdc85edb397c874f3dd0b043",
+      "change": "Replaced deployment IP and private-key path with user-defined variables; added portable note."
+    }
+  ],
+  "original_run_reanalysis": "Use the untouched source bundled with the original result archive, because original source locks include documentation."
+}

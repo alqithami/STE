@@ -1,0 +1,76 @@
+{
+  "release": "STE-HardUC-Confirm-v1",
+  "frozen_files_preserved_byte_for_byte": true,
+  "source": "audited UC equal-compute v1 frozen directory",
+  "files": [
+    {
+      "path": "FROZEN_SHA256SUMS.txt",
+      "sha256": "d8df56163283eb653e5b738021c2bc786af58a5be694d60d1de0c6478acceb2c"
+    },
+    {
+      "path": "PROVENANCE.txt",
+      "sha256": "3a07d88ab3be566607303c343af4e990c1d20ff3e81349a15f54e7ed32457d95"
+    },
+    {
+      "path": "original_config.json",
+      "sha256": "b8d70b1581d67f6dc9d88a793d7295dd0d002791244e78980ffdabfa86a3ac0d"
+    },
+    {
+      "path": "ste/__init__.py",
+      "sha256": "a8281f3660e704907410330365513f5ca8f0c497882d38220c7f1ddc764d5b56"
+    },
+    {
+      "path": "ste/analysis.py",
+      "sha256": "10be7da42fe6209ebf3d65a0a0188a47d8f8b13b86a9dfac8a7687eb216717e4"
+    },
+    {
+      "path": "ste/baselines.py",
+      "sha256": "65b96323e52101896876615fbc15ba94d51ee73ce0a37a408ccd00121a0eb3b7"
+    },
+    {
+      "path": "ste/common.py",
+      "sha256": "da23d5ad63142e12051a6282de5a70975a197c5ca360868fb088e66726442afb"
+    },
+    {
+      "path": "ste/count_study.py",
+      "sha256": "185f99ccd393e4c461fcae571ce8102a4111c2ae74cd21fab8023d7f88add328"
+    },
+    {
+      "path": "ste/data.py",
+      "sha256": "b3cbfa54ee342f93771b17f7c088500e5157d58558e6fee00e01c2f1d31a31c8"
+    },
+    {
+      "path": "ste/diagnostics.py",
+      "sha256": "64a41b4b8216da3feb1f8fc3aaf94c5c594cad1fa39fa17040935f6510565275"
+    },
+    {
+      "path": "ste/learning.py",
+      "sha256": "790174b50f94937ba91998ad846a36d6b195e65c45171ed174e11d1dfbdda858"
+    },
+    {
+      "path": "ste/metrics.py",
+      "sha256": "d35e62761a52e498acf218ba5351e46971229c4b07ee8559715a06b858f748be"
+    },
+    {
+      "path": "ste/models.py",
+      "sha256": "5ebd00bff682c3fa12344c25d6981a70f8185313ded4a859139144dbd0b418d3"
+    },
+    {
+      "path": "ste/operators.py",
+      "sha256": "435b53f6d07e8436db695b25f227577dcee62af3edef547b4b573009cb499af1"
+    },
+    {
+      "path": "ste/packaging.py",
+      "sha256": "ca65ab24a35d1968619ba07f84d4cf07c566cc0ff684483ee086181cfae87882"
+    },
+    {
+      "path": "ste/real.py",
+      "sha256": "b86144d17667211c719c248e197beb46ddc4cd51bb35ecec4267636a5c96345a"
+    },
+    {
+      "path": "ste/validation.py",
+      "sha256": "9ce517caa183db31b146eaafd61d68af7fbc64312095894429df42a363967ea9"
+    }
+  ],
+  "training_formulas": "Original pair likelihood, auxiliary BCE and soft-UC BCE retained; system-specific development readout changes only."
+}

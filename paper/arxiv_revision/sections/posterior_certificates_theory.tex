@@ -1,0 +1,157 @@
+\section{Posterior decisions and UC certificates}\label{app:posterior-certificates-theory}
+This section specifies the mathematical objects used by the additional posterior and certificate study. It connects established completion, confidence, and decision rules to UC inference; these supporting results do not establish a new tournament solution, an adaptive comparison algorithm, or improved learning. They are separate from the approximation guarantees for the canonical STE operator in Appendix~\ref{app:proofs}. Throughout, $V$ is a fixed set of $n\ge2$ vertices and every complete tournament is strict and irreflexive.
+
+\subsection{Certificates from partially known orientations}\label{app:uc-completion-certificates}
+For a partial tournament $G$, let $\mathcal C(G)$ be its unrestricted strict completions and define
+\[
+\mathcal N(G)=\bigcap_{T\in\mathcal C(G)}\UC(T),\qquad
+\mathcal P(G)=\bigcup_{T\in\mathcal C(G)}\UC(T).
+\]
+These are individual necessary and possible winners, rather than possible entire winning sets \citep{aziz2015partial}. An arbitrary subset of $\mathcal P(G)$ need not be the UC of a completion. Write $x\to_G y$ for a known edge, and define
+\begin{align}
+I(G)&=\{v:\ \forall u\ne v,\ v\to_Gu\ \text{or}\ \exists w,\ v\to_Gw\to_Gu\},\label{eq:uc-inner}\\
+O(G)&=V\setminus\bigl\{v:\ \exists u\ne v,\ u\to_Gv\ \text{and}\notag\\
+&\hspace{5em}\forall w\notin\{u,v\},\ w\to_Gv\ \text{or}\ u\to_Gw\bigr\}.\label{eq:uc-outer}
+\end{align}
+Only the stated soundness of these constructive tests is needed below.
+
+\begin{proposition}[Logical UC enclosure]\label{prop:uc-completion-enclosure}
+For every partial tournament $G$ and every $T\in\mathcal C(G)$,
+\[
+I(G)\subseteq\mathcal N(G)\subseteq\UC(T)\subseteq\mathcal P(G)\subseteq O(G).
+\]
+If $I(G)=O(G)$, this set is the UC of every completion. Each $v\in I(G)$ has a known-edge spanning out-tree of depth at most two and exactly $n-1$ edges certifying its inclusion.
+\end{proposition}
+\begin{proof}
+First, a vertex $v$ is uncovered in a strict tournament exactly when it reaches every opponent in at most two edges. If $u$ covers $v$, then $u\to v$, and $u\to w$ for every $v\to w$, so neither $v\to u$ nor $v\to w\to u$ is possible. Conversely, if $v$ cannot reach $u$ in at most two edges, strictness forces $u\to v$ and $u\to w$ for every $v\to w$; hence $u$ covers $v$.
+
+Every known path in Eq.~\eqref{eq:uc-inner} remains in every completion, proving $I(G)\subseteq\mathcal N(G)$. If $v$ is excluded by Eq.~\eqref{eq:uc-outer}, retain its witness $u$. Every completion has $u\to v$. Whenever that completion has $v\to w$, the alternative known edge $w\to_Gv$ cannot hold, so the test supplies $u\to_Gw$. Thus $u$ covers $v$ in every completion, proving $\mathcal P(G)\subseteq O(G)$. The middle inclusions follow from intersection and union; equality of the endpoints forces equality of the intermediate sets.
+
+For $v\in I(G)$, retain $v\to_Gu$ for every known out-neighbor $u$ of $v$. Each remaining vertex has a two-step witness through one of these out-neighbors; choose exactly one such incoming edge. Every nonroot vertex now has one parent, either the root or its direct child. These $n-1$ edges form the required spanning out-tree, and their preservation guarantees two-step reachability.
+\end{proof}
+The two-step characterization and depth-two support structure are established tournament properties \citep{aziz2015partial,contet2026supports}. The implementation checks all candidate witnesses in $O(n^3)$ time; it does not choose or pay for new comparisons.
+
+\begin{corollary}[Fixed-design frequentist enclosure]\label{cor:uc-fixed-design-enclosure}
+Let $P_{ij}+P_{ji}=1$ and $P_{ij}\ne1/2$ off the diagonal. For each unordered pair, its count $m_{ij}$ is fixed before outcomes are observed, and its observations are i.i.d. Bernoulli$(P_{ij})$. Cross-pair independence is unnecessary. Put $M=n(n-1)/2$ and choose a fixed $\delta\in(0,1)$. For $m_{ij}>0$, set
+\[
+r_{ij}=\sqrt{\frac{\log(2M/\delta)}{2m_{ij}}},\qquad
+[L_{ij},U_{ij}]=[\max(0,\widehat P_{ij}-r_{ij}),\min(1,\widehat P_{ij}+r_{ij})].
+\]
+Omitted pairs receive $[0,1]$, and reversed intervals are $[1-U_{ij},1-L_{ij}]$. Form $G$ with edge $i\to j$ only when $L_{ij}>1/2$. Then
+\[
+\Pr_P\{I(G)\subseteq\UC(T(P))\subseteq O(G)\}\ge1-\delta.
+\]
+\end{corollary}
+\begin{proof}
+Hoeffding's inequality \citep{hoeffding1963probability} bounds the failure probability of an observed interval by $2e^{-2m_{ij}r_{ij}^2}=\delta/M$. Clipping does not exclude an admissible $P_{ij}$ previously in the interval, and an omitted interval always covers it. A union bound over at most $M$ pairs therefore gives simultaneous coverage with probability at least $1-\delta$; reversed intervals describe the same events. On this event every known edge is a true edge, so $T(P)\in\mathcal C(G)$. Proposition~\ref{prop:uc-completion-enclosure} applies. The argument covers witnesses selected after seeing the intervals because it uses a single simultaneous whole-graph event.
+\end{proof}
+The strict inequality matters: an interval endpoint at $1/2$ never licenses an orientation. Latent ties are excluded. This is one fixed design and one fixed confidence level, with no outcome-dependent stopping, adaptive allocation, or anytime guarantee. Human ordinal records sampled without replacement from a finite cohort do not satisfy this conditional i.i.d. observation model. For those records, the logical enclosure remains valid \emph{if its supplied edges are correct}, but these intervals supply no asserted finite-population or population coverage. Equal inner and outer sets can identify a UC without identifying every edge; this structural possibility alone establishes no allocated-comparison savings.
+
+\subsection{Orientation laws, support, and posterior membership}\label{app:posterior-law-support}
+Under independent positive Beta priors and a factorized pairwise Bernoulli likelihood, the pair posterior is Beta$(a_{ij}+W_{ij},b_{ij}+W_{ji})$. Its orientation probability is
+\[
+q_{ij}=\Pr(P_{ij}>1/2\mid D)=1-I_{1/2}(a_{ij}+W_{ij},b_{ij}+W_{ji}),
+\]
+where $I_x$ is the regularized incomplete beta function. This quantity differs from $\mathbb E[P_{ij}\mid D]$. Independent posterior orientations follow from the stated prior and likelihood factorization, not from reciprocal marginal probabilities alone. The posterior puts no mass at $P_{ij}=1/2$.
+
+\begin{lemma}[Support and dependence distinctions]\label{lem:posterior-support-dependence}
+With finite counts and positive Beta parameters, every strict tournament has positive probability under this independent posterior. Consequently its individual support-possible UC winners are $V$, and its support-necessary UC winners are empty. More generally, edge marginals do not identify posterior UC membership probabilities.
+\end{lemma}
+\begin{proof}
+The Beta density is positive on $(0,1)$, so each of its two halves has positive probability: $0<q_{ij}<1$. Each strict tournament probability is a finite product of positive orientation probabilities. For any vertex $v$, a supported tournament making $v$ a Condorcet winner has $v\in\UC$; one making $v$ a Condorcet loser has another vertex covering it, so $v\notin\UC$. Taking support union and intersection proves the first assertions.
+
+For the final assertion, compare two laws on three vertices. Independent fair orientations give the uniform law on eight tournaments and UC inclusion probability $1/2$ at every vertex, as in Lemma~\ref{lem:distinct-summaries}. A law assigning probability $1/2$ to each of the two oppositely oriented three-cycles has the same edge marginals $q_{ij}=1/2$, but every vertex belongs to UC with probability one. Thus equal marginals can have different UC laws.
+\end{proof}
+Informative confidence-completion sets therefore differ from the unrestricted support of a positive Beta posterior. A learned finite mixture can model dependent orientations, but its training objective does not make that law a calibrated Bayesian posterior.
+
+\begin{proposition}[Conditional certificate probability]\label{prop:posterior-tree-bound}
+Fix data $D$, a joint tournament law conditional on $D$, and a depth-two spanning out-tree $C_v$ rooted at $v$. If $q_e$ is the marginal probability of each required orientation, then
+\[
+\Pr(v\in\UC(T)\mid D)\ge\max\{0,1-\textstyle\sum_{e\in C_v}(1-q_e)\}.
+\]
+If those orientations are jointly independent, their product $\prod_{e\in C_v}q_e$ is a valid, at least as large, lower bound.
+\end{proposition}
+\begin{proof}
+When every tree edge holds, the root reaches every vertex in at most two edges and is uncovered. A union bound on failures of the required orientations gives the first bound. Under independence, the probability that all required edges hold is their product. Applying the same union bound to that event shows that the product is at least $1-\sum_e(1-q_e)$; it is also nonnegative.
+\end{proof}
+The tree may be selected from $D$ before this conditional probability is evaluated. This is an assertion under a specified conditional law, not repeated-data coverage or optimal tree selection. In a mixture with weights $\rho_c$ and conditional independent edge probabilities $q_{c,e}$, the tree event has probability $\sum_c\rho_c\prod_{e\in C_v}q_{c,e}$, by conditioning on $c$. Multiplying the mixture marginals instead generally gives a different law.
+
+\begin{proposition}[Independent-law UC integration]\label{prop:posterior-uc-integration}
+Under mutually independent unordered orientations, let $W=N_T^+(v)$, whose elements $w\ne v$ are independently included with probabilities $q_{vw}$. Define
+\[
+H_v(W)=\prod_{u\notin W\cup\{v\}}\left(1-\prod_{w\in W}q_{uw}\right).
+\]
+Then $\pi_v:=\Pr(v\in\UC(T)\mid D)=\mathbb E[H_v(W)\mid D]$, and
+\[
+\operatorname{Var}(H_v(W)\mid D)
+=\pi_v(1-\pi_v)-\mathbb E[H_v(W)(1-H_v(W))\mid D]
+\le\pi_v(1-\pi_v).
+\]
+\end{proposition}
+\begin{proof}
+Conditional on $W$, precisely the vertices outside $W\cup\{v\}$ beat $v$. Such a vertex $u$ covers $v$ exactly when it beats every $w\in W$, with conditional probability $\prod_{w\in W}q_{uw}$. Conditioning fixes only edges incident to $v$; the remaining orientations retain independence. The covering events for different outside vertices involve disjoint unordered edges, so their failures multiply, giving $H_v(W)=\Pr(v\in\UC(T)\mid W,D)$. Total expectation proves the identity. Let $Y=\mathbf1\{v\in\UC(T)\}$. Total variance gives
+\[
+\operatorname{Var}(Y\mid D)=\operatorname{Var}(\mathbb E[Y\mid W,D]\mid D)+\mathbb E[\operatorname{Var}(Y\mid W,D)\mid D].
+\]
+The two Bernoulli variances are $\pi_v(1-\pi_v)$ and $H_v(W)(1-H_v(W))$, proving the claim.
+\end{proof}
+Empty products give $H_v(\varnothing)=0$ for $n>1$ and $H_v(V\setminus\{v\})=1$. Averaging independent $W$ draws is an unbiased scalar Rao--Blackwell estimator; its variance divides by the draw count. Summing explicitly over all $2^{n-1}$ choices of $W$ gives an exponential exact oracle, not a polynomial-time method. Within a mixture, apply the identity conditional on its component and average over components; using only mixture marginal edges in the products is generally invalid. This identity specifies the estimator; no novelty is claimed for conditioning or Rao--Blackwellization. Its scalar variance result does not imply reduced cross-vertex covariance or better set-level decisions.
+
+\subsection{Joint cardinality information and expected F1}\label{app:posterior-gfm}
+Let $S=\UC(T)$ under any specified joint law, and define $F(A,S)=2|A\cap S|/(|A|+|S|)$ for an action $A\subseteq V$. The target $S$ is always nonempty: a maximum-outdegree vertex cannot be covered, because its coverer would have strictly greater outdegree. Thus the empty action has utility zero. Write
+\[
+J_{i,s}=\Pr(i\in S,|S|=s\mid D),\qquad
+\Delta_{i,k}=\sum_{s=1}^n\frac{2J_{i,s}}{k+s}.
+\]
+\begin{proposition}[Established GFM rule for UC labels]\label{prop:uc-gfm}
+For each $k\in\{1,\ldots,n\}$, take the $k$ largest $\Delta_{i,k}$ and then choose the cardinality whose selected weights have greatest sum. This maximizes $U(A)=\mathbb E[F(A,S)\mid D]$ over all subsets $A\subseteq V$.
+\end{proposition}
+\begin{proof}
+For $|A|=k$, linearity gives $U(A)=\sum_{i\in A}\Delta_{i,k}$. The greatest sum at that size selects the $k$ greatest weights, with deterministic tie breaking. Searching all sizes therefore optimizes all nonempty actions. Some nonempty action has positive utility because $S$ is nonempty, so the empty action does not improve the maximum.
+\end{proof}
+This is General F-measure Maximization \citep{waegeman2014fmeasure}, applied to UC labels. The joint size weights, rather than membership marginals alone, encode the F1 denominator. No label or edge independence is required, and the optimal action need not itself be a UC realizable by a tournament. GFM applied to posterior draws maximizes the empirical modeled utility. It does not certify that the model matches the empirical reference or a population target.
+
+\begin{corollary}[Finite posterior-simulation regret]\label{cor:posterior-gfm-mc}
+For a fixed conditional law, take $B$ i.i.d. draws $S_b$ and let $\widehat A$ maximize $\widehat U(A)=B^{-1}\sum_bF(A,S_b)$. For $\epsilon>0$ and $\delta_{\mathrm{MC}}\in(0,1)$, if
+\[
+B\ge\frac{\log(2\cdot2^n/\delta_{\mathrm{MC}})}{2\epsilon^2},
+\]
+then, with probability at least $1-\delta_{\mathrm{MC}}$ over this simulation, $U(A^*)-U(\widehat A)\le2\epsilon$, where $A^*$ maximizes $U$.
+\end{corollary}
+\begin{proof}
+Each F1 summand lies in $[0,1]$. Hoeffding's inequality and a union bound over the $2^n$ actions give $\sup_A|\widehat U(A)-U(A)|\le\epsilon$ at the stated probability. On that event,
+\[
+U(A^*)\le\widehat U(A^*)+\epsilon\le\widehat U(\widehat A)+\epsilon\le U(\widehat A)+2\epsilon.
+\]
+\end{proof}
+This finite-class concentration consequence concerns integration error under a fixed law, independently of the comparison-sampling confidence level in Corollary~\ref{cor:uc-fixed-design-enclosure}. It supplies neither posterior calibration nor a guarantee for learned predictions.
+
+\subsection{The finite-mixture training objective}\label{app:mixture-score-identity}
+The additional mixture model has finite differentiable logits $\alpha_c(\theta)$ and $z_{c,e}(\theta)$ for components $c\in\{1,\ldots,C\}$ and unordered edges $e=(i,j)$, $i<j$. Put $\rho_c=\operatorname{softmax}(\alpha)_c$, $q_{c,e}=\sigma(z_{c,e})$, and let $x_e(T)$ indicate $i\to j$. The joint sampled law is
+\[
+p_\theta(c,T)=\rho_c\prod_e q_{c,e}^{x_e(T)}(1-q_{c,e})^{1-x_e(T)}.
+\]
+It has positive support on every $(c,T)$ at finite logits; marginalizing $c$ generally creates dependent edges. For fixed reference $S^*$, let $R(T)=F(\UC(T),S^*)$ and $\mathcal J(\theta)=\mathbb E_\theta[R(T)]$.
+
+\begin{proposition}[Score identity and leave-one-out baseline]\label{prop:mixture-score-identity}
+Define
+\[
+g_\theta(c,T)=\nabla_\theta\alpha_c-\sum_d\rho_d\nabla_\theta\alpha_d
++\sum_e(x_e(T)-q_{c,e})\nabla_\theta z_{c,e}.
+\]
+Then $\nabla_\theta\mathcal J=\mathbb E_\theta[R(T)g_\theta(c,T)]$. For $b=1,\ldots,B$, $B\ge2$, independently sample $(c_b,T_b)$ from the same current law and set $b_b=(B-1)^{-1}\sum_{a\ne b}R(T_a)$. The estimator
+\[
+\widehat g=B^{-1}\sum_b(R(T_b)-b_b)g_\theta(c_b,T_b)
+\]
+is unbiased for $\nabla_\theta\mathcal J$.
+\end{proposition}
+\begin{proof}
+The state space is finite and $R$ is independent of $\theta$, so differentiating the sum for $\mathcal J$ yields
+\[
+\nabla_\theta\mathcal J
+=\sum_{c,T}R(T)\nabla_\theta p_\theta(c,T)
+=\mathbb E_\theta[R(T)\nabla_\theta\log p_\theta(c,T)].
+\]
+The second equality uses positive probabilities. Softmax differentiation gives $\nabla\log\rho_c=\nabla\alpha_c-\sum_d\rho_d\nabla\alpha_d$. Differentiating each Bernoulli log probability gives $(x_e-q_{c,e})\nabla z_{c,e}$, establishing the displayed score. Normalization implies $\mathbb E_\theta[g_\theta]=\sum_{c,T}\nabla p_\theta(c,T)=\nabla1=0$. For each $b$, its baseline depends only on other independent draws; hence $\mathbb E[b_bg_b]=\mathbb E[b_b]\mathbb E[g_b]=0$. The expectation of each uncentered term is the first identity, so centering and averaging preserve it.
+\end{proof}
+This is a finite-state likelihood-ratio/REINFORCE construction \citep{williams1992reinforce}. In the sampled log-probability surrogate, rewards and baselines must be held constant during differentiation. Sampling and scoring must use the same law; inconsistent clipping would break the identity. It establishes neither optimizer convergence nor variance reduction for every baseline. The sampled-reference objective $\mathcal J$, GFM's utility of an action against a modeled random UC, and held-out empirical F1 are three different quantities. Increasing the first does not, by this result, guarantee improvement of the other two. The completed mixture comparison is therefore an empirical test of this modeling choice, rather than a consequence of the gradient identity.

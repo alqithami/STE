@@ -1,17 +1,22 @@
 cff-version: 1.2.0
-message: "If you use this repository, please cite the associated paper and this software artifact."
-title: "Soft Tournament Equilibrium"
+message: "If you use this repository, please cite the associated preprint and identify the software revision used."
+title: "Soft Tournament Equilibrium research software"
 type: software
 authors:
   - family-names: Alqithami
     given-names: Saad
 year: 2026
 repository-code: "https://github.com/alqithami/STE"
+url: "https://arxiv.org/abs/2604.04328"
 license: MIT
 preferred-citation:
   type: article
-  title: "Soft Tournament Equilibrium"
+  title: "Soft Tournament Equilibrium: Differentiable Set-Valued Inference for Non-Transitive Pairwise Comparisons"
   authors:
     - family-names: Alqithami
       given-names: Saad
   year: 2026
+  url: "https://arxiv.org/abs/2604.04328"
+  identifiers:
+    - type: other
+      value: "arXiv:2604.04328"

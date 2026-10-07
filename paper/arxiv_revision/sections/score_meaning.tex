@@ -1,0 +1,17 @@
+\subsection{What a soft UC score means}\label{sec:score-meaning}
+A bounded smooth score is neither a calibrated membership probability nor a certificate of correct ordering. The following constructions separate these interpretations; their full proofs are in Appendix~\ref{app:proofs}.
+
+\begin{lemma}[Neutral-input UC reference]\label{lem:neutral}
+For $n\ge3$, if $P_{ab}=1/2$ for all distinct $a,b$, then the canonical UC score is $u_a=5/8$ for every alternative and every positive $\tau,\gamma_c$.
+\end{lemma}
+Equal neutral witness scores give $v=1/4$ and cover strength $3/8$, regardless of temperature. Thus an unobserved graph under neutral imputation can score above one half without directional evidence.
+
+\begin{lemma}[Distinct plug-in and posterior summaries]\label{lem:distinct-summaries}
+Let $\Pi$ be uniform on the eight strict three-vertex tournaments, encoded by $0/1$ edge probabilities and diagonal $1/2$. At every positive canonical temperature, $u_a(\mathbb E_\Pi P)=5/8$ but $\Pr_\Pi\{a\in\UC(T(P))\}=1/2$ for each vertex.
+\end{lemma}
+Six transitive tournaments and two cycles give four UC inclusions per vertex. Plug-in and posterior summaries are intrinsically different.
+
+\begin{proposition}[A finite-temperature ordering counterexample]\label{prop:ordering-counterexample}
+There is a reciprocal strict-margin probability matrix with known entries whose hard TC and UC are the singleton $\{a\}$, but whose canonical UC scores at $\tau=\gamma_c=0.035$ satisfy $u(b)>u(a)$. Consequently no upper-threshold rule or descending-score prefix recovers that singleton at these temperatures.
+\end{proposition}
+The construction uses $P_{ab}=P_{ac}=0.501$, $P_{bc}=0.9$: exact probabilities do not eliminate smoothing bias.

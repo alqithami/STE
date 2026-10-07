@@ -1,0 +1,5 @@
+{
+  "count_tamper_rejected": "Count baseline output hash failed: /workspace/scratch/16f4f4d2b505/ste_strengthening/qa/real_integrity_guards/count/counts/00019-00000002.toi",
+  "observation_tamper_rejected": "Retained observation hash failed: observations/00019-00000002.toi/data.npz",
+  "partial_count_cache_regenerated_identically": true
+}

@@ -1,0 +1,23 @@
+\section{Reproduction map and notation}\label{app:reproduction}
+The manuscript source and research repository provide scientific code, study-specific environments, manuscript-build instructions, experiment commands, and output-reanalysis instructions. Large full-evidence archives are preserved separately. Table and figure generation reaggregates the preserved outputs without fitting new models. Deterministic checks compare Algorithm~\ref{alg:lse} with the numerical implementation and verify the refined bounds and historical operator equations.
+
+The matched-epoch study, equal-budget soft-UC comparison, hard-UC confirmation, exploratory human-profile learning, the posterior/control extension, and earlier studies retain separate protocols and analyses. The matched-epoch review verifies scores, calibration, and diagnostics, but lacks weights and several sampled arrays needed for complete replay. The equal-budget audit additionally regenerates data and replays predictions from selected weights, as described in Appendix~\ref{app:uc-equal-compute}. The hard-UC and human-profile audits also inspect raw inputs, selection, saved predictions, and metric aggregation (Appendices~\ref{app:hard-confirm}--\ref{app:real-learning}). The posterior/control extension additionally verifies native joint draws, selected-checkpoint outputs and independently reconstructed summaries, while excluding its invalid secondary mixture hard-decoding aggregate (Appendix~\ref{app:posterior-native}). Full optimizer trajectories were not independently retrained. Source attribution corrects the mixed election/sports interpretation of the recorded-data cohort (Appendix~\ref{app:gpu-real-inventory}); preserved measurements are unchanged. Earlier protocols and complete outputs remain separately preserved, with their own operators, observation dependencies, and provider terms; they are not pooled into any current study. Restricted respondent-level records are not redistributed, and provider snapshots were not pinned for every historical release. Acquisition and reconstruction instructions record the applicable access conditions.
+
+\begin{table}[ht]\centering\small
+\begin{tabular}{@{}ll@{}}\toprule
+Symbol / implementation & Meaning\\\midrule
+$P,\widehat P$ & Latent and estimated reciprocal pair probabilities; diagonal $1/2$.\\
+$W,T$ & Decisive wins and observed tied counts; masks retain missingness.\\
+$D_\tau$ & Zero-diagonal sigmoid edge strength; soft surrogate.\\
+$Q^{(k)},R,t$ & Exact-length soft walks, aggregated reachability, TC score.\\
+$v,\operatorname{cov},u$ & Covering witness, cover strength, UC score.\\
+$\tau,\gamma,\gamma_c$ & Edge, path and covering temperatures.\\
+$K$ & Path depth; $K\ge n-1$ required for full hard TC recovery.\\
+STE-LSE & Canonical normalized log-sum-exp operators.\\
+STE-WB & Historical confidence-weighted/Boltzmann variant.\\
+STE-Post & Mean hard-core membership under a specified posterior.\\
+$\AP$ / DG & Score-ordering AP / descriptive dominance gap.\\
+$J$ & Bootstrap agreement diagnostic, as defined per study.\\\bottomrule
+\end{tabular}
+\caption{Notation and implementation distinctions. Scores are not calibrated membership probabilities; posterior outputs are conditional on their model.}
+\end{table}

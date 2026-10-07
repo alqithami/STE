@@ -56,3 +56,8 @@ data/private/*
 # Keep documentation placeholders
 !data/README.md
 !paper/README.md
+
+# Current experiment environments and generated runs
+experiments/**/.venv/
+experiments/**/__pycache__/
+experiments/**/outputs/

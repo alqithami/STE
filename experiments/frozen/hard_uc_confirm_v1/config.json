@@ -1,0 +1,191 @@
+{
+  "release": "STE-HardUC-Confirm-v1",
+  "seed": 9872513,
+  "precision": "float32; TF32 disabled; no mixed precision",
+  "required_versions": {
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "pandas": "2.2.3"
+  },
+  "learning": {
+    "collections": 12,
+    "initializations": 3,
+    "targets": [
+      "uc"
+    ],
+    "objectives": [
+      "pair-hard",
+      "aux-direct",
+      "relational-direct",
+      "ste-hard",
+      "aux-hard",
+      "relational-hard"
+    ],
+    "train_n": 12,
+    "train_graphs": 512,
+    "development_graphs": 128,
+    "test_sizes": [
+      24,
+      48
+    ],
+    "test_graphs_per_size": 256,
+    "families": [
+      "ordered",
+      "planted",
+      "separated",
+      "rank_mixture",
+      "random"
+    ],
+    "core_weights": [
+      0.1,
+      1.0
+    ],
+    "hidden": 32,
+    "batch_size": 16,
+    "eval_batch_size": 8,
+    "learning_rate": 0.001,
+    "gradient_clip": 5.0,
+    "count_intensity": 10,
+    "missing_probability": 0.25,
+    "tie_probability": 0.2,
+    "temperature": 0.035,
+    "checkpoint_tc": true,
+    "readouts": {
+      "pair-hard": [
+        "hard_uc"
+      ],
+      "aux-direct": [
+        "direct"
+      ],
+      "relational-direct": [
+        "direct"
+      ],
+      "ste-hard": [
+        "hard_uc"
+      ],
+      "aux-hard": [
+        "hard_uc"
+      ],
+      "relational-hard": [
+        "hard_uc"
+      ]
+    },
+    "systems": {
+      "pair-hard": {
+        "training_objective": "pair",
+        "readout": "hard_uc"
+      },
+      "aux-direct": {
+        "training_objective": "aux",
+        "readout": "direct"
+      },
+      "relational-direct": {
+        "training_objective": "relational_aux",
+        "readout": "direct"
+      },
+      "ste-hard": {
+        "training_objective": "ste",
+        "readout": "hard_uc"
+      },
+      "aux-hard": {
+        "training_objective": "aux",
+        "readout": "hard_uc"
+      },
+      "relational-hard": {
+        "training_objective": "relational_aux",
+        "readout": "hard_uc"
+      }
+    }
+  },
+  "budget": {
+    "seconds_per_candidate": 110.0,
+    "pair_candidate_multiplier": 2.0,
+    "checkpoint_fractions": [
+      0.025,
+      0.1,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "relative_tolerance": 0.02,
+    "charged_components": [
+      "training",
+      "development prediction",
+      "hard UC decoding or direct threshold selection",
+      "checkpoint and development serialization",
+      "in-loop progress and bookkeeping"
+    ],
+    "excluded_recorded_components": [
+      "dataset generation",
+      "model initialization and data transfer",
+      "initial state hashing",
+      "global common warmup",
+      "post-budget integrity bookkeeping",
+      "test evaluation"
+    ],
+    "scheduler": "At each target fraction, reserve the largest prior measured checkpoint cost; stop training at the first synchronized minibatch boundary reaching target minus reserve. The first checkpoint has zero reserve. All five checkpoint costs count toward the same candidate wall-clock budget. Early 2.5% and 10% checkpoints let fast baselines select before overfitting.",
+    "invalid_budget_action": "Complete and report descriptive outputs; prohibit confirmatory equal-compute inference when any candidate or system total lies outside the fixed 2% tolerance."
+  },
+  "decisions": {
+    "threshold_step": 0.025,
+    "rules": [
+      "hard",
+      "absolute"
+    ],
+    "development_selection": "mean per-case F1 on selective_non_singleton UC at n=12; hard systems use frozen P>.5 hard UC without a membership cutoff; direct systems optimize development absolute threshold",
+    "tie_break": "earlier checkpoint, smaller lambda; for direct readout threshold nearest 0.5 then smaller threshold"
+  },
+  "primary_comparisons": [
+    {
+      "target": "uc",
+      "n": 24,
+      "left": "ste-hard",
+      "left_readout": "hard_uc",
+      "left_rule": "hard",
+      "right": "aux-direct",
+      "right_readout": "direct",
+      "right_rule": "absolute",
+      "core_class": "selective_non_singleton",
+      "metric": "f1"
+    },
+    {
+      "target": "uc",
+      "n": 24,
+      "left": "ste-hard",
+      "left_readout": "hard_uc",
+      "left_rule": "hard",
+      "right": "relational-direct",
+      "right_readout": "direct",
+      "right_rule": "absolute",
+      "core_class": "selective_non_singleton",
+      "metric": "f1"
+    }
+  ],
+  "inference": {
+    "unit": "independent collection",
+    "initialization_aggregation": "equal mean within each collection",
+    "multiplicity": "Holm correction of the two fixed primary contrasts",
+    "secondary": "descriptive only: common-hard auxiliary controls, all-class means, n=48, exact recovery, cardinality, edge fidelity, tie incidence; no additional confirmatory endpoints"
+  },
+  "sharding": {
+    "collection_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "unit": "complete independent collection with all three paired initializations and all six systems",
+    "global_inference": "exactly twelve unique collections required; never pool graphs, initializations, or shards as independent units",
+    "hardware": "all production shards require the same GPU model, capability and pinned numerical environment"
+  }
+}

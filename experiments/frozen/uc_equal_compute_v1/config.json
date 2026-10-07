@@ -1,0 +1,34 @@
+{
+  "release": "STE-UC-EqualCompute-v1",
+  "seed": 2026100407,
+  "precision": "float32; TF32 disabled; no mixed precision",
+  "required_versions": {"torch": "2.6.0+cu124", "cuda": "12.4", "numpy": "1.26.4", "scipy": "1.13.1", "pandas": "2.2.3"},
+  "learning": {
+    "collections": 12, "initializations": 3,
+    "targets": ["uc"], "objectives": ["pair", "aux", "relational_aux", "ste"],
+    "train_n": 12, "train_graphs": 512, "development_graphs": 128,
+    "test_sizes": [24, 48], "test_graphs_per_size": 256,
+    "families": ["ordered", "planted", "separated", "rank_mixture", "random"],
+    "core_weights": [0.1, 1.0], "hidden": 32, "batch_size": 16, "eval_batch_size": 8,
+    "learning_rate": 0.001, "gradient_clip": 5.0,
+    "count_intensity": 10, "missing_probability": 0.25, "tie_probability": 0.2,
+    "temperature": 0.035, "checkpoint_tc": true,
+    "readouts": {"pair": ["structural"], "aux": ["direct"], "relational_aux": ["direct"], "ste": ["structural"]}
+  },
+  "budget": {
+    "seconds_per_candidate": 110.0,
+    "pair_candidate_multiplier": 2.0,
+    "checkpoint_fractions": [0.025, 0.1, 0.25, 0.5, 1.0],
+    "relative_tolerance": 0.02,
+    "charged_components": ["training", "development prediction", "threshold selection", "checkpoint and development serialization", "in-loop progress and bookkeeping"],
+    "excluded_recorded_components": ["dataset generation", "model initialization and data transfer", "initial state hashing", "global common warmup", "post-budget integrity bookkeeping", "test evaluation"],
+    "scheduler": "At each target fraction, reserve the largest prior measured checkpoint cost; stop training at the first synchronized minibatch boundary reaching target minus reserve. The first checkpoint has zero reserve. All five checkpoint costs count toward the same candidate wall-clock budget. Early 2.5% and 10% checkpoints let fast baselines select before overfitting.",
+    "invalid_budget_action": "Complete and report descriptive outputs; prohibit confirmatory equal-compute inference when any candidate or system total lies outside the fixed 2% tolerance."
+  },
+  "decisions": {"threshold_step": 0.025, "rules": ["absolute"], "development_selection": "mean per-case F1 on selective_non_singleton UC at n=12", "tie_break": "earlier checkpoint, smaller lambda, threshold nearest 0.5, smaller threshold"},
+  "primary_comparisons": [
+    {"target": "uc", "n": 24, "left": "ste", "left_readout": "structural", "right": "aux", "right_readout": "direct", "rule": "absolute", "core_class": "selective_non_singleton", "metric": "f1"},
+    {"target": "uc", "n": 24, "left": "ste", "left_readout": "structural", "right": "relational_aux", "right_readout": "direct", "rule": "absolute", "core_class": "selective_non_singleton", "metric": "f1"}
+  ],
+  "inference": {"unit": "independent collection", "initialization_aggregation": "equal mean within each collection", "multiplicity": "Holm correction of the two fixed primary contrasts", "secondary": "descriptive; no additional confirmatory endpoints"}
+}

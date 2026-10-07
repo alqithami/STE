@@ -1,0 +1,443 @@
+\section{Proofs and operator properties}\label{app:proofs}
+All norms on matrices or vectors below are entrywise sup norms. We assume finite $n\ge2$ and positive temperatures. The hard target is a strict tournament unless an incomplete-graph extension is explicitly stated. Finite-temperature bounds are deterministic; sampling statements are conditional on their observation model. The arguments below prove the main-text results and the additional appendix guarantees. Numerical checks complement these proofs but are not premises of them.
+
+\subsection{Uniform approximation and continuity of soft extrema}
+\begin{lemma}\label{lem:extrema}
+For $z\in\mathbb R^r$, $r\ge1$, and $\gamma>0$,
+\[
+\max_i z_i-\gamma\log r\le\smax_\gamma(z)\le\max_i z_i,
+\qquad
+\min_i z_i\le\smin_\gamma(z)\le\min_i z_i+\gamma\log r.
+\]
+Both operators are nonexpansive in the sup norm. In particular, for $z,z'\in\mathbb R^r$,
+$|\smax_\gamma(z)-\smax_\gamma(z')|\le\|z-z'\|_\infty$, and likewise for $\smin$.
+\end{lemma}
+\begin{proof}
+Write $M=\max_i z_i$. The term attaining $M$ and the bound on every term give
+\[
+\frac{e^{M/\gamma}}r\le\frac1r\sum_{i=1}^r e^{z_i/\gamma}\le e^{M/\gamma}.
+\]
+Taking $\gamma\log$ proves the maximum bound. Applying it to $-z$ and negating proves the minimum bound. Both operators are coordinatewise nondecreasing and satisfy $F(z+c\mathbf1)=F(z)+c$. If $e=\|z-z'\|_\infty$, then $z'-e\mathbf1\le z\le z'+e\mathbf1$ entrywise, so monotonicity and translation equivariance give $F(z')-e\le F(z)\le F(z')+e$. This proves nonexpansiveness for either operator.
+
+For completeness, their coordinate derivatives are
+\[
+\frac{\partial\smax_\gamma(z)}{\partial z_i}
+=\frac{e^{z_i/\gamma}}{\sum_j e^{z_j/\gamma}},\qquad
+\frac{\partial\smin_\gamma(z)}{\partial z_i}
+=\frac{e^{-z_i/\gamma}}{\sum_j e^{-z_j/\gamma}}.
+\]
+Each derivative vector has nonnegative entries summing to one; normalization by $r$ changes the function value but not these derivatives. Also, monotonicity gives $\min z=F((\min z)\mathbf1)\le F(z)\le F((\max z)\mathbf1)=\max z$. Thus both operators preserve $[0,1]$. For $r=1$ they are exactly the identity and all smoothing allowances vanish.
+\end{proof}
+The approximation bounds are uniform in $z$, so they also apply when inputs vary with temperature. This permits induction through the nested operators; convergence only for a fixed binary input would not by itself justify such a composition.
+
+\subsection{Proof of Theorem~\ref{thm:finite}: directional errors}
+\begin{proof}[Proof of Theorem~\ref{thm:finite}]
+\emph{Hard paths.} Define $H^{(1)}=M$ and
+\[
+H^{(k)}_{ab}=\max_{c\in\agents}\min\{H^{(k-1)}_{ac},M_{cb}\}.
+\]
+Since all entries are binary, $H^{(1)}_{ab}=1$ exactly when there is an edge $a\to b$. Inductively, $H^{(k)}_{ab}=1$ exactly when some $c$ has a length-$(k-1)$ walk from $a$ to $c$ and an edge $c\to b$, which is equivalent to a length-$k$ walk from $a$ to $b$. Conversely, every length-$k$ walk has such a penultimate vertex. Intermediate diagonal entries may record cycles; self-reachability in the final TC definition is understood separately.
+
+Put $H^{\le K}_{ab}=\max_{1\le k\le K}H^{(k)}_{ab}$. For distinct $a,b$, any walk from $a$ to $b$ can be shortened to a simple path: whenever a vertex repeats, delete the segment between its two occurrences. Repeating this deletion leaves at most $n$ distinct vertices, hence at most $n-1$ edges. Therefore, when $K\ge n-1$, $H^{\le K}_{ab}$ equals hard reachability for all distinct pairs and
+\[
+\min_{b\ne a}H^{\le K}_{ab}=\mathbf1_{a\in\TC(M)}.
+\]
+
+\emph{TC recurrence.} Let $Q^{(1)}=D$ and use the canonical smooth product. We prove entrywise
+\[
+H^{(k)}-\ell_k\mathbf1\le Q^{(k)}\le H^{(k)}+r_k\mathbf1,
+\quad \ell_k=\eta+(k-1)\gamma\log n,
+\quad r_k=\eta+(k-1)\gamma\log2.
+\]
+The case $k=1$ is $\|D-M\|_\infty\le\eta$. Suppose it holds for $k-1$. For fixed $a,c,b$, both inputs $Q^{(k-1)}_{ac}$ and $D_{cb}$ differ from their hard counterparts by quantities in $[-\ell_{k-1},r_{k-1}]$, because $\ell_{k-1},r_{k-1}\ge\eta$. Monotonicity and translation equivariance of the ordinary minimum imply
+\[
+\min\{H^{(k-1)}_{ac},M_{cb}\}-\ell_{k-1}
+\le \min\{Q^{(k-1)}_{ac},D_{cb}\}
+\le \min\{H^{(k-1)}_{ac},M_{cb}\}+r_{k-1}.
+\]
+Replacing this two-input minimum by $\smin_\gamma$ adds an error in $[0,\gamma\log2]$. An ordinary maximum over $c$ preserves the resulting common interval. Replacing that maximum by $\smax_\gamma$ over $n$ entries adds an error in $[-\gamma\log n,0]$. Consequently the new interval is $[-\ell_{k-1}-\gamma\log n,r_{k-1}+\gamma\log2]$, establishing the induction.
+
+For all $k\le K$, the intervals lie inside $[-\ell_K,r_K]$. An ordinary maximum over lengths therefore preserves this interval relative to $H^{\le K}$; replacing it by the normalized maximum adds only the negative allowance $\gamma\log K$. Taking an ordinary minimum over opponents again preserves the interval, and its normalized replacement adds only the positive allowance $\gamma\log(n-1)$. It follows that
+\[
+-\eta-\gamma\{(K-1)\log n+\log K\}
+\le t_a-\mathbf1_{a\in\TC(M)}
+\le \eta+\gamma\{(K-1)\log2+\log(n-1)\}.
+\]
+The negative-side allowance minus the positive-side allowance is
+$\gamma\{(K-1)\log(n/2)+\log[K/(n-1)]\}\ge0$ for $n\ge2$, $K\ge n-1$. The larger allowance thus bounds the absolute error and proves Eq.~\eqref{eq:tc-bound}. In particular, $n=2,K=1$ has no aggregation error: the length and opponent vectors each have one entry.
+
+\emph{UC edge error.} For a zero-diagonal matrix $X\in[0,1]^{n\times n}$, let
+\[
+W_X(c,a)=\max_{b\notin\{a,c\}}X_{ab}(1-X_{cb}),\quad
+C_X(c,a)=X_{ca}(1-W_X(c,a)),\quad
+U_X(a)=1-\max_{c\ne a}C_X(c,a),
+\]
+with $W_X=0$ when $n=2$. On the binary matrix $M$, a witness equals one precisely when $a\to b$ but $c\not\to b$. Thus $C_M(c,a)$ equals one exactly when $c$ covers $a$, and $U_M=\mathbf1_{\UC(M)}$.
+For scalars in $[0,1]$,
+\[
+|x(1-y)-x'(1-y')|
+\le |x-x'|(1-y)+x'|y-y'|\le |x-x'|+|y-y'|.
+\]
+Each witness changes by at most $2\eta$ from $M$ to $D$. Ordinary maxima are nonexpansive, hence $|W_D-W_M|\le2\eta$; the empty witnesses have zero difference. Applying the same product inequality to $C_D,C_M$ gives $|C_D-C_M|\le\eta+2\eta=3\eta$. The final ordinary maximum yields $\|U_D-U_M\|_\infty\le3\eta$.
+
+\emph{UC smoothing error.} Now fix $D$. Set $L_c=\gamma_c\log\max\{1,n-2\}$ and $L_f=\gamma_c\log(n-1)$. Lemma~\ref{lem:extrema} gives $W_D-L_c\le v\le W_D$ for nonempty witnesses. For $n=2$, both are zero and $L_c=0$, so the same interval holds. Since $0\le D_{ca}\le1$,
+\[
+C_D(c,a)\le D_{ca}(1-v(c,a))\le C_D(c,a)+L_c.
+\]
+Writing $C_*(a)=\max_{c\ne a}C_D(c,a)$, an ordinary maximum of these soft cover values lies in $[C_*,C_*+L_c]$. Its normalized replacement lies in $[C_*-L_f,C_*+L_c]$. After subtraction from one, $u(a)-U_D(a)\in[-L_c,L_f]$. Because $L_c\le L_f$, adding the $3\eta$ edge error proves Eq.~\eqref{eq:uc-bound}.
+
+Every intermediate soft extremum remains in $[0,1]$ by Lemma~\ref{lem:extrema}; witness products, covers, and their complements do also. Thus each final score and each hard indicator belongs to $[0,1]$, permitting the cap at one. Finally, suppose a score has uniform error $E<\min(h,1-h)$ from a binary target. A zero target has score at most $E<h$, and a one target has score at least $1-E>h$. Hence the rule $S_h=\{a:z_a\ge h\}$ recovers the target exactly. The minimum of $h$ and $1-h$ is maximized at $h=1/2$.
+\end{proof}
+
+\subsection{Estimation, hard limits, and Condorcet inclusion}
+\begin{lemma}[Edge smoothing under a strict margin]\label{lem:edge}
+If $\Delta=\min_{a\ne b}|P_{ab}-1/2|>0$ and $\|\widehat P-P\|_\infty\le\epsilon<\Delta$, then $T(\widehat P)=T(P)$ and, for $D_\tau$ built from $\widehat P$,
+$\|D_\tau-M\|_\infty\le e^{-(\Delta-\epsilon)/\tau}$.
+\end{lemma}
+\begin{proof}
+If $P_{ab}>1/2$, then $\widehat P_{ab}-1/2\ge P_{ab}-1/2-\epsilon\ge\Delta-\epsilon>0$. The empirical orientation is therefore unchanged, and
+\[
+1-D_\tau(a,b)=\frac1{1+e^{(\widehat P_{ab}-1/2)/\tau}}
+\le e^{-(\widehat P_{ab}-1/2)/\tau}\le e^{-(\Delta-\epsilon)/\tau}.
+\]
+If $P_{ab}<1/2$, then $1/2-\widehat P_{ab}\ge\Delta-\epsilon>0$, so the orientation again agrees and
+$D_\tau(a,b)=1/(1+e^{(1/2-\widehat P_{ab})/\tau})\le e^{-(\Delta-\epsilon)/\tau}$.
+The diagonal entries of $D_\tau$ and $M$ are both zero. Taking the maximum over entries proves the claimed norm bound, and agreement of every off-diagonal sign proves graph equality.
+\end{proof}
+
+\begin{corollary}[Hard-limit consistency and learned-estimator transfer]\label{cor:limit}
+For fixed finite $n$ and $K\ge n-1$, strict-margin $P$, and $\widehat P\to P$ uniformly, STE-LSE scores converge to $\mathbf1_{\TC(T(P))}$ and $\mathbf1_{\UC(T(P))}$ as $\tau,\gamma,\gamma_c\to0^+$. Any estimator satisfying $\|\widehat P-P\|_\infty<\Delta$ recovers the same hard graph and hard cores, irrespective of its parameterization.
+\end{corollary}
+\begin{proof}
+Consider any sequence of estimates and positive temperatures satisfying the stated limits. Put $\epsilon_j=\|\widehat P_j-P\|_\infty$. Uniform convergence gives $\epsilon_j<\Delta/2$ for all sufficiently large $j$. Lemma~\ref{lem:edge} then gives
+$\eta_j\le e^{-(\Delta-\epsilon_j)/\tau_j}\le e^{-\Delta/(2\tau_j)}\to0$.
+Since $n,K$ are fixed, both $\gamma_j\{(K-1)\log n+\log K\}$ and $\gamma_{c,j}\log(n-1)$ tend to zero. Theorem~\ref{thm:finite} therefore gives uniform convergence of both score vectors to the indicated hard memberships. Separately, for any single estimate with error less than $\Delta$, Lemma~\ref{lem:edge} establishes graph equality. TC and UC are deterministic functions of that graph, so their hard memberships agree regardless of the estimator's parameterization.
+\end{proof}
+The fixed-$n,K$ qualification matters: if the number of agents or path depth grows with decreasing temperature, the terms involving $\gamma K\log n$ must also vanish. A full-graph recovery theorem does not identify never-observed edges without further assumptions.
+
+\begin{corollary}[Condorcet inclusion]\label{cor:condorcet}
+Under Corollary~\ref{cor:limit}, if $a^\star$ defeats every other alternative in $T(P)$, then both limiting scores are one at $a^\star$ and zero elsewhere.
+\end{corollary}
+\begin{proof}
+The winner reaches every other vertex by a single edge. No edge enters it; hence a directed path from any other vertex to $a^\star$ cannot exist, because its last edge would enter $a^\star$. Consequently TC is $\{a^\star\}$. No vertex covers $a^\star$, since covering requires defeating it. For every opponent $b$, $a^\star$ defeats $b$ and every vertex beaten by $b$, so $a^\star$ covers $b$. Thus UC is also $\{a^\star\}$. Corollary~\ref{cor:limit} transfers these hard memberships to the limiting scores.
+\end{proof}
+
+\subsection{Fixed-temperature perturbations and selection stability}\label{app:fixed-temperature}
+\begin{proof}[Proof of Proposition~\ref{prop:lipschitz}]
+First compare two soft-edge matrices $D,D'$ and put $d=\|D-D'\|_\infty$. More generally, for any matrices $X,X',Y,Y'$ of the same size, set $\delta=\max\{\|X-X'\|_\infty,\|Y-Y'\|_\infty\}$. Each two-entry vector $(X_{ac},Y_{cb})$ differs from $(X'_{ac},Y'_{cb})$ by at most $\delta$. Lemma~\ref{lem:extrema} bounds the change of its soft minimum by $\delta$. Applying the same lemma to the resulting $n$-vectors of candidates proves
+\[
+\|X\otimes_\gamma Y-X'\otimes_\gamma Y'\|_\infty\le\delta.
+\]
+The base case has $\|Q^{(1)}-Q'^{(1)}\|_\infty=d$. If the difference at depth $k-1$ is at most $d$, the displayed inequality applied with $Y=D,Y'=D'$ shows that it remains at most $d$ at depth $k$. Hence this holds at every depth up to the same fixed $K$. The soft maximum over the same $K$ path lengths changes by at most $d$, as does the final soft minimum over the same $n-1$ opponents. Therefore $\|t(D)-t(D')\|_\infty\le d$.
+
+For UC, the product inequality in the proof of Theorem~\ref{thm:finite} bounds each witness change by $2d$. The normalized witness maximum is nonexpansive, so $|v-v'|\le2d$. For $n=2$ both violations are identically zero. All violations lie in $[0,1]$, and
+\[
+|D_{ca}(1-v)-D'_{ca}(1-v')|
+\le |D_{ca}-D'_{ca}|+|v-v'|\le3d.
+\]
+The final normalized maximum is again nonexpansive; thus $\|u(D)-u(D')\|_\infty\le3d$. This conservative bound includes $n=2$.
+
+Lastly, the off-diagonal edge map has derivative
+\[
+\frac{\partial D_\tau(a,b)}{\partial P_{ab}}
+=\frac1\tau\sigma((P_{ab}-1/2)/\tau)
+\bigl[1-\sigma((P_{ab}-1/2)/\tau)\bigr]\le\frac1{4\tau},
+\]
+since $x(1-x)\le1/4$ on $[0,1]$. The mean value theorem gives $d\le\|P-P'\|_\infty/(4\tau)$, while both diagonals remain zero. Substitution proves the two inequalities. No step uses a preserved majority sign or a strict margin.
+\end{proof}
+
+\begin{proposition}[Selection stability]\label{prop:selection-stability}
+Let $z=f(P)$ and $z'=f(P')$ satisfy $\|z-z'\|_\infty\le Le$. For $1\le k<n$, write $z_{(1)}\ge\cdots\ge z_{(n)}$ and $g_k=z_{(k)}-z_{(k+1)}$. If $g_k>2Le$, the top-$k$ sets of $z$ and $z'$ coincide. For a fixed threshold $h$, if $\min_a|z_a-h|>Le$, then $S_h(z)=S_h(z')$.
+\end{proposition}
+\begin{proof}
+The strict boundary gap makes the initial top-$k$ set $S$ unambiguous even if ties occur within $S$ or its complement. For $i\in S$ and $j\notin S$,
+\[
+z'_i-z'_j\ge(z_i-Le)-(z_j+Le)\ge g_k-2Le>0.
+\]
+Every one of the $k$ selected scores remains above every unselected score; hence the selected set is unchanged. For a threshold, if $z_a\ge h$, the assumed strict distance gives $z_a-h>Le$ and consequently $z'_a\ge z_a-Le>h$. If $z_a<h$, then $h-z_a>Le$, so $z'_a\le z_a+Le<h$. This proves threshold-set equality.
+\end{proof}
+Proposition~\ref{prop:lipschitz} supplies $L=1/(4\tau)$ for TC and $3/(4\tau)$ for UC. These are deterministic robustness statements for a specified probability-error radius. They neither choose $k$ or $h$, provide a population confidence level without a sampling argument, nor establish correctness relative to an unknown latent core. The top-$n$ set is trivially the entire panel; no boundary gap is needed. The results concern STE-LSE and are not asserted for the Boltzmann mean.
+
+\subsection{Proof of Proposition~\ref{prop:sample}}
+\begin{proof}[Proof of Proposition~\ref{prop:sample}]
+For each unordered pair $a<b$, let $X_1,\ldots,X_{m_{ab}}$ be its independent Bernoulli observations with common mean $P_{ab}$, and let $\widehat P_{ab}=m_{ab}^{-1}\sum_iX_i$. Define
+$E_{ab}=\{|\widehat P_{ab}-P_{ab}|\ge\Delta_{ab}\}$.
+Hoeffding's inequality \citep{hoeffding1963probability} gives
+\[
+\Pr(E_{ab})\le2e^{-2m_{ab}\Delta_{ab}^2}.
+\]
+Outside $E_{ab}$, if $P_{ab}>1/2$, then $\widehat P_{ab}>P_{ab}-\Delta_{ab}=1/2$; if $P_{ab}<1/2$, then $\widehat P_{ab}<P_{ab}+\Delta_{ab}=1/2$. Thus neither a wrong majority sign nor an empirical tie can occur. Reciprocal orientation identifies the reversed pair as well. Therefore
+\[
+\{T(\widehat P)\ne T(P)\}\subseteq\bigcup_{a<b}E_{ab}.
+\]
+The union bound proves Eq.~\eqref{eq:sample}. It does not require the different $E_{ab}$ to be independent. On the complementary graph-equality event, the deterministic TC and UC sets agree.
+
+For $m_{ab}=m$ and $\Delta_{ab}\ge\Delta$, there are $n(n-1)/2$ unordered pairs, so the bound is $n(n-1)e^{-2m\Delta^2}$. For $\delta\in(0,1)$, $m\ge(2\Delta^2)^{-1}\log(n(n-1)/\delta)$ makes it at most $\delta$. This is a sufficient count, not a lower bound or a sample-optimality result. The assumptions require positive counts and independent observations within each pair; missing pairs and dependent repeated judgments need additional modeling.
+\end{proof}
+
+\begin{lemma}[Symmetric-pseudocount displacement]\label{lem:pseudocount-bias}
+For $m>0$, $0\le w\le m$, and $\alpha\ge0$, the smoothed mean $(w+\alpha)/(m+2\alpha)$ differs from the raw mean by at most $\alpha/(m+2\alpha)$.
+\end{lemma}
+\begin{proof}
+Direct subtraction gives
+\[
+\left|\frac{w+\alpha}{m+2\alpha}-\frac wm\right|
+=\frac{\alpha|m-2w|}{m(m+2\alpha)}
+\le\frac{\alpha}{m+2\alpha},
+\]
+because $|m-2w|\le m$. If a raw-mean estimation error is at most $\epsilon$, the triangle inequality therefore bounds the smoothed-mean error by $\epsilon+\alpha/(m+2\alpha)$ for that pair. Maximizing over observed pairs gives the corresponding uniform bound.
+\end{proof}
+This displacement must be included when Lemma~\ref{lem:edge} is applied to a posterior mean; it is not absorbed into the raw-mean concentration statement. At $m=0$ the raw mean is undefined, so this lemma supplies no missing-pair certificate.
+
+\begin{corollary}[Finite-sample score recovery]\label{cor:finite-sample-recovery}
+Under the observation assumptions of Proposition~\ref{prop:sample}, with positive counts $m_{ab}$ fixed by a nonadaptive design, let $\Delta=\min_{a\ne b}|P_{ab}-1/2|>0$, choose a deterministic $0<\epsilon<\Delta$, and construct canonical scores from the reciprocal raw empirical means $\widehat P$. Fix the positive temperatures and the threshold $h\in(0,1)$ in advance of those observations, set $b=\min(h,1-h)$, and write $C_{n,K}=(K-1)\log n+\log K$. Put
+\[
+E_{\TC}=e^{-(\Delta-\epsilon)/\tau}+\gamma C_{n,K},\qquad
+E_{\UC}=3e^{-(\Delta-\epsilon)/\tau}+\gamma_c\log(n-1).
+\]
+If $K\ge n-1$ and $E_{\TC}<b$, the thresholded TC scores recover $\TC(T(P))$ with failure probability at most $2\sum_{a<b}e^{-2m_{ab}\epsilon^2}$. If $E_{\UC}<b$, the analogous conclusion holds for UC. When both conditions hold, both sets are recovered on the same event with that same failure bound.
+\end{corollary}
+\begin{proof}
+For each unordered pair, Hoeffding's inequality gives
+\[
+\Pr\{|\widehat P_{ab}-P_{ab}|>\epsilon\}\le2e^{-2m_{ab}\epsilon^2}.
+\]
+Apply a union bound to these events. The reversed entries have the same absolute errors by reciprocity, and the diagonals agree at $1/2$. Therefore the common event
+$G=\{\|\widehat P-P\|_\infty\le\epsilon\}$ has failure probability at most the stated sum. On $G$, Lemma~\ref{lem:edge} gives $\eta\le e^{-(\Delta-\epsilon)/\tau}$ relative to the latent hard adjacency. Theorem~\ref{thm:finite}, with $K\ge n-1$ for TC, then bounds the respective score errors by $E_{\TC}$ and $E_{\UC}$. Each strict inequality below $b$ invokes its threshold-recovery conclusion. Both conclusions use this single event $G$, so a second union bound over core types is unnecessary. Independence across pairs is never used.
+\end{proof}
+This combines the existing approximation and concentration results; it is not a new estimator or experiment. The temperatures, $\epsilon$, margin, and counts enter a stipulated Bernoulli-model certificate. A bound exceeding one is vacuous and may be capped at one. Applying it to smoothed means requires the displacement in Lemma~\ref{lem:pseudocount-bias}; applying it to dependent or missing observations requires additional assumptions. It does not certify the recorded ordinal-data operating points or select temperatures from an unknown test margin.
+
+\subsection{Posterior-edge Monte Carlo precision}
+\begin{proposition}[Conditional posterior simulation error]\label{prop:posterior-mc}
+Fix a distribution $\Pi$ over hard tournaments and draw $T^{(1)},\ldots,T^{(S)}$ independently from it, with integer $S\ge1$. For $C\in\{\TC,\UC\}$, let $\mu_C(a)=\mathbb E_\Pi\mathbf1\{a\in C(T)\}$ and $\bar z_{C,S}(a)=S^{-1}\sum_s\mathbf1\{a\in C(T^{(s)})\}$. Then, for every $\varepsilon>0$,
+\[
+\Pr_\Pi\{\|\bar z_{C,S}-\mu_C\|_\infty>\varepsilon\}
+\le2n e^{-2S\varepsilon^2}.
+\]
+\end{proposition}
+\begin{proof}
+For fixed $a$, the variables $Z_s(a)=\mathbf1\{a\in C(T^{(s)})\}$ are independent across $s$, belong to $[0,1]$, and share mean $\mu_C(a)$. Hoeffding's inequality yields
+$\Pr_\Pi\{|S^{-1}\sum_sZ_s(a)-\mu_C(a)|>\varepsilon\}\le2e^{-2S\varepsilon^2}$.
+The sup-norm event is the union of these $n$ coordinate events; a union bound proves the claim. The argument applies to either deterministic core map and does not assume independence of different agents' memberships within a tournament, or of that tournament's edges.
+\end{proof}
+The probability is conditional on the specified $\Pi$, including observed data if $\Pi$ is a posterior. The archived implementation uses independent Beta edge posteriors, but the proposition also permits dependent edges when whole-tournament draws are independent. Increasing $S$ reduces this simulation error; it does not establish posterior correctness, population coverage, or recovery of unobserved task dependence.
+
+\subsection{Proof of Proposition~\ref{prop:mixture}}
+\begin{proof}[Proof of Proposition~\ref{prop:mixture}]
+Add and subtract $\sum_c\widehat q_cP^{(c)}$:
+\[
+\sum_c\widehat q_c\widehat P^{(c)}-\sum_cq_cP^{(c)}
+=\sum_c\widehat q_c(\widehat P^{(c)}-P^{(c)})
++\sum_c(\widehat q_c-q_c)P^{(c)}.
+\]
+Because $\widehat q_c\ge0$, the first term has norm at most $\sum_c\widehat q_c\epsilon_c$. Put $d_c=\widehat q_c-q_c$. Both weight vectors sum to one, hence $\sum_cd_c=0$. For any matrix entry $p_c=P^{(c)}_{ab}\in[0,1]$, write $s=\sum_{d_c>0}d_c=-\sum_{d_c<0}d_c=\tfrac12\sum_c|d_c|$. Then
+\[
+-s\le\sum_{d_c<0}d_cp_c\le0,
+\qquad 0\le\sum_{d_c>0}d_cp_c\le s,
+\]
+so $|\sum_cd_cp_c|\le s$. This holds for every entry, bounding the second term by $\tfrac12\|\widehat q-q\|_1$. The triangle inequality proves Eq.~\eqref{eq:mixture}.
+
+The target $P(q)=\sum_cq_cP^{(c)}$ and estimate $\widehat P(\widehat q)=\sum_c\widehat q_c\widehat P^{(c)}$ remain reciprocal. If the displayed error allowance is smaller than the target's strict majority margin, each estimated off-diagonal entry stays on the same side of $1/2$ as its target entry. The induced graphs, and hence both hard cores, agree.
+\end{proof}
+This result assumes a common target mixture across pairs and stable context-conditional comparisons. If the observation process selects different contexts for different pairs, naive pooling need not estimate $\sum_cq_cP^{(c)}$. One needs the context labels and corresponding selection model or an appropriate sampling design. With observed ties, reweighting conditional decisive probabilities also requires the intended decisive-outcome mixture; unconditional outcome mixtures can induce pair-dependent conditioning weights. The context experiment uses Bernoulli outcomes without observed ties and a common training mixture, so it avoids this additional identification problem.
+
+\subsection{Fixed-temperature regularity and the weighted variant}
+\begin{proposition}[Smooth canonical inference]\label{prop:canonical-smooth}
+For fixed finite $n,K$ and positive temperatures, the canonical maps $P\mapsto t(P)$ and $P\mapsto u(P)$ are smooth. Composing either map with a differentiable reciprocal edge predictor gives a differentiable score map.
+\end{proposition}
+\begin{proof}
+Each off-diagonal sigmoid is smooth in its probability input; diagonal entries are fixed. The exponentials in every finite LSE sum are positive, so its logarithm has a positive argument and is smooth. The soft minimum is obtained by negation and the soft maximum. Finite compositions of these operations are smooth, establishing smoothness at every TC depth, the finite length aggregation, and the final opponent aggregation. UC additionally uses products and affine complements, which are smooth; for $n=2$ its empty witness is the constant zero. Restricting these maps to the affine space of reciprocal inputs preserves smoothness. The chain rule proves the composition claim, including gradients through the predictor rather than through a subsequently selected hard set.
+\end{proof}
+This establishes availability of derivatives, not useful gradient magnitude, a favorable optimum, or an optimization convergence rate. The implemented clipped BCE objective is a separate numerical choice: its clipped regions need not supply a nonzero derivative. Exact maxima and minima in historical WB paths are only piecewise differentiable.
+
+\begin{lemma}[Boltzmann approximation]\label{lem:boltzmann-bound}
+For a nonempty $r$-vector $z$ and $\gamma>0$, put $p_i=e^{z_i/\gamma}/\sum_j e^{z_j/\gamma}$, $H(p)=-\sum_ip_i\log p_i$, and $\mathcal B_\gamma(z)=\sum_ip_iz_i$. Then
+\[
+\mathcal B_\gamma(z)=\gamma\log\sum_i e^{z_i/\gamma}-\gamma H(p),\qquad
+\max_i z_i-\gamma\log r\le\mathcal B_\gamma(z)\le\max_i z_i.
+\]
+\end{lemma}
+\begin{proof}
+From $\log p_i=z_i/\gamma-\log\sum_j e^{z_j/\gamma}$, multiplication by $p_i$ and summation gives $-H(p)=\mathcal B_\gamma(z)/\gamma-\log\sum_j e^{z_j/\gamma}$, establishing the identity. The unnormalized LSE is at least $\max z$. To bound the entropy, concavity of the logarithm yields
+$H(p)=\sum_ip_i\log(1/p_i)\le\log(\sum_ip_i/p_i)=\log r$.
+The identity then gives the lower bound. The upper bound follows from $\mathcal B_\gamma$ being a convex combination of the entries. It is also at least $\min z$, so it preserves the score range. The bound is uniform in $z$ and vanishes as $\gamma\to0$ for fixed $r$.
+\end{proof}
+The Boltzmann mean therefore has the same zero-temperature maximum limit, but a different finite-temperature value. No monotonicity or nonexpansiveness claim for it is used here.
+
+\begin{corollary}[Boltzmann UC approximation]\label{cor:boltzmann-uc}
+Let $M$ be a strict tournament adjacency and $D\in[0,1]^{n\times n}$ have zero diagonal, with $\eta=\|D-M\|_\infty$. Form $u^{\rm B}(D)$ by replacing both UC maxima in Eqs.~\eqref{eq:violation}--\eqref{eq:uc} with $\mathcal B_{\gamma_c}$, retaining the zero empty witness when $n=2$. Then
+\[
+\|u^{\rm B}(D)-\mathbf1_{\UC(M)}\|_\infty\le3\eta+\gamma_c\log(n-1).
+\]
+\end{corollary}
+\begin{proof}
+The ordinary-max UC computation $U_D$ in the proof of Theorem~\ref{thm:finite} differs from hard UC by at most $3\eta$; that comparison does not involve a soft aggregation. With $L_c=\gamma_c\log\max\{1,n-2\}$, Lemma~\ref{lem:boltzmann-bound} gives $W_D-L_c\le v^{\rm B}\le W_D$. Multiplying the complement by $D_{ca}\in[0,1]$ gives $C_D\le\operatorname{cov}^{\rm B}\le C_D+L_c$. If $C_* = \max_{c\ne a}C_D(c,a)$ and $L_f=\gamma_c\log(n-1)$, the same lemma applied to the final cover vector gives
+$C_*-L_f\le\mathcal B_{\gamma_c}(\operatorname{cov}^{\rm B})\le C_*+L_c$.
+Thus $u^{\rm B}-U_D\in[-L_c,L_f]$. Since $L_c\le L_f$, adding the ordinary-max edge error proves the displayed allowance. For $n=2$ both $L_c,L_f$ vanish and the witness is exactly zero.
+\end{proof}
+This transfers approximation accounting, not the STE-LSE perturbation constant. All Boltzmann UC scores remain in $[0,1]$, so the bound may be capped at one. For historical weighted edges the relevant $\eta$ includes the weighting error; no unweighted sigmoid error is substituted for it.
+
+\begin{lemma}[Confidence-weighted edge allowance]\label{lem:weighted-edge-bound}
+Let $r_{ab}=m_{ab}/(m_{ab}+5)$ off the diagonal, $\rho=\max_{a\ne b}(1-r_{ab})$, and let $D_\tau$ and $M$ have zero diagonal. Then
+\[
+\|r\odot D_\tau-M\|_\infty\le\|D_\tau-M\|_\infty+\rho.
+\]
+\end{lemma}
+\begin{proof}
+For each off-diagonal entry, $0\le r_{ab},D_{\tau,ab}\le1$, and
+\[
+|r_{ab}D_{\tau,ab}-M_{ab}|
+\le |D_{\tau,ab}-M_{ab}|+(1-r_{ab})D_{\tau,ab}
+\le |D_{\tau,ab}-M_{ab}|+\rho.
+\]
+The diagonals are zero, so maximizing proves the bound.
+\end{proof}
+At fixed finite counts, temperature alone does not send the allowance $\rho$ to zero. In fact, for any strict winning edge with $M_{ab}=1$ and fixed $r_{ab}<1$, the idealized weighted edge tends to $r_{ab}$ as $\tau\to0$, leaving edge error $1-r_{ab}$. A sufficient full-target hard-limit argument using these bounds therefore requires $r_{ab}\to1$ on all target pairs, or must retain the weighting error explicitly. This is not a necessary condition for every individual selected set. A missing pair has $\rho=1$, so this sufficient certificate is uninformative. Historical code additionally uses numerical floors and logit clipping; those guards are described in Appendix~\ref{app:variant-details}, rather than silently treated as exact zero-temperature limits.
+
+\subsection{Neutral evidence and numerical meaning of a sufficient bound}\label{app:neutral}
+\begin{proof}[Proof of Lemma~\ref{lem:neutral}]
+Every off-diagonal soft edge is $\sigma(0)=1/2$. For distinct $c,a$, the $n-2$ eligible witnesses are nonempty and each is $(1/2)(1-1/2)=1/4$. A normalized soft maximum of a constant $r$-vector equals its constant, since $\gamma\log(r^{-1}r e^{x/\gamma})=x$. Thus $v(c,a)=1/4$, every cover equals $(1/2)(3/4)=3/8$, and the final normalized maximum over $n-1$ equal covers is $3/8$. Its complement gives $u_a=5/8$. For $n=2$ the witness convention is zero, so the single cover is $1/2$ and the UC score is $1/2$ instead.
+\end{proof}
+Under the neutral missing-pair convention, an entirely unobserved graph has this same score. It contains no directional evidence and satisfies no strict-margin recovery condition. This algebraic reference is not a posterior membership probability, does not imply that the population core is the whole panel, and does not establish the cause of a particular human-data failure. In exact arithmetic the rule $u_a\ge5/8$ includes every neutral alternative; numerical comparisons at an exact boundary additionally depend on floating-point rounding. The development-selected .625 cutoff in Section~\ref{sec:unknown} coincides with this reference value. It remains the frozen empirical rule, not a confidence level.
+
+\begin{proof}[Proof of Lemma~\ref{lem:distinct-summaries}]
+Each unordered edge has either orientation in four of the eight tournaments, so $\mathbb E_\Pi P$ has off-diagonal entries $1/2$. Lemma~\ref{lem:neutral} gives its canonical score. Among the eight tournaments, six are transitive and two are three-cycles. Each transitive tournament has only its Condorcet winner in UC, and each cycle has all vertices in UC. For a fixed vertex $a$, exactly two transitive tournaments have $a$ as winner, corresponding to the two possible orders of its opponents. It also belongs to UC in both cycles. Thus its posterior inclusion is $(2+2)/8=1/2$.
+\end{proof}
+This finite construction establishes that the two summaries are different functions; it is not an empirical claim about any recorded posterior or a calibration guarantee.
+
+\paragraph{When the sufficient certificate is informative.}\label{app:bias-budget}
+Define $C_{n,K}=(K-1)\log n+\log K$. The sharpened smoothing allowances are $B_{\TC}=\gamma C_{n,K}$ and $B_{\UC}=\gamma_c\log(n-1)$. Table~\ref{tab:smoothing-budgets} compares them with the historical TC allowance $\gamma\{(K-1)\log(2n)+\log[K(n-1)]\}$ at the executed study's full depth and default temperature. These are uncapped sufficient bounds with the idealized $\eta=0$; the actual sigmoid generally has $\eta>0$ even when $P$ is known. The TC certificate remains vacuous throughout the learning study. A smaller bound does not establish a smaller measured error, useful gradients, or better selected sets.
+
+\begin{table}[ht]\centering\small
+\input{results/tables/v10_smoothing_budgets.tex}
+\caption{Smoothing-only allowances at $\gamma=\gamma_c=0.035$, $K=n-1$. Values greater than one are uninformative for score recovery. Statistical/edge-smoothing error must additionally fit within the threshold allowance.}
+\label{tab:smoothing-budgets}\end{table}
+
+\paragraph{Binary-target UC refinement.}\label{rem:uc-binary-refinement}
+For the same canonical UC operator with $n\ge2$ and $\gamma_c>0$, let $M$ be a strict tournament adjacency, let $D\in[0,1]^{n\times n}$ have zero diagonal, and put $\eta=\|D-M\|_\infty$. Then
+\[
+\|u(D)-\mathbf1_{\UC(M)}\|_\infty
+\le\min\{1,\;2\eta-\eta^2+\gamma_c\log(n-1)\}.
+\]
+This optional refinement uses the binary target and does not require reciprocal $D$. It neither changes the operator nor invalidates the conservative $3\eta$ theorem and its corollaries; it is not a general perturbation bound between arbitrary soft inputs.
+\begin{proof}[Proof of the binary-target UC refinement]
+Write $A=1-(1-\eta)^2=2\eta-\eta^2$, $L_c=\gamma_c\log\max\{1,n-2\}$, and $L_f=\gamma_c\log(n-1)$. Since $0\le\eta\le1$, $A\ge\eta$ and $L_c\le L_f$.
+
+If $a$ is covered in $M$, choose a covering vertex $c$. Then $M_{ca}=1$, and each eligible witness $b$ has either $M_{ab}=0$ or $M_{cb}=1$. In the first case $D_{ab}\le\eta$; in the second $1-D_{cb}\le\eta$. Thus every witness product is at most $\eta$, and its normalized soft maximum satisfies $v(c,a)\le\eta$. This also holds for the zero empty witness when $n=2$. Because $D_{ca}\ge1-\eta$,
+\[
+\operatorname{cov}(c,a)=D_{ca}(1-v(c,a))\ge(1-\eta)^2.
+\]
+The normalized maximum over all covers is at least this cover minus $L_f$. Therefore the zero-target score obeys $u(a)\le A+L_f$.
+
+If $a\in\UC(M)$, consider each $c\ne a$. When $M_{ca}=0$, $D_{ca}\le\eta$, hence $\operatorname{cov}(c,a)\le\eta\le A$. When $M_{ca}=1$, the absence of a hard cover supplies an eligible witness $b$ with $M_{ab}=1$ and $M_{cb}=0$. Its soft product satisfies
+$D_{ab}(1-D_{cb})\ge(1-\eta)^2$.
+Lemma~\ref{lem:extrema} gives $v(c,a)\ge(1-\eta)^2-L_c$, so
+\[
+\operatorname{cov}(c,a)\le D_{ca}(A+L_c)\le A+L_c.
+\]
+For $n=2$ this second branch cannot occur: with no witnesses, any incoming hard edge would itself cover $a$. Thus the first branch handles every potential cover of a two-vertex UC member. All cover scores of a member are at most $A+L_c$. Their normalized maximum is no greater than their ordinary maximum, giving $1-u(a)\le A+L_c\le A+L_f$.
+
+These two cases prove the uniform allowance. Scores and binary targets lie in $[0,1]$, so their distance is also at most one. At $h=1/2$, write $B=\gamma_c\log(n-1)$. If $B<1/2$, the sufficient condition $A+B<1/2$ is equivalent, for $\eta\in[0,1]$, to
+\[
+\eta<1-\sqrt{1/2+B},
+\]
+since $A=1-(1-\eta)^2$. The threshold-recovery argument in Theorem~\ref{thm:finite} then applies.
+\end{proof}
+The refinement remains a deterministic sufficient certificate requiring a valid edge-error allowance. It does not certify any empirical operating point or supply an unknown test margin.
+
+\begin{corollary}[A sufficient temperature budget]\label{cor:temperature-budget}
+Under Lemma~\ref{lem:edge} and, for TC, $K\ge n-1$, fix $h\in(0,1)$, $b=\min(h,1-h)$, and $e_0\in(0,b)$ for TC (or $e_0\in(0,b/3)$ for UC). If
+\[
+\tau\le\frac{\Delta-\epsilon}{\log(1/e_0)},\qquad
+\gamma C_{n,K}<b-e_0\quad\text{(TC)},\qquad
+\gamma_c\log(n-1)<b-3e_0\quad\text{(UC)},
+\]
+then the relevant thresholded score recovers its strict hard core. A zero smoothing coefficient imposes no constraint on its temperature.
+\end{corollary}
+\begin{proof}
+The assumptions give $0<e_0<1$ and $\Delta-\epsilon>0$, so the denominator $\log(1/e_0)$ is positive. The condition on $\tau$ implies $(\Delta-\epsilon)/\tau\ge\log(1/e_0)$. Hence Lemma~\ref{lem:edge} gives $\eta\le e^{-(\Delta-\epsilon)/\tau}\le e_0$. For TC, the full-depth assumption permits Theorem~\ref{thm:finite}, yielding error at most $e_0+\gamma C_{n,K}<b$. For UC, the same theorem gives error at most $3e_0+\gamma_c\log(n-1)<b$. Its threshold conclusion proves recovery in either case. If $C_{n,K}=0$ or $\log(n-1)=0$, the respective smoothing term is identically zero, so any positive value of that temperature satisfies the relevant inequality; $n=2,K=1$ realizes both zero coefficients.
+\end{proof}
+The margin and uniform estimation error must be known or bounded appropriately. Choosing $\tau$ from an unknown test margin would be oracle tuning and is not an automatic method. With growing $n$ and full $K=n-1$, the TC coefficient is at most $n\log n$, and the UC coefficient is at most $\log n$. Therefore $\gamma_n n\log n\to0$ and $\gamma_{c,n}\log n\to0$, together with $(\Delta_n-\epsilon_n)/\tau_n\to\infty$, make both sufficient error bounds vanish. Uniform estimation with growing dimension is an additional assumption, not supplied by this deterministic argument. No empirical validation of such a schedule follows from it.
+
+\subsection{A worked tournament and finite-temperature ordering}
+Figure~\ref{fig:worked-tournament} has edges $a\to b$, $b\to c$, $c\to a$, $a\to d$, $b\to d$, and $d\to c$. Its out-neighborhoods are
+\[
+N^+(a)=\{b,d\},\quad N^+(b)=\{c,d\},\quad
+N^+(c)=\{a\},\quad N^+(d)=\{c\}.
+\]
+The directed cycle $a\to b\to d\to c\to a$ visits all four vertices, so each vertex reaches every other and TC is the full panel. Only $d$ is covered: $b\to d$ and $N^+(d)\subseteq N^+(b)$. To exclude other covers, $a$ loses only to $c$, but $c$ does not beat $b\in N^+(a)$; $b$ loses only to $a$, but $a$ does not beat $c\in N^+(b)$; and $c$ loses to $b,d$, neither of which beats $a\in N^+(c)$. Thus UC is exactly $\{a,b,c\}$. In particular, $a$ does not cover $d$, since $d\to c$ but $c\to a$.
+
+\begin{proof}[Proof of Proposition~\ref{prop:ordering-counterexample}]
+With row/column order $a,b,c$, take
+\[
+P=\begin{pmatrix}0.5&0.501&0.501\\0.499&0.5&0.9\\0.499&0.1&0.5\end{pmatrix}.
+\]
+The strict edges are $a\to b$, $a\to c$, $b\to c$. Vertex $a$ is a Condorcet winner, so the hard-core argument in Corollary~\ref{cor:condorcet} gives both hard sets as $\{a\}$.
+Write $d=\sigma(0.001/\tau)$ and $q=\sigma(0.4/\tau)$. Each witness set has one entry, hence its normalized maximum is the identity. Substitution into Eqs.~\eqref{eq:violation}--\eqref{eq:uc} gives the following two covers for each target:
+\[
+\begin{array}{ll}
+a:&A_1=(1-d)[1-d(1-q)],\quad A_2=(1-d)(1-dq),\\
+b:&B_1=d[1-q(1-d)],\quad B_2=(1-q)[1-d(1-d)],\\
+c:&d[1-(1-q)(1-d)],\quad q[1-d(1-d)].
+\end{array}
+\]
+At the specified $\tau$, $0.5<d<0.51$: the sigmoid derivative is at most $1/4$, so $d\le1/2+(1/35)/4<0.51$. Also $q>0.99$, because $0.4/0.035=80/7>\log99$. The differences obey
+\[
+\begin{split}
+A_1-B_1&=1-3d+d^2+2d(1-d)q\\
+&>1-3(0.51)+(0.5)^2+2(0.5)(0.49)(0.99)>0,\\
+A_2-B_2&=-d^2+q(1-2d+2d^2)\\
+&>-(0.51)^2+(0.99)/2>0,
+\end{split}
+\]
+where $1-2d+2d^2=2(d-1/2)^2+1/2\ge1/2$. Thus $(A_1,A_2)$ is strictly larger coordinatewise than $(B_1,B_2)$. The positive derivatives in Lemma~\ref{lem:extrema} make its normalized maximum strictly larger. Subtracting from one gives $u(a)<u(b)$, for any positive final cover temperature and in particular for $\gamma_c=0.035$. A threshold that includes $a$ must include the higher-scoring $b$; a descending prefix that includes $a$ does also. Neither can yield $\{a\}$.
+\end{proof}
+Numerical evaluation of these explicit formulas gives approximately $(0.531378,0.767042,0.274183)$. There is no estimation error; this is an ordering failure of finite-temperature smoothing, distinct from a separating ordering with a poorly transferred cutoff. The margin is $0.001$, outside the small-error recovery regime. Changing only $\tau$ to $0.00035$ gives approximately $(0.962687,0.129937,0.052807)$, restoring the member's lead. These examples neither contradict limiting Condorcet inclusion nor estimate failure prevalence or validate a new temperature. The accompanying saved local check verifies the formulas and general operator; it is not new GPU training.
+
+\subsection{Data-dependent TC certificates}\label{app:tc-certificates}
+Theorem~\ref{thm:finite} bounds every aggregation by its worst-case allowance. The following result instead measures the smoothing discrepancy on the supplied matrix, keeping the canonical operator unchanged. It does not remove the need for a valid uniform edge-error bound.
+
+\begin{proposition}[Computable TC smoothing discrepancy]\label{prop:tc-computable-certificate}
+Let $n\ge2$, let $M$ be a strict tournament adjacency, and let $D\in[0,1]^{n\times n}$ have zero diagonal. Fix an integer $K\ge n-1$ and $\gamma>0$, and write $\eta=\|D-M\|_\infty$. Let $t_\gamma(D)$ be the canonical TC score at this depth and aggregation temperature. Define $t_0(D)$ by replacing every soft maximum and minimum in Eqs.~\eqref{eq:product}--\eqref{eq:tc} with its ordinary maximum or minimum, retaining the same $D$ and $K$. Put
+\[
+B_a(D)=|t_{\gamma,a}(D)-t_{0,a}(D)|.
+\]
+Then, for every alternative $a$,
+\[
+|t_{\gamma,a}(D)-\mathbf1_{\TC(M)}(a)|
+\le E_a:=\min\{1,\eta+B_a(D)\}.
+\]
+For a threshold $h\in(0,1)$, $E_a<\min(h,1-h)$ certifies the threshold decision for $a$. If this inequality holds for every $a$, it certifies the entire selected set.
+\end{proposition}
+\begin{proof}
+For matrices $X,Y,X',Y'$ of the same size, ordinary maxima and minima satisfy
+\[
+\left\|\max_c\min\{X_{ac},Y_{cb}\}
+-\max_c\min\{X'_{ac},Y'_{cb}\}\right\|_\infty
+\le\max\{\|X-X'\|_\infty,\|Y-Y'\|_\infty\}.
+\]
+Indeed, each two-entry minimum changes by at most the greatest change of its entries, and an ordinary maximum preserves that allowance. The same inequality applies when intermediate matrices have nonzero diagonals. The unsmoothed recurrence starts at $D$ and $M$ with error $\eta$. If its preceding pair of matrices differs by at most $\eta$, the displayed inequality bounds the next pair by $\eta$, since the second inputs remain $D$ and $M$. Induction therefore gives this bound at every depth $k\le K$. Taking ordinary maxima over lengths and minima over opponents yields
+\[
+\|t_0(D)-t_0(M)\|_\infty\le\eta.
+\]
+The hard-path argument in the proof of Theorem~\ref{thm:finite} gives $t_0(M)=\mathbf1_{\TC(M)}$ when $K\ge n-1$. The triangle inequality now gives the allowance $\eta+B_a(D)$. Both scores and the binary target lie in $[0,1]$, giving the cap at one. If the target is zero, $t_{\gamma,a}(D)\le E_a<h$; if it is one, $t_{\gamma,a}(D)\ge1-E_a>h$. This proves the coordinate and complete-set conclusions.
+\end{proof}
+
+$B_a(D)$ is computable without the latent tournament. The unsmoothed score is the minimum, over opponents, of maximum path-bottleneck weights; its closure can also be evaluated by ordinary max--min Floyd--Warshall updates. This is an auxiliary certificate computation, not a replacement training objective or decoder. A supplied upper bound on $\eta$ may replace $\eta$ throughout. Lemma~\ref{lem:edge} supplies one under its strict-margin and uniform-estimation assumptions; low average pair MSE or an unvalidated posterior does not. A small discrepancy certifies neither the edge estimator nor an unknown population target by itself. No claim that this certificate holds at a recorded operating point follows without checking both terms.
+
+\begin{corollary}[A one-sided shortest-path refinement]\label{cor:tc-short-path}
+Under the assumptions of Proposition~\ref{prop:tc-computable-certificate}, let $a\in\TC(M)$ and let $\ell_a$ be the greatest shortest-path distance from $a$ to any distinct vertex in $M$. Then $1\le\ell_a\le n-1$ and
+\[
+1-t_{\gamma,a}(D)
+\le\min\{1,\eta+\gamma[(\ell_a-1)\log n+\log K]\}.
+\]
+\end{corollary}
+\begin{proof}
+For every $b\ne a$, choose a shortest path of length $k_b\le\ell_a$ from $a$ to $b$. The hard length-$k_b$ reachability entry is one. The lower recurrence bound in the proof of Theorem~\ref{thm:finite} therefore gives
+\[
+Q^{(k_b)}_{ab}\ge1-\eta-(k_b-1)\gamma\log n
+\ge1-\eta-(\ell_a-1)\gamma\log n.
+\]
+All these lengths are included because $K\ge n-1$. Lemma~\ref{lem:extrema} bounds the normalized maximum over lengths from below by any selected entry minus $\gamma\log K$. Thus every opponent reachability score is at least $1-\eta-\gamma[(\ell_a-1)\log n+\log K]$. The final normalized minimum is no smaller than the ordinary minimum, so the same lower bound holds for $t_{\gamma,a}(D)$. Since this score lies in $[0,1]$, its one-sided error is also at most one.
+\end{proof}
+The refinement explains why short-path members can have a useful allowance when the uniform full-depth bound is vacuous. It requires their paths in the target graph to be known or certified and says nothing about nonmembers. In particular, substituting $\ell_a$ for $K$ in the full two-sided theorem would be unjustified: the unchanged operator still aggregates all $K$ depths. These are conditional approximation certificates, not optimization, calibration, or predictive-performance claims. Deterministic CPU checks of the formulas support implementation consistency; the written proofs, rather than those checks, establish the results.

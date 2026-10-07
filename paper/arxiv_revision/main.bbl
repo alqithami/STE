@@ -1,0 +1,245 @@
+\begin{thebibliography}{}
+
+\bibitem[Aziz et~al., 2015]{aziz2015partial}
+Aziz, H., Brill, M., Fischer, F., Harrenstein, P., Lang, J., and Seedig, H.~G.
+  (2015).
+\newblock Possible and necessary winners of partial tournaments.
+\newblock {\em Journal of Artificial Intelligence Research}, 54:493--534.
+
+\bibitem[Berthet et~al., 2020]{berthet2020learning}
+Berthet, Q., Blondel, M., Teboul, O., Cuturi, M., Vert, J.-P., and Bach, F.
+  (2020).
+\newblock Learning with differentiable perturbed optimizers.
+\newblock In {\em Advances in Neural Information Processing Systems},
+  volume~33, pages 9508--9519.
+
+\bibitem[Blondel et~al., 2020]{blondel2020fast}
+Blondel, M., Teboul, O., Berthet, Q., and Djolonga, J. (2020).
+\newblock Fast differentiable sorting and ranking.
+\newblock In {\em Proceedings of the 37th International Conference on Machine
+  Learning}, volume 119, pages 950--959. PMLR.
+
+\bibitem[Boehmer and Schaar, 2022]{boehmer2022collecting}
+Boehmer, N. and Schaar, N. (2022).
+\newblock Collecting, classifying, analyzing, and using real-world elections.
+\newblock arXiv:2204.03589.
+
+\bibitem[B{\"o}hmer, 2023]{boehmer2023thesis}
+B{\"o}hmer, N. (2023).
+\newblock {\em Application-oriented Collective Decision Making: Experimental
+  Toolbox and Dynamic Environments}.
+\newblock PhD thesis, Technische Universit{\"a}t Berlin.
+
+\bibitem[Bradley and Terry, 1952]{bradley1952rank}
+Bradley, R.~A. and Terry, M.~E. (1952).
+\newblock Rank analysis of incomplete block designs: I. the method of paired
+  comparisons.
+\newblock {\em Biometrika}, 39(3/4):324--345.
+
+\bibitem[Brandt et~al., 2016]{brandt2016handbook}
+Brandt, F., Brill, M., and Harrenstein, P. (2016).
+\newblock Tournament solutions.
+\newblock In Brandt, F., Conitzer, V., Endriss, U., Lang, J., and Procaccia,
+  A.~D., editors, {\em Handbook of Computational Social Choice}, pages 57--84.
+  Cambridge University Press.
+
+\bibitem[Brill et~al., 2022]{brill2022margin}
+Brill, M., Schmidt-Kraepelin, U., and Suksompong, W. (2022).
+\newblock Margin of victory for tournament solutions.
+\newblock {\em Artificial Intelligence}, 302:103600.
+
+\bibitem[Chiang et~al., 2024]{chiang2024chatbotarena}
+Chiang, W.-L., Zheng, L., Sheng, Y., Angelopoulos, A.~N., Li, T., Li, D., Zhu,
+  B., Zhang, H., Jordan, M., Gonzalez, J.~E., and Stoica, I. (2024).
+\newblock Chatbot arena: An open platform for evaluating {LLM}s by human
+  preference.
+\newblock In {\em Proceedings of the 41st International Conference on Machine
+  Learning}, volume 235, pages 8359--8388. PMLR.
+
+\bibitem[Contet et~al., 2026]{contet2026supports}
+Contet, C., Grandi, U., and Mengin, J. (2026).
+\newblock Explaining tournament solutions with minimal supports.
+\newblock Extended version of the AAAI 2026 paper; arXiv version 5.
+
+\bibitem[Fishburn, 1977]{fishburn1977condorcet}
+Fishburn, P.~C. (1977).
+\newblock Condorcet social choice functions.
+\newblock {\em SIAM Journal on Applied Mathematics}, 33(3):469--489.
+
+\bibitem[Good, 1971]{good1971note}
+Good, I.~J. (1971).
+\newblock A note on condorcet sets.
+\newblock {\em Public Choice}, 10:97--101.
+
+\bibitem[Hoeffding, 1963]{hoeffding1963probability}
+Hoeffding, W. (1963).
+\newblock Probability inequalities for sums of bounded random variables.
+\newblock {\em Journal of the American Statistical Association},
+  58(301):13--30.
+
+\bibitem[Hu et~al., 2026]{hu2026acyclic}
+Hu, Z., Zhang, J., Xiong, Z., Ratner, A., Ding, K., and Krishna, R. (2026).
+\newblock Towards acyclic preference evaluation of language models via multiple
+  evaluators.
+\newblock {\em Proceedings of the AAAI Conference on Artificial Intelligence},
+  40(26):21903--21911.
+
+\bibitem[Jiang et~al., 2011]{jiang2011statistical}
+Jiang, X., Lim, L.-H., Yao, Y., and Ye, Y. (2011).
+\newblock Statistical ranking and combinatorial {H}odge theory.
+\newblock {\em Mathematical Programming}, 127(1):203--244.
+
+\bibitem[Kamishima, 2016]{sushidata}
+Kamishima, T. (2016).
+\newblock {SUSHI} preference data sets.
+\newblock Provider release sushi3-2016.
+\newblock Research use permitted; redistribution prohibited.
+
+\bibitem[Kamishima and Akaho, 2009]{kamishima2009orders}
+Kamishima, T. and Akaho, S. (2009).
+\newblock Efficient clustering for orders.
+\newblock In {\em Mining Complex Data}, volume 165 of {\em Studies in
+  Computational Intelligence}, pages 261--279. Springer.
+
+\bibitem[Lanctot et~al., 2025]{lanctot2024sco}
+Lanctot, M., Larson, K., Kaisers, M., Berthet, Q., Gemp, I., Diaz, M.,
+  Maura-Rivero, R.-R., Bachrach, Y., Koop, A., and Precup, D. (2025).
+\newblock Soft {Condorcet} optimization for ranking of general agents.
+\newblock In {\em Proceedings of the 24th International Conference on
+  Autonomous Agents and Multiagent Systems}, pages 1253--1262. IFAAMAS.
+
+\bibitem[Laslier, 1997]{laslier1997tournament}
+Laslier, J.-F. (1997).
+\newblock {\em Tournament Solutions and Majority Voting}.
+\newblock Springer.
+
+\bibitem[{LMArena}, 2025a]{arena100data}
+{LMArena} (2025a).
+\newblock Arena human preference 100k.
+\newblock Dataset card, Hugging Face.
+
+\bibitem[{LMArena}, 2025b]{webdevdata}
+{LMArena} (2025b).
+\newblock Webdev arena preference 10k.
+\newblock Dataset card, Hugging Face.
+
+\bibitem[Luce, 1959]{luce1959individual}
+Luce, R.~D. (1959).
+\newblock {\em Individual Choice Behavior: A Theoretical Analysis}.
+\newblock Wiley.
+
+\bibitem[Mattei and Walsh, 2013]{mattei2013preflib}
+Mattei, N. and Walsh, T. (2013).
+\newblock {PrefLib}: A library for preferences.
+\newblock In {\em Algorithmic Decision Theory}, volume 8176 of {\em Lecture
+  Notes in Computer Science}, pages 259--270. Springer.
+
+\bibitem[Miller, 1980]{miller1980graph}
+Miller, N.~R. (1980).
+\newblock A new solution set for tournaments and majority voting: Further
+  graph-theoretical approaches to the theory of voting.
+\newblock {\em American Journal of Political Science}, 24(1):68--96.
+
+\bibitem[Mordeson et~al., 2011]{mordeson2011uncovered}
+Mordeson, J.~N., Clark, T.~D., Miller, N.~R., Casey, P.~C., and Gibilisco,
+  M.~B. (2011).
+\newblock The uncovered set and indifference in spatial models: A fuzzy set
+  approach.
+\newblock {\em Fuzzy Sets and Systems}, 168(1):89--101.
+
+\bibitem[Negahban et~al., 2017]{negahban2017rank}
+Negahban, S., Oh, S., and Shah, D. (2017).
+\newblock Rank centrality: Ranking from pairwise comparisons.
+\newblock {\em Operations Research}, 65(1):266--287.
+
+\bibitem[O'Neill, 2013]{oneill2013openstv}
+O'Neill, J. (2013).
+\newblock Open {STV}.
+\newblock Original election-data attribution recorded by PrefLib.
+
+\bibitem[Popov et~al., 2014]{popov2015consensus}
+Popov, S.~V., Popova, A., and Regenwetter, M. (2014).
+\newblock Consensus in organizations: Hunting for the social choice conundrum
+  in {APA} elections.
+\newblock {\em Decision}, 1(2):123--146.
+
+\bibitem[{PrefLib}, 2013]{preflibers}
+{PrefLib} (2013).
+\newblock Electoral reform society ({ERS}) data (00007).
+\newblock Provider description; election ballots donated by Nicolaus Tideman.
+
+\bibitem[{PrefLib}, 2024]{preflibcses}
+{PrefLib} (2024).
+\newblock Comparative study of electoral systems: Dataset 00067.
+\newblock Dataset documentation.
+
+\bibitem[{PrefLib}, 2026]{preflibvoterautrement}
+{PrefLib} (2026).
+\newblock {Voter Autrement} online experiments in french presidential
+  elections: Dataset 00073.
+\newblock Dataset documentation.
+
+\bibitem[Ramamohan et~al., 2016]{ramamohan2016dueling}
+Ramamohan, S., Rajkumar, A., and Agarwal, S. (2016).
+\newblock Dueling bandits: Beyond {Condorcet} winners to general tournament
+  solutions.
+\newblock In {\em Advances in Neural Information Processing Systems},
+  volume~29.
+
+\bibitem[Smith, 1973]{smith1973aggregation}
+Smith, J.~H. (1973).
+\newblock Aggregation of preferences with variable electorate.
+\newblock {\em Econometrica}, 41(6):1027--1041.
+
+\bibitem[{The Comparative Study of Electoral Systems}, 2015a]{csesmodule1}
+{The Comparative Study of Electoral Systems} (2015a).
+\newblock {CSES Module 1 Full Release}.
+\newblock Dataset.
+
+\bibitem[{The Comparative Study of Electoral Systems}, 2015b]{csesmodule2}
+{The Comparative Study of Electoral Systems} (2015b).
+\newblock {CSES Module 2 Full Release}.
+\newblock Dataset.
+
+\bibitem[{The Comparative Study of Electoral Systems}, 2015c]{csesmodule3}
+{The Comparative Study of Electoral Systems} (2015c).
+\newblock {CSES Module 3 Full Release}.
+\newblock Dataset.
+
+\bibitem[{The Comparative Study of Electoral Systems}, 2018]{csesmodule4}
+{The Comparative Study of Electoral Systems} (2018).
+\newblock {CSES Module 4 Full Release}.
+\newblock Dataset.
+
+\bibitem[{The Comparative Study of Electoral Systems}, 2022]{csesmodule5}
+{The Comparative Study of Electoral Systems} (2022).
+\newblock {CSES Module 5 Full Release}.
+\newblock Dataset.
+
+\bibitem[Waegeman et~al., 2014]{waegeman2014fmeasure}
+Waegeman, W., Dembczy{\'n}ski, K., Jachnik, A., Cheng, W., and H{\"u}llermeier,
+  E. (2014).
+\newblock On the {Bayes}-optimality of {F}-measure maximizers.
+\newblock {\em Journal of Machine Learning Research}, 15(103):3513--3568.
+
+\bibitem[Williams, 1992]{williams1992reinforce}
+Williams, R.~J. (1992).
+\newblock Simple statistical gradient-following algorithms for connectionist
+  reinforcement learning.
+\newblock {\em Machine Learning}, 8:229--256.
+
+\bibitem[Xu et~al., 2025]{xu2025nontransitivity}
+Xu, Y., Ruis, L., Rockt{\"a}schel, T., and Kirk, R. (2025).
+\newblock Investigating non-transitivity in {LLM}-as-a-judge.
+\newblock In {\em Proceedings of the 42nd International Conference on Machine
+  Learning}, volume 267, pages 69583--69612. PMLR.
+
+\bibitem[Yu et~al., 2026]{yu2025elspr}
+Yu, Y., Liu, Y., He, M., Tao, S., Meng, W., Yang, X., Zhang, L., Ma, H., Li,
+  D., Wei, D., Chen, B., and Li, F. (2026).
+\newblock {ELSPR}: Evaluator {LLM} training data self-purification on
+  non-transitive preferences via tournament graph reconstruction.
+\newblock {\em Proceedings of the AAAI Conference on Artificial Intelligence},
+  40(21):17975--17983.
+
+\end{thebibliography}

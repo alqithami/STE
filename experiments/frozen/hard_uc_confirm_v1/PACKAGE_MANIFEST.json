@@ -1,0 +1,182 @@
+{
+  "release": "STE-HardUC-Confirm-v1",
+  "production_not_run": true,
+  "files": [
+    {
+      "path": "FORK_PROVENANCE.json",
+      "bytes": 2509,
+      "sha256": "7cd4a771f361eaba41363ba413384defba551b3229bac710ea3ee7ff8121d62e"
+    },
+    {
+      "path": "LAUNCH_AND_SHARE.md",
+      "bytes": 9643,
+      "sha256": "9b6a0eb9acdbcf807280366db1a16faa0d89f817fdc85edb397c874f3dd0b043"
+    },
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 9562,
+      "sha256": "b538955cf62792a861806cdd0b230d5dffa5c86909df0927f02042270426137f"
+    },
+    {
+      "path": "QA_READINESS.json",
+      "bytes": 2251,
+      "sha256": "6d4814cbaf19277c4a863bad24fd2bb53ec961af10fa6262b558cac5758798bf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6603,
+      "sha256": "cfe817ece2aa1c606caf4f9cf14be9516f2ae323072b2abe9e3e11eb6dd9df9c"
+    },
+    {
+      "path": "analysis_tests.py",
+      "bytes": 8667,
+      "sha256": "80dd887b635d90ed51fa443d006d4a4802cd5d57bb660ca2d8cff5a9ec0751b9"
+    },
+    {
+      "path": "analyze.py",
+      "bytes": 40937,
+      "sha256": "38f19095a7e61ee19884132a0a51410289269936626c995bff962d39eaa1251f"
+    },
+    {
+      "path": "cloud.sh",
+      "bytes": 15385,
+      "sha256": "1e2ee97b032dd81d2a1c26c254a25fa7b2f75fd8b8ee2a7e49694135eb554874"
+    },
+    {
+      "path": "config.json",
+      "bytes": 5305,
+      "sha256": "d84bead343c83b136c87e5632c149575f7cb0e7883f8d2d82c323695cefe4fea"
+    },
+    {
+      "path": "frozen/FROZEN_SHA256SUMS.txt",
+      "bytes": 1426,
+      "sha256": "d8df56163283eb653e5b738021c2bc786af58a5be694d60d1de0c6478acceb2c"
+    },
+    {
+      "path": "frozen/PROVENANCE.txt",
+      "bytes": 352,
+      "sha256": "3a07d88ab3be566607303c343af4e990c1d20ff3e81349a15f54e7ed32457d95"
+    },
+    {
+      "path": "frozen/original_config.json",
+      "bytes": 2238,
+      "sha256": "b8d70b1581d67f6dc9d88a793d7295dd0d002791244e78980ffdabfa86a3ac0d"
+    },
+    {
+      "path": "frozen/ste/__init__.py",
+      "bytes": 67,
+      "sha256": "a8281f3660e704907410330365513f5ca8f0c497882d38220c7f1ddc764d5b56"
+    },
+    {
+      "path": "frozen/ste/analysis.py",
+      "bytes": 8417,
+      "sha256": "10be7da42fe6209ebf3d65a0a0188a47d8f8b13b86a9dfac8a7687eb216717e4"
+    },
+    {
+      "path": "frozen/ste/baselines.py",
+      "bytes": 3921,
+      "sha256": "65b96323e52101896876615fbc15ba94d51ee73ce0a37a408ccd00121a0eb3b7"
+    },
+    {
+      "path": "frozen/ste/common.py",
+      "bytes": 3365,
+      "sha256": "da23d5ad63142e12051a6282de5a70975a197c5ca360868fb088e66726442afb"
+    },
+    {
+      "path": "frozen/ste/count_study.py",
+      "bytes": 4973,
+      "sha256": "185f99ccd393e4c461fcae571ce8102a4111c2ae74cd21fab8023d7f88add328"
+    },
+    {
+      "path": "frozen/ste/data.py",
+      "bytes": 6449,
+      "sha256": "b3cbfa54ee342f93771b17f7c088500e5157d58558e6fee00e01c2f1d31a31c8"
+    },
+    {
+      "path": "frozen/ste/diagnostics.py",
+      "bytes": 8384,
+      "sha256": "64a41b4b8216da3feb1f8fc3aaf94c5c594cad1fa39fa17040935f6510565275"
+    },
+    {
+      "path": "frozen/ste/learning.py",
+      "bytes": 11883,
+      "sha256": "790174b50f94937ba91998ad846a36d6b195e65c45171ed174e11d1dfbdda858"
+    },
+    {
+      "path": "frozen/ste/metrics.py",
+      "bytes": 4310,
+      "sha256": "d35e62761a52e498acf218ba5351e46971229c4b07ee8559715a06b858f748be"
+    },
+    {
+      "path": "frozen/ste/models.py",
+      "bytes": 1949,
+      "sha256": "5ebd00bff682c3fa12344c25d6981a70f8185313ded4a859139144dbd0b418d3"
+    },
+    {
+      "path": "frozen/ste/operators.py",
+      "bytes": 5058,
+      "sha256": "435b53f6d07e8436db695b25f227577dcee62af3edef547b4b573009cb499af1"
+    },
+    {
+      "path": "frozen/ste/packaging.py",
+      "bytes": 2447,
+      "sha256": "ca65ab24a35d1968619ba07f84d4cf07c566cc0ff684483ee086181cfae87882"
+    },
+    {
+      "path": "frozen/ste/real.py",
+      "bytes": 13044,
+      "sha256": "b86144d17667211c719c248e197beb46ddc4cd51bb35ecec4267636a5c96345a"
+    },
+    {
+      "path": "frozen/ste/validation.py",
+      "bytes": 5071,
+      "sha256": "9ce517caa183db31b146eaafd61d68af7fbc64312095894429df42a363967ea9"
+    },
+    {
+      "path": "merge.py",
+      "bytes": 9553,
+      "sha256": "99b11e4216c0012f8a07eee43e29c7bdda5da05a93ceb3c85a55bff65b3312b8"
+    },
+    {
+      "path": "package_results.py",
+      "bytes": 10536,
+      "sha256": "d7a60914acb1c788424553100f9eaf82f68be6cc6b4ebdd90a3c1e172c6f4fe2"
+    },
+    {
+      "path": "preflight.py",
+      "bytes": 6362,
+      "sha256": "197f9fb91300739fab6b79769dcd5c35a847e7f870f614fe1027e39cfc9ddb3a"
+    },
+    {
+      "path": "replay_selected.py",
+      "bytes": 7068,
+      "sha256": "1f200fbdac52625fe5c4e77f3cc9c162a2f688f6bf15831d4e3728e3c7dc2c5d"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 42,
+      "sha256": "8fd7785fbdfba7ff878471f7f31a56d85316f2da28259389e34867df3b7ab181"
+    },
+    {
+      "path": "run_experiment.py",
+      "bytes": 44990,
+      "sha256": "c35be6e5447c6f64ef97a1d8795dbd0a55c29bb4025ad76305fecfd3b54146ca"
+    },
+    {
+      "path": "software_tests.py",
+      "bytes": 9909,
+      "sha256": "b3308841819b93ce4aa09e6338c27f8a65e6097eab37a3a61e55321062501e63"
+    },
+    {
+      "path": "verify_archive.py",
+      "bytes": 20070,
+      "sha256": "d47b962d5d09640cb17692655f01da119de05ce705abfed225dc6cd739439c1f"
+    },
+    {
+      "path": "REPORTING_COPY_PROVENANCE.json",
+      "bytes": 677,
+      "sha256": "f0996ecb4cf64046f69a1912a804071efdc6a6b470487b06a465af10ad83cce6"
+    }
+  ],
+  "copy_classification": "Anonymous reproduction source; delivered package originally marked production_not_run before execution. Completed-run evidence is separate."
+}
